@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'statisticview.dart';
 
 const PrimaryColor = const Color(0xff2980b9);
 
@@ -41,14 +42,14 @@ class _mainmenuPage extends State<mainmenuPage> {
       body: Column(
         children: <Widget>[
           makeRow(context,
-              left: '차량통계',
+              left: '주간통계',
               right: '차량진단',
               icons: Icon(
                 Icons.leaderboard_outlined,
                 size: 100,
               ),
               icons2: Icon(
-                Icons.add_chart,
+                Icons.search,
                 size: 100,
               )),
           makeRow(context,
@@ -94,31 +95,79 @@ class _mainmenuPage extends State<mainmenuPage> {
       {String left, String right, Icon icons, Icon icons2}) {
     return Row(
       children: <Widget>[
-        Container(
-          child: Center(
-              child: Column(
-            children: [
-              icons,
-              ElevatedButton(
+          Container(
+            child: Center(
+              child:  ElevatedButton(
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                    (Set<MaterialState> states) {
+                        (Set<MaterialState> states) {
                       if (states.contains(MaterialState.pressed)) return null;
                       return new Color(
                           0xff2980b9); // Use the component's default.
                     },
                   ),
                 ),
-                child: Text(
-                  left,
-                  style: TextStyle(fontSize: 23.0, color: Colors.white),
+                onPressed: () {
+                  if (left.compareTo('주간통계') == 0) {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => statisticview()));
+                  }
+                },
+                  child: Column(
+                    mainAxisSize :MainAxisSize.max,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      icons,
+                      Text(
+                        left,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 23.0, color: Colors.white),
+                      ),
+                    ],
+                  ),
+                 )
+
+            ),
+            width: 205,
+            height: 150.8,
+            //150.8
+            decoration: BoxDecoration(
+              color: PrimaryColor,
+              border: Border.all(color: Colors.white, width: 1.5),
+            ),
+            margin: EdgeInsets.only(left: 0, right: 0),
+          ),
+
+        Container(
+          child: Center(
+              child:  ElevatedButton(
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                        (Set<MaterialState> states) {
+                      if (states.contains(MaterialState.pressed)) return null;
+                      return new Color(
+                          0xff2980b9); // Use the component's default.
+                    },
+                  ),
                 ),
                 onPressed: () {
-                  if (left.compareTo('차량통계') == 0) {}
+
                 },
+                child: Column(
+                  mainAxisSize :MainAxisSize.max,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    icons2,
+                    Text(
+                      right,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 23.0, color: Colors.white),
+                    ),
+                  ],
+                ),
               )
-            ],
-          )),
+
+          ),
           width: 205,
           height: 150.8,
           //150.8
@@ -126,38 +175,6 @@ class _mainmenuPage extends State<mainmenuPage> {
             color: PrimaryColor,
             border: Border.all(color: Colors.white, width: 1.5),
           ),
-          margin: EdgeInsets.only(left: 0, right: 0),
-        ),
-        Container(
-          child: Center(
-              child: Column(
-            children: [
-              icons2,
-              ElevatedButton(
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                    (Set<MaterialState> states) {
-                      if (states.contains(MaterialState.pressed)) return null;
-                      return new Color(
-                          0xff2980b9); // Use the component's default.
-                    },
-                  ),
-                ),
-                child: Text(
-                  right,
-                  style: TextStyle(fontSize: 23.0, color: Colors.white),
-                ),
-                onPressed: () {
-                  if (left.compareTo('차량통계') == 0) {}
-                },
-              )
-            ],
-          )),
-          width: 205,
-          height: 150.8,
-          decoration: BoxDecoration(
-              color: PrimaryColor,
-              border: Border.all(color: Colors.white, width: 1.5)),
           margin: EdgeInsets.only(left: 0, right: 0),
         ),
       ],
