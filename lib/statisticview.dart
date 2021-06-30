@@ -51,7 +51,33 @@ class statistic_viewPage extends State<statisticviewPage> {
           new IconButton(
               icon: Icon(Icons.info_outline),
               onPressed: () {
-                  //팝업창 만들기
+                //팝업창
+                showCupertinoDialog(
+                    context: context,
+                    //barrierDismissible - Dialog를 제외한 다른 화면 터치 x
+                    barrierDismissible: false,
+                    builder: (BuildContext context) {
+                      return new Container(
+                              height: 800.0,
+                              child: CupertinoAlertDialog(
+                                //Dialog Main Title
+                                title: Column(
+                                  children: <Widget>[
+                                    new Text("주간 통계"),
+                                    new Container(height: 1.0, width: 400.0,color: Colors.grey)
+                                  ],
+                                ),
+                                content: new Text("앱 내의 흩어져있는 차량 정보들을 수집하여 일주일마다 통계를 냅니다.\n\n ✔ 매주 월요일에 오전에 업데이트 됩니다. \n\n ✔ 설정버튼을 눌러 통계 정보들의 위치와 \n활성화 여부를 선택할 수 있습니다. "),
+                                actions: <Widget>[
+                                  new TextButton(
+                                    child: Text("확인"),
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                ],
+                              ));
+                    });
               }),
           new IconButton(
               icon: Icon(Icons.settings),
