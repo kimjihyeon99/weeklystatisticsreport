@@ -84,12 +84,11 @@ class _WeeklyStatisticsEditPage extends State<WeeklyStatisticsEditPage> {
               if (item is HeadingItem) {
                 return makeAppbarContainer(item.isActivate);
               } else if (item is isActivateItem) {
-                if(item.isactivate==true){
+                if (item.isactivate == true) {
                   return makeActivationContainer(item.Activatename);
-                }else{
+                } else {
                   return makeDeactivationContainer(item.Activatename);
                 }
-
               }
             }),
       ),
@@ -128,16 +127,24 @@ class _WeeklyStatisticsEditPage extends State<WeeklyStatisticsEditPage> {
               onPressed: () {
                 Activateinfo[menuName] = false;
 
-                int ct= countactivate();
+                int ct = countactivate();
                 //reload
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => WeeklyStatisticsEdit(items: List<ListItem>.generate(
-                            9,
-                                (i) => ((i % (ct+1)) == 0 && ((i ~/ (ct+1))==0 || (i ~/ (ct+1))==1))
-                                ? (i==0 ? HeadingItem("활성화") : HeadingItem("비활성화"))
-                                : ((i ~/ (ct+1))==0? isActivateItem(activate[i-1],true): isActivateItem(deactivate[i-ct-2],false))))));
+                        builder: (context) => WeeklyStatisticsEdit(
+                            items: List<ListItem>.generate(
+                                9,
+                                (i) => ((i % (ct + 1)) == 0 &&
+                                        ((i ~/ (ct + 1)) == 0 ||
+                                            (i ~/ (ct + 1)) == 1))
+                                    ? (i == 0
+                                        ? HeadingItem("활성화")
+                                        : HeadingItem("비활성화"))
+                                    : ((i ~/ (ct + 1)) == 0
+                                        ? isActivateItem(activate[i - 1], true)
+                                        : isActivateItem(
+                                            deactivate[i - ct - 2], false))))));
               },
             ),
           ),
@@ -171,22 +178,30 @@ class _WeeklyStatisticsEditPage extends State<WeeklyStatisticsEditPage> {
       child: Row(children: <Widget>[
         Expanded(
           // for Alignment
-          child:  new IconButton(
+          child: new IconButton(
             icon: Icon(Icons.add_circle),
             color: Colors.green,
             onPressed: () {
               Activateinfo[menuName] = true;
 
-              int ct= countactivate();
+              int ct = countactivate();
               //reload
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => WeeklyStatisticsEdit(items: List<ListItem>.generate(
-                          9,
-                              (i) => ((i % (ct+1)) == 0 && ((i ~/ (ct+1))==0 || (i ~/ (ct+1))==1))
-                              ? (i==0 ? HeadingItem("활성화") : HeadingItem("비활성화"))
-                              : ((i ~/ (ct+1))==0? isActivateItem(activate[i-1],true): isActivateItem(deactivate[i-ct-2],false))))));
+                      builder: (context) => WeeklyStatisticsEdit(
+                          items: List<ListItem>.generate(
+                              9,
+                              (i) => ((i % (ct + 1)) == 0 &&
+                                      ((i ~/ (ct + 1)) == 0 ||
+                                          (i ~/ (ct + 1)) == 1))
+                                  ? (i == 0
+                                      ? HeadingItem("활성화")
+                                      : HeadingItem("비활성화"))
+                                  : ((i ~/ (ct + 1)) == 0
+                                      ? isActivateItem(activate[i - 1], true)
+                                      : isActivateItem(
+                                          deactivate[i - ct - 2], false))))));
             },
           ),
         ),
