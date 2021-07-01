@@ -4,8 +4,29 @@ import 'mainmenu.dart';
 import 'WeeklyStatisticsEdit.dart';
 
 
-List<bool> isActivate = [true,true,true,true,true,true,true];
+List<String> activateName = ["안전 점수","경제 점수","운전스타일 경고 점수","일일 연비","주행 거리","지출 내역","점검 필요항목"];
+List activate;
+List deactivate;
+Map Activateinfo={"안전 점수":true,"경제 점수":true,"운전스타일 경고 점수":true,"일일 연비":true,"주행 거리":false,"지출 내역":true,"점검 필요항목":true};
 
+int countactivate(){
+  int count=0;
+  activate =[];
+  deactivate =[];
+  for(int i=0;i<Activateinfo.length;i++){
+    if(Activateinfo[activateName[i]] == true){
+      activate.add(activateName[i]);
+      count = count+1;
+    }else{
+      deactivate.add(activateName[i]);
+    }
+  }
+  print(activate);
+
+  print(deactivate);
+  print(count);
+  return count;
+}
 
 class statisticview extends StatelessWidget {
   @override
@@ -29,7 +50,13 @@ class statisticviewPage extends StatefulWidget {
 }
 
 class statistic_viewPage extends State<statisticviewPage> {
-
+  int ct ;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    ct= countactivate();
+  }
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -86,7 +113,12 @@ class statistic_viewPage extends State<statisticviewPage> {
               icon: Icon(Icons.settings),
               onPressed: () {
                 Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => WeeklyStatisticsEdit()));
+                    context, MaterialPageRoute(builder: (context) => WeeklyStatisticsEdit(
+                    items: List<ListItem>.generate(
+                      9,
+                        (i) => ((i % (ct+1)) == 0 && ((i ~/ (ct+1))==0 || (i ~/ (ct+1))==1))
+                        ? (i==0 ? HeadingItem("활성화") : HeadingItem("비활성화"))
+                        : ((i ~/ (ct+1))==0? isActivateItem(activate[i-1],true): isActivateItem(deactivate[i-ct-2],false))))));
               })
         ],
       ),
@@ -94,7 +126,8 @@ class statistic_viewPage extends State<statisticviewPage> {
         padding: const EdgeInsets.all(20.0),
         itemCount: 7,
         itemBuilder: (context, index){
-          if(index==0  && isActivate[index] == true){
+          print(Activateinfo);
+          if(index==0  && Activateinfo[activateName[index]] == true){
             return Container(
               margin: EdgeInsets.symmetric(vertical: 10.0),
               padding: EdgeInsets.all(15),
@@ -118,7 +151,7 @@ class statistic_viewPage extends State<statisticviewPage> {
               ),
               child: Text("안전 점수", style: TextStyle(fontWeight: FontWeight.bold,fontSize: 23.0, color: Colors.black)),
             );
-          }else if(index==1  && isActivate[index] == true){
+          }else if(index==1  &&  Activateinfo[activateName[index]] == true){
             return Container(
               margin: EdgeInsets.symmetric(vertical: 10.0),
               padding: EdgeInsets.all(15),
@@ -142,7 +175,7 @@ class statistic_viewPage extends State<statisticviewPage> {
               ),
               child: Text("경제 점수", style: TextStyle(fontWeight: FontWeight.bold,fontSize: 23.0, color: Colors.black)),
             );
-          }else if(index==2  && isActivate[index] == true){
+          }else if(index==2  &&  Activateinfo[activateName[index]] == true){
             return Container(
               margin: EdgeInsets.symmetric(vertical: 10.0),
               padding: EdgeInsets.all(15),
@@ -166,7 +199,7 @@ class statistic_viewPage extends State<statisticviewPage> {
               ),
               child: Text("운전스타일 경고 점수", style: TextStyle(fontWeight: FontWeight.bold,fontSize: 23.0, color: Colors.black)),
             );
-          }else if(index==3  && isActivate[index] == true){
+          }else if(index==3  && Activateinfo[activateName[index]] == true){
             return Container(
               margin: EdgeInsets.symmetric(vertical: 10.0),
               padding: EdgeInsets.all(15),
@@ -190,7 +223,7 @@ class statistic_viewPage extends State<statisticviewPage> {
               ),
               child: Text("일일 연비", style: TextStyle(fontWeight: FontWeight.bold,fontSize: 23.0, color: Colors.black)),
             );
-          }else if(index==4  && isActivate[index] == true){
+          }else if(index==4  && Activateinfo[activateName[index]] == true){
             return Container(
               margin: EdgeInsets.symmetric(vertical: 10.0),
               padding: EdgeInsets.all(15),
@@ -214,7 +247,7 @@ class statistic_viewPage extends State<statisticviewPage> {
               ),
               child: Text("주행 거리", style: TextStyle(fontWeight: FontWeight.bold,fontSize: 23.0, color: Colors.black)),
             );
-          }else if(index==5  && isActivate[index] == true){
+          }else if(index==5  && Activateinfo[activateName[index]] == true){
             return Container(
               margin: EdgeInsets.symmetric(vertical: 10.0),
               padding: EdgeInsets.all(15),
@@ -238,7 +271,7 @@ class statistic_viewPage extends State<statisticviewPage> {
               ),
               child: Text("지출 내역", style: TextStyle(fontWeight: FontWeight.bold,fontSize: 23.0, color: Colors.black)),
             );
-          }else if(index==6  && isActivate[index] == true){
+          }else if(index==6  &&  Activateinfo[activateName[index]] == true){
             return Container(
               margin: EdgeInsets.symmetric(vertical: 10.0),
               padding: EdgeInsets.all(15),

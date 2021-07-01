@@ -1,12 +1,29 @@
 import 'package:flutter/material.dart';
 import 'statisticview.dart';
 
-
-
 const PrimaryColor = const Color(0xff2980b9);
 const SecondColor = const Color(0xff2B5490);
 
+abstract class ListItem {}
+
+class HeadingItem implements ListItem {
+  final String isActivate;
+
+  HeadingItem(this.isActivate);
+}
+
+class isActivateItem implements ListItem {
+  final String Activatename;
+  final bool isactivate;
+
+  isActivateItem(this.Activatename, this.isactivate);
+}
+
 class WeeklyStatisticsEdit extends StatelessWidget {
+  final List<ListItem> items;
+
+  WeeklyStatisticsEdit({Key key, @required this.items}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
@@ -15,95 +32,67 @@ class WeeklyStatisticsEdit extends StatelessWidget {
           primaryColor: PrimaryColor,
           accentColor: PrimaryColor,
           canvasColor: PrimaryColor),
-      home: new WeeklyStatisticsEditPage(),
+      home: new WeeklyStatisticsEditPage(items: items),
     );
   }
 }
 
 class WeeklyStatisticsEditPage extends StatefulWidget {
-  WeeklyStatisticsEditPage({Key key}) : super(key: key);
+  final List<ListItem> items;
+
+  WeeklyStatisticsEditPage({Key key, @required this.items}) : super(key: key);
 
   @override
-  _WeeklyStatisticsEditPage createState() => new _WeeklyStatisticsEditPage();
+  _WeeklyStatisticsEditPage createState() =>
+      new _WeeklyStatisticsEditPage(items: items);
 }
 
 class _WeeklyStatisticsEditPage extends State<WeeklyStatisticsEditPage> {
+  final List<ListItem> items;
+
+  _WeeklyStatisticsEditPage({@required this.items});
+
   @override
   Widget build(BuildContext context) {
-    print(isActivate);
     return new Scaffold(
-        appBar: new AppBar(
-          title: new Text(
-            '주간 통계 화면 편집',
-            style: new TextStyle(
-              fontSize: 25.0,
-            ),
-          ),
-          centerTitle: true,
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back),
-            onPressed: () {
-              // 주간 통계 화면으로 넘어가도록 구현
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => statisticview()));
-            },
+      appBar: new AppBar(
+        title: new Text(
+          '주간 통계 화면 편집',
+          style: new TextStyle(
+            fontSize: 25.0,
           ),
         ),
-        body: new SingleChildScrollView(
-          physics: ScrollPhysics(),
-          child: Column(
-            children: <Widget>[
-              makeAppbarContainer("활성화"),
-              ListView.builder(
-                  physics: NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount:7,
-                  itemBuilder: (context,index){
-                    if(index==0  && isActivate[index] == true ){
-                      return  makeActivationContainer("안전 점수", index);
-                    }else if(index==1  && isActivate[index] == true){
-                      return  makeActivationContainer("경제 점수", index);
-                    }else if(index==2  && isActivate[index] == true){
-                      return  makeActivationContainer("운전스타일 경고 점수", index);
-                    }else if(index==3  && isActivate[index] == true){
-                      return  makeActivationContainer("일일 연비", index);
-                    }else if(index==4  && isActivate[index] == true){
-                      return  makeActivationContainer("주행 거리", index);
-                    }else if(index==5  && isActivate[index] == true){
-                      return  makeActivationContainer("지출 내역", index);
-                    }else if(index==6  && isActivate[index] == true){
-                      return  makeActivationContainer("점검 필요 항목", index);
-                    }
-                    return null;
-                  }
-              ),
-              makeAppbarContainer("비활성화"),
-              ListView.builder(
-                  physics: NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount:7,
-                  itemBuilder: (context,index){
-                    if(index==0  && isActivate[index] == false){
-                      return  makeDeactivationContainer("안전 점수", index);
-                    }else if(index==1  && isActivate[index] == false){
-                      return  makeDeactivationContainer("경제 점수", index);
-                    }else if(index==2  && isActivate[index] == false){
-                      return  makeDeactivationContainer("운전스타일 경고 점수", index);
-                    }else if(index==3  && isActivate[index] == false){
-                      return  makeDeactivationContainer("일일 연비", index);
-                    }else if(index==4  && isActivate[index] == false){
-                      return  makeDeactivationContainer("주행 거리", index);
-                    }else if(index==5  && isActivate[index] == false){
-                      return  makeDeactivationContainer("지출 내역", index);
-                    }else if(index==6  && isActivate[index] == false){
-                      return  makeDeactivationContainer("점검 필요 항목", index);
-                    }
-                    return null;
-                  }
-              ),
-            ],
-          ),
+        centerTitle: true,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            // 주간 통계 화면으로 넘어가도록 구현
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => statisticview()));
+          },
         ),
+      ),
+      body: new SingleChildScrollView(
+        physics: ScrollPhysics(),
+        child: ListView.builder(
+            physics: NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            itemCount: items.length,
+            itemBuilder: (context, index) {
+              final item = items[index];
+
+              if (item is HeadingItem) {
+                return makeAppbarContainer(item.isActivate);
+              } else if (item is isActivateItem) {
+                if(item.isactivate==true){
+                  return makeActivationContainer(item.Activatename);
+                }else{
+                  return makeDeactivationContainer(item.Activatename);
+                }
+
+              }
+            }),
+      ),
     );
   }
 
@@ -117,17 +106,16 @@ class _WeeklyStatisticsEditPage extends State<WeeklyStatisticsEditPage> {
           fontSize: 25.0,
           color: Colors.white,
         ),
-
       ),
       decoration: BoxDecoration(
         color: SecondColor,
       ),
-        width: double.infinity,
-        height: AppBar().preferredSize.height,
+      width: double.infinity,
+      height: AppBar().preferredSize.height,
     );
   }
 
-  Widget makeActivationContainer(String menuName, int id) {
+  Widget makeActivationContainer(String menuName) {
     return Container(
       // border를 추가하기 위해 Row를 Container로 감쌈
       child: Row(
@@ -138,12 +126,18 @@ class _WeeklyStatisticsEditPage extends State<WeeklyStatisticsEditPage> {
               icon: Icon(Icons.remove_circle),
               color: Colors.red,
               onPressed: () {
-                isActivate[id] = false;
-                print(isActivate);
-                //reload
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => WeeklyStatisticsEdit()));
+                Activateinfo[menuName] = false;
 
+                int ct= countactivate();
+                //reload
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => WeeklyStatisticsEdit(items: List<ListItem>.generate(
+                            9,
+                                (i) => ((i % (ct+1)) == 0 && ((i ~/ (ct+1))==0 || (i ~/ (ct+1))==1))
+                                ? (i==0 ? HeadingItem("활성화") : HeadingItem("비활성화"))
+                                : ((i ~/ (ct+1))==0? isActivateItem(activate[i-1],true): isActivateItem(deactivate[i-ct-2],false))))));
               },
             ),
           ),
@@ -171,19 +165,33 @@ class _WeeklyStatisticsEditPage extends State<WeeklyStatisticsEditPage> {
     );
   }
 
-  Widget makeDeactivationContainer(String menuName, int id) {
+  Widget makeDeactivationContainer(String menuName) {
     return new Container(
       // border를 추가하기 위해 Row를 Container로 감쌈
       child: Row(children: <Widget>[
         Expanded(
           // for Alignment
-          child: new Icon(
-            Icons.add_circle,
+          child:  new IconButton(
+            icon: Icon(Icons.add_circle),
             color: Colors.green,
+            onPressed: () {
+              Activateinfo[menuName] = true;
+
+              int ct= countactivate();
+              //reload
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => WeeklyStatisticsEdit(items: List<ListItem>.generate(
+                          9,
+                              (i) => ((i % (ct+1)) == 0 && ((i ~/ (ct+1))==0 || (i ~/ (ct+1))==1))
+                              ? (i==0 ? HeadingItem("활성화") : HeadingItem("비활성화"))
+                              : ((i ~/ (ct+1))==0? isActivateItem(activate[i-1],true): isActivateItem(deactivate[i-ct-2],false))))));
+            },
           ),
         ),
         Expanded(
-          flex: 21, // for Alignment
+          flex: 5, // for Alignment
           child: new Text(
             menuName,
             style: new TextStyle(
