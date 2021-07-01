@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'statisticview.dart';
 
-List<bool> isActivate = List<bool>(7);
+
 
 const PrimaryColor = const Color(0xff2980b9);
 const SecondColor = const Color(0xff2B5490);
@@ -28,18 +28,9 @@ class WeeklyStatisticsEditPage extends StatefulWidget {
 }
 
 class _WeeklyStatisticsEditPage extends State<WeeklyStatisticsEditPage> {
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    for(int i=0; i<isActivate.length; i++) {
-      isActivate[i] = true;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
+    print(isActivate);
     return new Scaffold(
         appBar: new AppBar(
           title: new Text(
@@ -68,21 +59,20 @@ class _WeeklyStatisticsEditPage extends State<WeeklyStatisticsEditPage> {
                   shrinkWrap: true,
                   itemCount:7,
                   itemBuilder: (context,index){
-                    var id = "$index";
-                    if(isActivate[0]==true && id.compareTo("0")==0){
-                      return  makeActivationContainer("안전 점수");
-                    }else if(isActivate[1]==true && id.compareTo("1")==0){
-                      return  makeActivationContainer("경제 점수");
-                    }else if(isActivate[2]==true && id.compareTo("2")==0){
-                      return  makeActivationContainer("운전스타일 경고 점수");
-                    }else if(isActivate[3]==true && id.compareTo("3")==0){
-                      return  makeActivationContainer("일일 연비");
-                    }else if(isActivate[4]==true && id.compareTo("4")==0){
-                      return  makeActivationContainer("주행 거리");
-                    }else if(isActivate[5]==true && id.compareTo("5")==0){
-                      return  makeActivationContainer("지출 내역");
-                    }else if(isActivate[6]==true && id.compareTo("6")==0){
-                      return  makeActivationContainer("점검 필요 항목");
+                    if(index==0  && isActivate[index] == true ){
+                      return  makeActivationContainer("안전 점수", index);
+                    }else if(index==1  && isActivate[index] == true){
+                      return  makeActivationContainer("경제 점수", index);
+                    }else if(index==2  && isActivate[index] == true){
+                      return  makeActivationContainer("운전스타일 경고 점수", index);
+                    }else if(index==3  && isActivate[index] == true){
+                      return  makeActivationContainer("일일 연비", index);
+                    }else if(index==4  && isActivate[index] == true){
+                      return  makeActivationContainer("주행 거리", index);
+                    }else if(index==5  && isActivate[index] == true){
+                      return  makeActivationContainer("지출 내역", index);
+                    }else if(index==6  && isActivate[index] == true){
+                      return  makeActivationContainer("점검 필요 항목", index);
                     }
                     return null;
                   }
@@ -93,21 +83,20 @@ class _WeeklyStatisticsEditPage extends State<WeeklyStatisticsEditPage> {
                   shrinkWrap: true,
                   itemCount:7,
                   itemBuilder: (context,index){
-                    var id = "$index";
-                    if(isActivate[0]==false && id.compareTo("0")==0){
-                      return  makeDeactivationContainer("안전 점수");
-                    }else if(isActivate[1]==false && id.compareTo("1")==0){
-                      return  makeDeactivationContainer("경제 점수");
-                    }else if(isActivate[2]==false && id.compareTo("2")==0){
-                      return  makeDeactivationContainer("운전스타일 경고 점수");
-                    }else if(isActivate[3]==false && id.compareTo("3")==0){
-                      return  makeDeactivationContainer("일일 연비");
-                    }else if(isActivate[4]==false && id.compareTo("4")==0){
-                      return  makeDeactivationContainer("주행 거리");
-                    }else if(isActivate[5]==false && id.compareTo("5")==0){
-                      return  makeDeactivationContainer("지출 내역");
-                    }else if(isActivate[6]==false && id.compareTo("6")==0){
-                      return  makeDeactivationContainer("점검 필요 항목");
+                    if(index==0  && isActivate[index] == false){
+                      return  makeDeactivationContainer("안전 점수", index);
+                    }else if(index==1  && isActivate[index] == false){
+                      return  makeDeactivationContainer("경제 점수", index);
+                    }else if(index==2  && isActivate[index] == false){
+                      return  makeDeactivationContainer("운전스타일 경고 점수", index);
+                    }else if(index==3  && isActivate[index] == false){
+                      return  makeDeactivationContainer("일일 연비", index);
+                    }else if(index==4  && isActivate[index] == false){
+                      return  makeDeactivationContainer("주행 거리", index);
+                    }else if(index==5  && isActivate[index] == false){
+                      return  makeDeactivationContainer("지출 내역", index);
+                    }else if(index==6  && isActivate[index] == false){
+                      return  makeDeactivationContainer("점검 필요 항목", index);
                     }
                     return null;
                   }
@@ -138,20 +127,28 @@ class _WeeklyStatisticsEditPage extends State<WeeklyStatisticsEditPage> {
     );
   }
 
-  Widget makeActivationContainer(String menuName) {
+  Widget makeActivationContainer(String menuName, int id) {
     return Container(
       // border를 추가하기 위해 Row를 Container로 감쌈
       child: Row(
         children: <Widget>[
           Expanded(
             // for Alignment
-            child: new Icon(
-              Icons.remove_circle,
+            child: new IconButton(
+              icon: Icon(Icons.remove_circle),
               color: Colors.red,
+              onPressed: () {
+                isActivate[id] = false;
+                print(isActivate);
+                //reload
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => WeeklyStatisticsEdit()));
+
+              },
             ),
           ),
           Expanded(
-            flex: 21, // for Alignment
+            flex: 5, // for Alignment
             child: new Text(
               menuName,
               style: new TextStyle(
@@ -174,7 +171,7 @@ class _WeeklyStatisticsEditPage extends State<WeeklyStatisticsEditPage> {
     );
   }
 
-  Widget makeDeactivationContainer(String menuName) {
+  Widget makeDeactivationContainer(String menuName, int id) {
     return new Container(
       // border를 추가하기 위해 Row를 Container로 감쌈
       child: Row(children: <Widget>[

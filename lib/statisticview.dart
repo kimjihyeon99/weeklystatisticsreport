@@ -1,6 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'mainmenu.dart';
+import 'WeeklyStatisticsEdit.dart';
+
+
+List<bool> isActivate = [true,true,true,true,true,true,true];
+
 
 class statisticview extends StatelessWidget {
   @override
@@ -17,15 +22,13 @@ class statisticview extends StatelessWidget {
 }
 
 class statisticviewPage extends StatefulWidget {
-  statisticviewPage({Key key, this.conlist}) : super(key: key);
+  statisticviewPage({Key key}) : super(key: key);
 
-  final List conlist;
   @override
   statistic_viewPage createState() => new statistic_viewPage();
 }
 
 class statistic_viewPage extends State<statisticviewPage> {
-
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +85,8 @@ class statistic_viewPage extends State<statisticviewPage> {
           new IconButton(
               icon: Icon(Icons.settings),
               onPressed: () {
-                  //아영이 화면 가져오기
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => WeeklyStatisticsEdit()));
               })
         ],
       ),
@@ -90,8 +94,7 @@ class statistic_viewPage extends State<statisticviewPage> {
         padding: const EdgeInsets.all(20.0),
         itemCount: 7,
         itemBuilder: (context, index){
-          var id = "$index";
-          if(id.compareTo("0")==0){
+          if(index==0  && isActivate[index] == true){
             return Container(
               margin: EdgeInsets.symmetric(vertical: 10.0),
               padding: EdgeInsets.all(15),
@@ -115,7 +118,7 @@ class statistic_viewPage extends State<statisticviewPage> {
               ),
               child: Text("안전 점수", style: TextStyle(fontWeight: FontWeight.bold,fontSize: 23.0, color: Colors.black)),
             );
-          }else if(id.compareTo("1")==0){
+          }else if(index==1  && isActivate[index] == true){
             return Container(
               margin: EdgeInsets.symmetric(vertical: 10.0),
               padding: EdgeInsets.all(15),
@@ -139,7 +142,7 @@ class statistic_viewPage extends State<statisticviewPage> {
               ),
               child: Text("경제 점수", style: TextStyle(fontWeight: FontWeight.bold,fontSize: 23.0, color: Colors.black)),
             );
-          }else if(id.compareTo("2")==0){
+          }else if(index==2  && isActivate[index] == true){
             return Container(
               margin: EdgeInsets.symmetric(vertical: 10.0),
               padding: EdgeInsets.all(15),
@@ -163,7 +166,7 @@ class statistic_viewPage extends State<statisticviewPage> {
               ),
               child: Text("운전스타일 경고 점수", style: TextStyle(fontWeight: FontWeight.bold,fontSize: 23.0, color: Colors.black)),
             );
-          }else if(id.compareTo("3")==0){
+          }else if(index==3  && isActivate[index] == true){
             return Container(
               margin: EdgeInsets.symmetric(vertical: 10.0),
               padding: EdgeInsets.all(15),
@@ -187,7 +190,7 @@ class statistic_viewPage extends State<statisticviewPage> {
               ),
               child: Text("일일 연비", style: TextStyle(fontWeight: FontWeight.bold,fontSize: 23.0, color: Colors.black)),
             );
-          }else if(id.compareTo("4")==0){
+          }else if(index==4  && isActivate[index] == true){
             return Container(
               margin: EdgeInsets.symmetric(vertical: 10.0),
               padding: EdgeInsets.all(15),
@@ -211,7 +214,7 @@ class statistic_viewPage extends State<statisticviewPage> {
               ),
               child: Text("주행 거리", style: TextStyle(fontWeight: FontWeight.bold,fontSize: 23.0, color: Colors.black)),
             );
-          }else if(id.compareTo("5")==0){
+          }else if(index==5  && isActivate[index] == true){
             return Container(
               margin: EdgeInsets.symmetric(vertical: 10.0),
               padding: EdgeInsets.all(15),
@@ -235,7 +238,7 @@ class statistic_viewPage extends State<statisticviewPage> {
               ),
               child: Text("지출 내역", style: TextStyle(fontWeight: FontWeight.bold,fontSize: 23.0, color: Colors.black)),
             );
-          }else if(id.compareTo("6")==0){
+          }else if(index==6  && isActivate[index] == true){
             return Container(
               margin: EdgeInsets.symmetric(vertical: 10.0),
               padding: EdgeInsets.all(15),
