@@ -1,7 +1,25 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'mainmenu.dart';
 import 'WeeklyStatisticsEdit.dart';
+
+class DraggableList {
+  final String header;
+  final List<DraggableListItem> items;
+  const DraggableList({
+    this.header,
+    this.items,
+  });
+}
+class DraggableListItem {
+  final String Activatename;
+  final bool isactivate;
+  final Icon icons;
+  const DraggableListItem({this.Activatename, this.isactivate, this.icons});
+}
+//====================================================CLASS
 
 List<String> activateName = [
   "안전 점수",
@@ -23,6 +41,7 @@ Map Activateinfo = {
   "지출 내역": true,
   "점검 필요항목": true
 };
+
 
 int countactivate() {
   int count = 0;
@@ -54,13 +73,12 @@ class statisticview extends StatelessWidget {
 }
 
 class statisticviewPage extends StatefulWidget {
-  statisticviewPage({Key key}) : super(key: key);
-
   @override
   statistic_viewPage createState() => new statistic_viewPage();
 }
 
 class statistic_viewPage extends State<statisticviewPage> {
+
   int ct;
 
   @override
@@ -72,6 +90,37 @@ class statistic_viewPage extends State<statisticviewPage> {
 
   @override
   Widget build(BuildContext context) {
+
+    List<DraggableList> allLists = [
+      DraggableList(
+        header: '활성화',
+        items: [
+        ],
+      ),
+      DraggableList(
+        header: '비활성화',
+        items: [
+        ],
+      ),
+    ];
+
+    for(int i=0;i<Activateinfo.length;i++){
+      if(Activateinfo[activateName[i]] ==true){
+        allLists[0].items.add(DraggableListItem(
+          Activatename: activateName[i],
+          isactivate: true,
+          icons: Icon(Icons.remove_circle,color: Colors.red),
+        ));
+
+      }else{
+        allLists[1].items.add(DraggableListItem(
+          Activatename: activateName[i],
+          isactivate: false,
+          icons: Icon(Icons.add_circle,color: Colors.green),
+        ));
+      }
+     }
+
     return new Scaffold(
         appBar: new AppBar(
           title: new Center(
@@ -133,21 +182,12 @@ class statistic_viewPage extends State<statisticviewPage> {
                       context,
                       MaterialPageRoute(
                           builder: (context) => WeeklyStatisticsEdit(
-                              items: List<ListItem>.generate(
-                                  9,
-                                  (i) => ((i % (ct + 1)) == 0 &&
-                                          ((i ~/ (ct + 1)) == 0 ||
-                                              (i ~/ (ct + 1)) == 1))
-                                      ? (i == 0
-                                          ? HeadingItem("활성화")
-                                          : HeadingItem("비활성화"))
-                                      : ((i ~/ (ct + 1)) == 0
-                                          ? isActivateItem(
-                                              activate[i - 1], true)
-                                          : isActivateItem(
-                                              deactivate[i - ct - 2],
-                                              false))))));
-                })
+                              items: allLists
+                          )
+                      )
+                  );
+                }
+                )
           ],
         ),
         body: ListView.builder(
@@ -174,7 +214,7 @@ class statistic_viewPage extends State<statisticviewPage> {
                     ),
                   ],
                 ),
-                child: Text(activateName[index],
+                child: Text(activate[index],
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 23.0,
