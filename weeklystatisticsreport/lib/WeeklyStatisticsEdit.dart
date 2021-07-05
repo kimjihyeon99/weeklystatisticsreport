@@ -60,8 +60,6 @@ class _WeeklyStatisticsEditPage extends State<WeeklyStatisticsEditPage> {
 
   @override
   Widget build(BuildContext context) {
-
-
     return new Scaffold(
       appBar: new AppBar(
         title: new Text(
@@ -75,6 +73,7 @@ class _WeeklyStatisticsEditPage extends State<WeeklyStatisticsEditPage> {
           icon: Icon(Icons.arrow_back),
           onPressed: () {
             // 주간 통계 화면으로 넘어가도록 구현
+            print(lists);
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => statisticview()));
           },

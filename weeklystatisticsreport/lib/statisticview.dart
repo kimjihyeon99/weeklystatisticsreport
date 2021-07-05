@@ -186,6 +186,8 @@ class statistic_viewPage extends State<statisticviewPage> {
                           )
                       )
                   );
+
+                  print('result');
                 }
                 )
           ],
@@ -194,6 +196,7 @@ class statistic_viewPage extends State<statisticviewPage> {
           padding: const EdgeInsets.all(20.0),
           itemCount: ct,
           itemBuilder: (context, index) {
+
               return Container(
                 margin: EdgeInsets.symmetric(vertical: 10.0),
                 padding: EdgeInsets.all(15),
