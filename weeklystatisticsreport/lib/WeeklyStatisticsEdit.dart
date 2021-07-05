@@ -5,6 +5,9 @@ import 'statisticview.dart';
 const PrimaryColor = const Color(0xff2980b9);
 const SecondColor = const Color(0xff2B5490);
 
+List activeOrder = new List();
+List deActiveOrder =new List();
+
 class WeeklyStatisticsEdit extends StatelessWidget {
   final List<DraggableList> items;
 
@@ -39,18 +42,7 @@ class _WeeklyStatisticsEditPage extends State<WeeklyStatisticsEditPage> {
 
   _WeeklyStatisticsEditPage({@required this.items});
 
-  List<DraggableList> allLists = [
-    DraggableList(
-      header: '활성화',
-      items: [
-      ],
-    ),
-    DraggableList(
-      header: '비활성화',
-      items: [
-      ],
-    ),
-  ];
+
   @override
   void initState() {
     // TODO: implement initState
@@ -134,6 +126,7 @@ class _WeeklyStatisticsEditPage extends State<WeeklyStatisticsEditPage> {
     setState(() {
       final movedList = lists.removeAt(oldListIndex);
       lists.insert(newListIndex, movedList);
+
     });
   }
 
@@ -156,151 +149,52 @@ class _WeeklyStatisticsEditPage extends State<WeeklyStatisticsEditPage> {
     );
   }
 
-  Widget makeActivationContainer(String menuName) {
-    return Container(
-      // border를 추가하기 위해 Row를 Container로 감쌈
-      child: Row(
-        children: <Widget>[
-          Expanded(
-            // for Alignment
-            child: new IconButton(
-              icon: Icon(Icons.remove_circle),
-              color: Colors.red,
-              onPressed: () {
-                Activateinfo[menuName] = false;
-                int ct = countactivate();
-                //reload
-                // Navigator.push(
-                //     context,
-                //     MaterialPageRoute(
-                //         builder: (context) =>
-                //             WeeklyStatisticsEdit(
-                //                 items: List<ListItem>.generate(
-                //                     9,
-                //                         (i) =>
-                //                     ((i % (ct + 1)) == 0 &&
-                //                         ((i ~/ (ct + 1)) == 0 ||
-                //                             (i ~/ (ct + 1)) == 1))
-                //                         ? (i == 0
-                //                         ? HeadingItem("활성화")
-                //                         : HeadingItem("비활성화"))
-                //                         : ((i ~/ (ct + 1)) == 0
-                //                         ? isActivateItem(activate[i - 1], true)
-                //                         : isActivateItem(
-                //                         deactivate[i - ct - 2], false))))));
-              },
-            ),
-          ),
-          Expanded(
-            flex: 5, // for Alignment
-            child: new Text(
-              menuName,
-              style: new TextStyle(
-                fontSize: 25.0,
-                color: Colors.white,
-              ),
-            ),
-          ),
-          Expanded(
-            child: new Icon(
-              Icons.menu,
-              color: Colors.white,
-            ),
-          )
-        ],
-      ),
-      decoration:
-          BoxDecoration(border: Border.all(color: SecondColor, width: 1.2)),
-      height: 50,
-    );
-  }
-
-  Widget makeDeactivationContainer(String menuName) {
-    return new Container(
-      // border를 추가하기 위해 Row를 Container로 감쌈
-      child: Row(children: <Widget>[
-        Expanded(
-          // for Alignment
-          child: new IconButton(
-            icon: Icon(Icons.add_circle),
-            color: Colors.green,
-            onPressed: () {
-              Activateinfo[menuName] = true;
-              int ct = countactivate();
-              //reload
-              // Navigator.push(
-              //     context,
-              //     MaterialPageRoute(
-              //         builder: (context) =>
-              //             WeeklyStatisticsEdit(
-              //                 items: List<ListItem>.generate(
-              //                     9,
-              //                         (i) =>
-              //                     ((i % (ct + 1)) == 0 &&
-              //                         ((i ~/ (ct + 1)) == 0 ||
-              //                             (i ~/ (ct + 1)) == 1))
-              //                         ? (i == 0
-              //                         ? HeadingItem("활성화")
-              //                         : HeadingItem("비활성화"))
-              //                         : ((i ~/ (ct + 1)) == 0
-              //                         ? isActivateItem(activate[i - 1], true)
-              //                         : isActivateItem(
-              //                         deactivate[i - ct - 2], false))))));
-            },
-          ),
-        ),
-        Expanded(
-          flex: 5, // for Alignment
-          child: new Text(
-            menuName,
-            style: new TextStyle(
-              fontSize: 25.0,
-              color: new Color(0xffE0E0E0),
-            ),
-          ),
-        ),
-        Expanded(
-          child: new Icon(
-            Icons.menu,
-            color: Colors.white,
-          ),
-        )
-      ]),
-      decoration:
-          BoxDecoration(border: Border.all(color: SecondColor, width: 1.2)),
-      height: 50,
-    );
-  }
-
   DragAndDropList buildList(DraggableList list) => DragAndDropList(
         header: makeAppbarContainer(list.header),
+        canDrag: false,
         children: list.items
             .map((item) => DragAndDropItem(
                   child: ListTile(
                     leading: new IconButton(icon: item.icons, onPressed: () {
-                      Activateinfo[list.header] = !item.isactivate;
+                      Activateinfo[item.Activatename][1]  = !item.isactivate;
+
+                      List<DraggableList> allLists = [
+                        DraggableList(
+                          header: '활성화',
+                          items: [
+                          ],
+                        ),
+                        DraggableList(
+                          header: '비활성화',
+                          items: [
+                          ],
+                        ),
+                      ];
+
 
                       for(int i=0;i<Activateinfo.length;i++){
-                        if(Activateinfo[activateName[i]] ==true){
+                        if(Activateinfo[activateName[i]][1] ==true){
+
                           allLists[0].items.add(DraggableListItem(
                             Activatename: activateName[i],
                             isactivate: true,
                             icons: Icon(Icons.remove_circle,color: Colors.red),
                           ));
-
                         }else{
                           allLists[1].items.add(DraggableListItem(
                             Activatename: activateName[i],
                             isactivate: false,
                             icons: Icon(Icons.add_circle,color: Colors.green),
                           ));
+
                         }
                       }
+
                       Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                      WeeklyStatisticsEdit(items: allLists
+                                      WeeklyStatisticsEdit(items: allLists,
                                       )));
                     }),
                     title: Text(item.Activatename),

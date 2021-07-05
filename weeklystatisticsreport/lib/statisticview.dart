@@ -1,9 +1,12 @@
+import 'dart:collection';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'mainmenu.dart';
 import 'WeeklyStatisticsEdit.dart';
+
+
 
 class DraggableList {
   final String header;
@@ -33,22 +36,23 @@ List<String> activateName = [
 List activate;
 List deactivate;
 Map Activateinfo = {
-  "안전 점수": true,
-  "경제 점수": true,
-  "운전스타일 경고 점수": true,
-  "일일 연비": true,
-  "주행 거리": false,
-  "지출 내역": true,
-  "점검 필요항목": true
+  "안전 점수": [0,true],
+  "경제 점수": [2,true],
+  "운전스타일 경고 점수": [3,true],
+  "일일 연비": [1,true],
+  "주행 거리": [0,false],
+  "지출 내역": [5,true],
+  "점검 필요항목": [4,true]
 };
 
+Map ActivateOrder = {};
 
 int countactivate() {
   int count = 0;
   activate = [];
   deactivate = [];
   for (int i = 0; i < Activateinfo.length; i++) {
-    if (Activateinfo[activateName[i]] == true) {
+    if (Activateinfo[activateName[i]][1] == true) {
       activate.add(activateName[i]);
       count = count + 1;
     } else {
@@ -81,6 +85,7 @@ class statistic_viewPage extends State<statisticviewPage> {
 
   int ct;
 
+
   @override
   void initState() {
     // TODO: implement initState
@@ -104,14 +109,17 @@ class statistic_viewPage extends State<statisticviewPage> {
       ),
     ];
 
+
+
     for(int i=0;i<Activateinfo.length;i++){
-      if(Activateinfo[activateName[i]] ==true){
+      if(Activateinfo[activateName[i]][1] ==true){
         allLists[0].items.add(DraggableListItem(
           Activatename: activateName[i],
           isactivate: true,
           icons: Icon(Icons.remove_circle,color: Colors.red),
         ));
 
+        ActivateOrder[Activateinfo[activateName[i]][0]]=activateName[i];
       }else{
         allLists[1].items.add(DraggableListItem(
           Activatename: activateName[i],
@@ -120,6 +128,11 @@ class statistic_viewPage extends State<statisticviewPage> {
         ));
       }
      }
+
+    final sorted = SplayTreeMap.from(
+        ActivateOrder, (key1, key2) => key1.compareTo(key2));
+    print(sorted);
+    ActivateOrder = sorted;
 
     return new Scaffold(
         appBar: new AppBar(
@@ -196,7 +209,6 @@ class statistic_viewPage extends State<statisticviewPage> {
           padding: const EdgeInsets.all(20.0),
           itemCount: ct,
           itemBuilder: (context, index) {
-
               return Container(
                 margin: EdgeInsets.symmetric(vertical: 10.0),
                 padding: EdgeInsets.all(15),
@@ -217,7 +229,7 @@ class statistic_viewPage extends State<statisticviewPage> {
                     ),
                   ],
                 ),
-                child: Text(activate[index],
+                child: Text(ActivateOrder[index],
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 23.0,
