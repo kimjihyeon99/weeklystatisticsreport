@@ -4,6 +4,7 @@ import 'statisticview.dart';
 const PrimaryColor = const Color(0xff2980b9);
 const SecondColor = const Color(0xff2B5490);
 
+//list를 head이름으로 나누기 위한 구조
 abstract class ListItem {}
 
 class HeadingItem implements ListItem {
@@ -13,13 +14,17 @@ class HeadingItem implements ListItem {
 }
 
 class isActivateItem implements ListItem {
-  final String Activatename;
-  final bool isactivate;
+   String Activatename;
+   bool isactivate;
 
   isActivateItem(this.Activatename, this.isactivate);
 }
 
+//head를 넘어가서 위치 바꾸기 방지를 위한 것
+int baseindex=0;
+
 class WeeklyStatisticsEdit extends StatelessWidget {
+  //staticview에서 받아온 정보
   final List<ListItem> items;
 
   WeeklyStatisticsEdit({Key key, @required this.items}) : super(key: key);
@@ -48,23 +53,14 @@ class WeeklyStatisticsEditPage extends StatefulWidget {
 }
 
 class _WeeklyStatisticsEditPage extends State<WeeklyStatisticsEditPage> {
-  final List<ListItem> items;
+  List<ListItem> items;
 
   _WeeklyStatisticsEditPage({@required this.items});
 
   @override
   Widget build(BuildContext context) {
-    for (int i = 0; i < items.length; i++) {
-      var item = items[i];
-
-      if (item is HeadingItem) {
-        print(item.isActivate);
-      }
-      else if (item is isActivateItem) {
-        print(item.Activatename);
-
-      }
-    }
+    //순서 정보가 바뀔때 마다 , mylist에 저장하기(동기화)
+    mylist = items;
 
     return new Scaffold(
         appBar: new AppBar(
@@ -103,11 +99,41 @@ class _WeeklyStatisticsEditPage extends State<WeeklyStatisticsEditPage> {
           },
           onReorder: (int oldIndex, int newIndex) {
             setState(() {
-              if (oldIndex < newIndex) {
-                newIndex -= 1;
+              //head를 넘어가면 위치바꾸기 적용 안되게 제한하기
+              final ListItem temp = items[oldIndex];
+
+              for (int i=0;i<items.length;i++){
+                var item = items[i];
+                if (item is HeadingItem) {
+                  if(item.isActivate.compareTo("비활성화")==0){
+                    baseindex = i;
+                  }
+                }
               }
-              final ListItem item = items.removeAt(oldIndex);
-              items.insert(newIndex, item);
+
+              if(temp is isActivateItem){
+                if(temp.isactivate == true){
+                  print(baseindex);
+                  print(newIndex);
+                  //활성화
+                  if(baseindex >=newIndex && newIndex!=0){
+                    if (oldIndex < newIndex) {
+                      newIndex -= 1;
+                    }
+                    final ListItem item = items.removeAt(oldIndex);
+                    items.insert(newIndex, item);
+                  }
+                }else{
+                  //비활성화
+                  if(baseindex <= newIndex  && newIndex!=0){
+                    if (oldIndex < newIndex) {
+                      newIndex -= 1;
+                    }
+                    final ListItem item = items.removeAt(oldIndex);
+                    items.insert(newIndex, item);
+                  }
+                }
+              }
             });
           },
         ));
@@ -145,26 +171,29 @@ class _WeeklyStatisticsEditPage extends State<WeeklyStatisticsEditPage> {
               icon: Icon(Icons.remove_circle),
               color: Colors.red,
               onPressed: () {
+                final item = items[index];
+                if(item is isActivateItem){
+                  item.isactivate = false;
+                }
                 Activateinfo[menuName] = false;
 
                 int ct = countactivate();
+
+                items = List<ListItem>.generate(
+                    9,
+                        (i) => ((i % (ct + 1)) == 0 &&
+                        ((i ~/ (ct + 1)) == 0 || (i ~/ (ct + 1)) == 1))
+                        ? (i == 0 ? HeadingItem("활성화") : HeadingItem("비활성화"))
+                        : ((i ~/ (ct + 1)) == 0
+                        ? isActivateItem(activate[i - 1], true)
+                        : isActivateItem(deactivate[i - ct - 2], false)));
+
                 //reload
                 Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) => WeeklyStatisticsEdit(
-                            items: List<ListItem>.generate(
-                                9,
-                                (i) => ((i % (ct + 1)) == 0 &&
-                                        ((i ~/ (ct + 1)) == 0 ||
-                                            (i ~/ (ct + 1)) == 1))
-                                    ? (i == 0
-                                        ? HeadingItem("활성화")
-                                        : HeadingItem("비활성화"))
-                                    : ((i ~/ (ct + 1)) == 0
-                                        ? isActivateItem(activate[i - 1], true)
-                                        : isActivateItem(
-                                            deactivate[i - ct - 2], false))))));
+                            items: items)));
               },
             ),
           ),
@@ -203,26 +232,29 @@ class _WeeklyStatisticsEditPage extends State<WeeklyStatisticsEditPage> {
             icon: Icon(Icons.add_circle),
             color: Colors.green,
             onPressed: () {
+              final item = items[index];
+              if(item is isActivateItem){
+                item.isactivate = true;
+              }
               Activateinfo[menuName] = true;
 
               int ct = countactivate();
+
+              items = List<ListItem>.generate(
+                  9,
+                      (i) => ((i % (ct + 1)) == 0 &&
+                      ((i ~/ (ct + 1)) == 0 || (i ~/ (ct + 1)) == 1))
+                      ? (i == 0 ? HeadingItem("활성화") : HeadingItem("비활성화"))
+                      : ((i ~/ (ct + 1)) == 0
+                      ? isActivateItem(activate[i - 1], true)
+                      : isActivateItem(deactivate[i - ct - 2], false)));
+
               //reload
               Navigator.push(
                   context,
                   MaterialPageRoute(
                       builder: (context) => WeeklyStatisticsEdit(
-                          items: List<ListItem>.generate(
-                              9,
-                              (i) => ((i % (ct + 1)) == 0 &&
-                                      ((i ~/ (ct + 1)) == 0 ||
-                                          (i ~/ (ct + 1)) == 1))
-                                  ? (i == 0
-                                      ? HeadingItem("활성화")
-                                      : HeadingItem("비활성화"))
-                                  : ((i ~/ (ct + 1)) == 0
-                                      ? isActivateItem(activate[i - 1], true)
-                                      : isActivateItem(
-                                          deactivate[i - ct - 2], false))))));
+                          items: items)));
             },
           ),
         ),

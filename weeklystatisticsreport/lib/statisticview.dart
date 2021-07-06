@@ -23,11 +23,24 @@ Map Activateinfo = {
   "지출 내역": true,
   "점검 필요항목": true
 };
+//item lsit
+int initcount = firstcountactivate();
 
-int countactivate() {
+List<ListItem> mylist = List<ListItem>.generate(
+    9,
+    (i) => ((i % (initcount + 1)) == 0 &&
+            ((i ~/ (initcount + 1)) == 0 || (i ~/ (initcount + 1)) == 1))
+        ? (i == 0 ? HeadingItem("활성화") : HeadingItem("비활성화"))
+        : ((i ~/ (initcount + 1)) == 0
+            ? isActivateItem(activate[i - 1], true)
+            : isActivateItem(deactivate[i - initcount - 2], false)));
+
+//처음 activate 개수를 세기 위한것
+int firstcountactivate() {
   int count = 0;
   activate = [];
   deactivate = [];
+
   for (int i = 0; i < Activateinfo.length; i++) {
     if (Activateinfo[activateName[i]] == true) {
       activate.add(activateName[i]);
@@ -37,6 +50,239 @@ int countactivate() {
     }
   }
   return count;
+}
+
+//처음 이후 activate 개수를 세기 위한것
+int countactivate() {
+  int count = 0;
+  activate = [];
+  deactivate = [];
+
+  for (int i = 0; i < mylist.length; i++) {
+    final item = mylist[i];
+    if (item is isActivateItem) {
+      if (item.isactivate) {
+        activate.add(item.Activatename);
+        count = count + 1;
+      } else {
+        deactivate.add(item.Activatename);
+      }
+    }
+  }
+  return count;
+}
+
+/////////////////////////container class, 각자의 container 생성을 위한것
+abstract class containerItem {}
+
+class container1 implements containerItem {
+  final String activatename = activateName[0];
+  final Container mycon = new Container(
+    margin: EdgeInsets.symmetric(vertical: 10.0),
+    padding: EdgeInsets.all(15),
+    height: 100,
+    decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(10),
+          topRight: Radius.circular(10),
+          bottomLeft: Radius.circular(10),
+          bottomRight: Radius.circular(10)),
+      boxShadow: [
+        BoxShadow(
+          color: Colors.black.withOpacity(0.4),
+          spreadRadius: 5,
+          blurRadius: 7,
+          offset: Offset(5, 5), // changes position of shadow
+        ),
+      ],
+    ),
+    child: Text(activateName[0],
+        style: TextStyle(
+            fontWeight: FontWeight.bold, fontSize: 23.0, color: Colors.black)),
+  );
+
+  container1();
+}
+
+class container2 implements containerItem {
+  final String activatename = activateName[1];
+  final Container mycon = new Container(
+    margin: EdgeInsets.symmetric(vertical: 10.0),
+    padding: EdgeInsets.all(15),
+    height: 100,
+    decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(10),
+          topRight: Radius.circular(10),
+          bottomLeft: Radius.circular(10),
+          bottomRight: Radius.circular(10)),
+      boxShadow: [
+        BoxShadow(
+          color: Colors.black.withOpacity(0.4),
+          spreadRadius: 5,
+          blurRadius: 7,
+          offset: Offset(5, 5), // changes position of shadow
+        ),
+      ],
+    ),
+    child: Text(activateName[1],
+        style: TextStyle(
+            fontWeight: FontWeight.bold, fontSize: 23.0, color: Colors.black)),
+  );
+
+  container2();
+}
+
+class container3 implements containerItem {
+  final String activatename = activateName[2];
+  final Container mycon = new Container(
+    margin: EdgeInsets.symmetric(vertical: 10.0),
+    padding: EdgeInsets.all(15),
+    height: 100,
+    decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(10),
+          topRight: Radius.circular(10),
+          bottomLeft: Radius.circular(10),
+          bottomRight: Radius.circular(10)),
+      boxShadow: [
+        BoxShadow(
+          color: Colors.black.withOpacity(0.4),
+          spreadRadius: 5,
+          blurRadius: 7,
+          offset: Offset(5, 5), // changes position of shadow
+        ),
+      ],
+    ),
+    child: Text(activateName[2],
+        style: TextStyle(
+            fontWeight: FontWeight.bold, fontSize: 23.0, color: Colors.black)),
+  );
+
+  container3();
+}
+
+class container4 implements containerItem {
+  final String activatename = activateName[3];
+  final Container mycon = new Container(
+    margin: EdgeInsets.symmetric(vertical: 10.0),
+    padding: EdgeInsets.all(15),
+    height: 100,
+    decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(10),
+          topRight: Radius.circular(10),
+          bottomLeft: Radius.circular(10),
+          bottomRight: Radius.circular(10)),
+      boxShadow: [
+        BoxShadow(
+          color: Colors.black.withOpacity(0.4),
+          spreadRadius: 5,
+          blurRadius: 7,
+          offset: Offset(5, 5), // changes position of shadow
+        ),
+      ],
+    ),
+    child: Text(activateName[3],
+        style: TextStyle(
+            fontWeight: FontWeight.bold, fontSize: 23.0, color: Colors.black)),
+  );
+
+  container4();
+}
+
+class container5 implements containerItem {
+  final String activatename = activateName[4];
+  final Container mycon = new Container(
+    margin: EdgeInsets.symmetric(vertical: 10.0),
+    padding: EdgeInsets.all(15),
+    height: 100,
+    decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(10),
+          topRight: Radius.circular(10),
+          bottomLeft: Radius.circular(10),
+          bottomRight: Radius.circular(10)),
+      boxShadow: [
+        BoxShadow(
+          color: Colors.black.withOpacity(0.4),
+          spreadRadius: 5,
+          blurRadius: 7,
+          offset: Offset(5, 5), // changes position of shadow
+        ),
+      ],
+    ),
+    child: Text(activateName[4],
+        style: TextStyle(
+            fontWeight: FontWeight.bold, fontSize: 23.0, color: Colors.black)),
+  );
+
+  container5();
+}
+
+class container6 implements containerItem {
+  final String activatename = activateName[5];
+  final Container mycon = new Container(
+    margin: EdgeInsets.symmetric(vertical: 10.0),
+    padding: EdgeInsets.all(15),
+    height: 100,
+    decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(10),
+          topRight: Radius.circular(10),
+          bottomLeft: Radius.circular(10),
+          bottomRight: Radius.circular(10)),
+      boxShadow: [
+        BoxShadow(
+          color: Colors.black.withOpacity(0.4),
+          spreadRadius: 5,
+          blurRadius: 7,
+          offset: Offset(5, 5), // changes position of shadow
+        ),
+      ],
+    ),
+    child: Text(activateName[5],
+        style: TextStyle(
+            fontWeight: FontWeight.bold, fontSize: 23.0, color: Colors.black)),
+  );
+
+  container6();
+}
+
+class container7 implements containerItem {
+  final String activatename = activateName[6];
+  final Container mycon = new Container(
+    margin: EdgeInsets.symmetric(vertical: 10.0),
+    padding: EdgeInsets.all(15),
+    height: 100,
+    decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(10),
+          topRight: Radius.circular(10),
+          bottomLeft: Radius.circular(10),
+          bottomRight: Radius.circular(10)),
+      boxShadow: [
+        BoxShadow(
+          color: Colors.black.withOpacity(0.4),
+          spreadRadius: 5,
+          blurRadius: 7,
+          offset: Offset(5, 5), // changes position of shadow
+        ),
+      ],
+    ),
+    child: Text(activateName[6],
+        style: TextStyle(
+            fontWeight: FontWeight.bold, fontSize: 23.0, color: Colors.black)),
+  );
+
+  container7();
 }
 
 class statisticview extends StatelessWidget {
@@ -61,17 +307,29 @@ class statisticviewPage extends StatefulWidget {
 }
 
 class statistic_viewPage extends State<statisticviewPage> {
-  int ct;
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    ct = countactivate();
-  }
+  final List<containerItem> ci = [
+    container1(),
+    container2(),
+    container3(),
+    container4(),
+    container5(),
+    container6(),
+    container7()
+  ];
 
   @override
   Widget build(BuildContext context) {
+    List<ListItem> myactivelist = new List();
+    //container 출력을 위해 activate만 myactivelist에 추가하기
+    for (int i = 0; i < mylist.length; i++) {
+      final item = mylist[i];
+      if (item is isActivateItem) {
+        if (item.isactivate) {
+          myactivelist.add(item);
+        }
+      }
+    }
+
     return new Scaffold(
         appBar: new AppBar(
           title: new Center(
@@ -132,55 +390,55 @@ class statistic_viewPage extends State<statisticviewPage> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => WeeklyStatisticsEdit(
-                              items: List<ListItem>.generate(
-                                  9,
-                                      (i) => ((i % (ct + 1)) == 0 &&
-                                      ((i ~/ (ct + 1)) == 0 ||
-                                          (i ~/ (ct + 1)) == 1))
-                                      ? (i == 0
-                                      ? HeadingItem("활성화")
-                                      : HeadingItem("비활성화"))
-                                      : ((i ~/ (ct + 1)) == 0
-                                      ? isActivateItem(
-                                      activate[i - 1], true)
-                                      : isActivateItem(
-                                      deactivate[i - ct - 2],
-                                      false))))));
+                          builder: (context) =>
+                          //현재 list 정보 같이 보내기
+                              WeeklyStatisticsEdit(items: mylist)));
                 })
           ],
         ),
         body: ListView.builder(
             padding: const EdgeInsets.all(20.0),
-            itemCount: ct,
+            itemCount: myactivelist.length,
             itemBuilder: (context, index) {
-              return Container(
-                margin: EdgeInsets.symmetric(vertical: 10.0),
-                padding: EdgeInsets.all(15),
-                height: 100,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(10),
-                      topRight: Radius.circular(10),
-                      bottomLeft: Radius.circular(10),
-                      bottomRight: Radius.circular(10)),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.4),
-                      spreadRadius: 5,
-                      blurRadius: 7,
-                      offset: Offset(5, 5), // changes position of shadow
-                    ),
-                  ],
-                ),
-                child: Text(activateName[index],
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 23.0,
-                        color: Colors.black)),
-              );
-            }
-        ));
+              final item = myactivelist[index];
+              String name;
+              //activate name 알아내기
+              if (item is isActivateItem) {
+                name = item.Activatename;
+              }
+              //ci(container list)를 전체 돌면서, activatename과 비교 후 해당하면 반환하기
+              for (int i = 0; i < ci.length; i++) {
+                var item = ci[i];
+                if (item is container1) {
+                  if (name.compareTo(item.activatename) == 0) {
+                    return item.mycon;
+                  }
+                } else if (item is container2) {
+                  if (name.compareTo(item.activatename) == 0) {
+                    return item.mycon;
+                  }
+                } else if (item is container3) {
+                  if (name.compareTo(item.activatename) == 0) {
+                    return item.mycon;
+                  }
+                } else if (item is container4) {
+                  if (name.compareTo(item.activatename) == 0) {
+                    return item.mycon;
+                  }
+                } else if (item is container5) {
+                  if (name.compareTo(item.activatename) == 0) {
+                    return item.mycon;
+                  }
+                } else if (item is container6) {
+                  if (name.compareTo(item.activatename) == 0) {
+                    return item.mycon;
+                  }
+                } else if (item is container7) {
+                  if (name.compareTo(item.activatename) == 0) {
+                    return item.mycon;
+                  }
+                }
+              }
+            }));
   }
 }
