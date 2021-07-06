@@ -1,28 +1,7 @@
-import 'dart:collection';
-import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'mainmenu.dart';
 import 'WeeklyStatisticsEdit.dart';
-
-
-
-class DraggableList {
-  final String header;
-  final List<DraggableListItem> items;
-  const DraggableList({
-    this.header,
-    this.items,
-  });
-}
-class DraggableListItem {
-  final String Activatename;
-  final bool isactivate;
-  final Icon icons;
-  const DraggableListItem({this.Activatename, this.isactivate, this.icons});
-}
-//====================================================CLASS
 
 List<String> activateName = [
   "안전 점수",
@@ -36,23 +15,21 @@ List<String> activateName = [
 List activate;
 List deactivate;
 Map Activateinfo = {
-  "안전 점수": [0,true],
-  "경제 점수": [2,true],
-  "운전스타일 경고 점수": [3,true],
-  "일일 연비": [1,true],
-  "주행 거리": [0,false],
-  "지출 내역": [5,true],
-  "점검 필요항목": [4,true]
+  "안전 점수": true,
+  "경제 점수": true,
+  "운전스타일 경고 점수": true,
+  "일일 연비": true,
+  "주행 거리": false,
+  "지출 내역": true,
+  "점검 필요항목": true
 };
-
-Map ActivateOrder = {};
 
 int countactivate() {
   int count = 0;
   activate = [];
   deactivate = [];
   for (int i = 0; i < Activateinfo.length; i++) {
-    if (Activateinfo[activateName[i]][1] == true) {
+    if (Activateinfo[activateName[i]] == true) {
       activate.add(activateName[i]);
       count = count + 1;
     } else {
@@ -77,14 +54,14 @@ class statisticview extends StatelessWidget {
 }
 
 class statisticviewPage extends StatefulWidget {
+  statisticviewPage({Key key}) : super(key: key);
+
   @override
   statistic_viewPage createState() => new statistic_viewPage();
 }
 
 class statistic_viewPage extends State<statisticviewPage> {
-
   int ct;
-
 
   @override
   void initState() {
@@ -95,45 +72,6 @@ class statistic_viewPage extends State<statisticviewPage> {
 
   @override
   Widget build(BuildContext context) {
-
-    List<DraggableList> allLists = [
-      DraggableList(
-        header: '활성화',
-        items: [
-        ],
-      ),
-      DraggableList(
-        header: '비활성화',
-        items: [
-        ],
-      ),
-    ];
-
-
-
-    for(int i=0;i<Activateinfo.length;i++){
-      if(Activateinfo[activateName[i]][1] ==true){
-        allLists[0].items.add(DraggableListItem(
-          Activatename: activateName[i],
-          isactivate: true,
-          icons: Icon(Icons.remove_circle,color: Colors.red),
-        ));
-
-        ActivateOrder[Activateinfo[activateName[i]][0]]=activateName[i];
-      }else{
-        allLists[1].items.add(DraggableListItem(
-          Activatename: activateName[i],
-          isactivate: false,
-          icons: Icon(Icons.add_circle,color: Colors.green),
-        ));
-      }
-     }
-
-    final sorted = SplayTreeMap.from(
-        ActivateOrder, (key1, key2) => key1.compareTo(key2));
-    print(sorted);
-    ActivateOrder = sorted;
-
     return new Scaffold(
         appBar: new AppBar(
           title: new Center(
@@ -195,20 +133,27 @@ class statistic_viewPage extends State<statisticviewPage> {
                       context,
                       MaterialPageRoute(
                           builder: (context) => WeeklyStatisticsEdit(
-                              items: allLists
-                          )
-                      )
-                  );
-
-                  print('result');
-                }
-                )
+                              items: List<ListItem>.generate(
+                                  9,
+                                      (i) => ((i % (ct + 1)) == 0 &&
+                                      ((i ~/ (ct + 1)) == 0 ||
+                                          (i ~/ (ct + 1)) == 1))
+                                      ? (i == 0
+                                      ? HeadingItem("활성화")
+                                      : HeadingItem("비활성화"))
+                                      : ((i ~/ (ct + 1)) == 0
+                                      ? isActivateItem(
+                                      activate[i - 1], true)
+                                      : isActivateItem(
+                                      deactivate[i - ct - 2],
+                                      false))))));
+                })
           ],
         ),
         body: ListView.builder(
-          padding: const EdgeInsets.all(20.0),
-          itemCount: ct,
-          itemBuilder: (context, index) {
+            padding: const EdgeInsets.all(20.0),
+            itemCount: ct,
+            itemBuilder: (context, index) {
               return Container(
                 margin: EdgeInsets.symmetric(vertical: 10.0),
                 padding: EdgeInsets.all(15),
@@ -229,7 +174,7 @@ class statistic_viewPage extends State<statisticviewPage> {
                     ),
                   ],
                 ),
-                child: Text(ActivateOrder[index],
+                child: Text(activateName[index],
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 23.0,
