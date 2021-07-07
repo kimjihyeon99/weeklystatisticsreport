@@ -95,79 +95,70 @@ class _mainmenuPage extends State<mainmenuPage> {
       {String left, String right, Icon icons, Icon icons2}) {
     return Row(
       children: <Widget>[
-          Container(
-            child: Center(
-              child:  ElevatedButton(
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                        (Set<MaterialState> states) {
-                      if (states.contains(MaterialState.pressed)) return null;
-                      return new Color(
-                          0xff2980b9); // Use the component's default.
-                    },
-                  ),
-                ),
-                onPressed: () {
-                  if (left.compareTo('주간통계') == 0) {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => statisticview()));
-                  }
-                },
-                  child: Column(
-                    mainAxisSize :MainAxisSize.max,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      icons,
-                      Text(
-                        left,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 23.0, color: Colors.white),
-                      ),
-                    ],
-                  ),
-                 )
-
-            ),
-            width: 205,
-            height: 150.8,
-            //150.8
-            decoration: BoxDecoration(
-              color: PrimaryColor,
-              border: Border.all(color: Colors.white, width: 1.5),
-            ),
-            margin: EdgeInsets.only(left: 0, right: 0),
-          ),
-
         Container(
           child: Center(
-              child:  ElevatedButton(
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                        (Set<MaterialState> states) {
-                      if (states.contains(MaterialState.pressed)) return null;
-                      return new Color(
-                          0xff2980b9); // Use the component's default.
-                    },
-                  ),
-                ),
-                onPressed: () {
-
+              child: ElevatedButton(
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                (Set<MaterialState> states) {
+                  if (states.contains(MaterialState.pressed)) return null;
+                  return new Color(0xff2980b9); // Use the component's default.
                 },
-                child: Column(
-                  mainAxisSize :MainAxisSize.max,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    icons2,
-                    Text(
-                      right,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 23.0, color: Colors.white),
-                    ),
-                  ],
+              ),
+            ),
+            onPressed: () {
+              if (left.compareTo('주간통계') == 0) {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => statisticview()));
+              }
+            },
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                icons,
+                Text(
+                  left,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 23.0, color: Colors.white),
                 ),
-              )
-
+              ],
+            ),
+          )),
+          width: 205,
+          height: 150.8,
+          //150.8
+          decoration: BoxDecoration(
+            color: PrimaryColor,
+            border: Border.all(color: Colors.white, width: 1.5),
           ),
+          margin: EdgeInsets.only(left: 0, right: 0),
+        ),
+        Container(
+          child: Center(
+              child: ElevatedButton(
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                (Set<MaterialState> states) {
+                  if (states.contains(MaterialState.pressed)) return null;
+                  return new Color(0xff2980b9); // Use the component's default.
+                },
+              ),
+            ),
+            onPressed: () {},
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                icons2,
+                Text(
+                  right,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 23.0, color: Colors.white),
+                ),
+              ],
+            ),
+          )),
           width: 205,
           height: 150.8,
           //150.8

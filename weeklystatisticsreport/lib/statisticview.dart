@@ -2,7 +2,21 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'mainmenu.dart';
 import 'WeeklyStatisticsEdit.dart';
+import 'containerItem.dart';
 
+//activate 와 deactivate 구분하기 위한 list
+List activate = [
+  "안전 점수",
+  "경제 점수",
+  "운전스타일 경고 점수",
+  "일일 연비",
+  "주행 거리",
+  "지출 내역",
+  "점검 필요 항목"
+];
+List deactivate = [];
+
+//이름 저장소
 List<String> activateName = [
   "안전 점수",
   "경제 점수",
@@ -10,22 +24,23 @@ List<String> activateName = [
   "일일 연비",
   "주행 거리",
   "지출 내역",
-  "점검 필요항목"
+  "점검 필요 항목"
 ];
-List activate;
-List deactivate;
+
+//이름에 따른 활성화 여부 맵
 Map Activateinfo = {
   "안전 점수": true,
   "경제 점수": true,
   "운전스타일 경고 점수": true,
   "일일 연비": true,
-  "주행 거리": false,
+  "주행 거리": true,
   "지출 내역": true,
-  "점검 필요항목": true
+  "점검 필요 항목": true
 };
 //item lsit
 int initcount = firstcountactivate();
 
+//보낼 정보 초기화하기
 List<ListItem> mylist = List<ListItem>.generate(
     9,
     (i) => ((i % (initcount + 1)) == 0 &&
@@ -52,239 +67,6 @@ int firstcountactivate() {
   return count;
 }
 
-//처음 이후 activate 개수를 세기 위한것
-int countactivate() {
-  int count = 0;
-  activate = [];
-  deactivate = [];
-
-  for (int i = 0; i < mylist.length; i++) {
-    final item = mylist[i];
-    if (item is isActivateItem) {
-      if (item.isactivate) {
-        activate.add(item.Activatename);
-        count = count + 1;
-      } else {
-        deactivate.add(item.Activatename);
-      }
-    }
-  }
-  return count;
-}
-
-/////////////////////////container class, 각자의 container 생성을 위한것
-abstract class containerItem {}
-
-class container1 implements containerItem {
-  final String activatename = activateName[0];
-  final Container mycon = new Container(
-    margin: EdgeInsets.symmetric(vertical: 10.0),
-    padding: EdgeInsets.all(15),
-    height: 100,
-    decoration: BoxDecoration(
-      color: Colors.white,
-      borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(10),
-          topRight: Radius.circular(10),
-          bottomLeft: Radius.circular(10),
-          bottomRight: Radius.circular(10)),
-      boxShadow: [
-        BoxShadow(
-          color: Colors.black.withOpacity(0.4),
-          spreadRadius: 5,
-          blurRadius: 7,
-          offset: Offset(5, 5), // changes position of shadow
-        ),
-      ],
-    ),
-    child: Text(activateName[0],
-        style: TextStyle(
-            fontWeight: FontWeight.bold, fontSize: 23.0, color: Colors.black)),
-  );
-
-  container1();
-}
-
-class container2 implements containerItem {
-  final String activatename = activateName[1];
-  final Container mycon = new Container(
-    margin: EdgeInsets.symmetric(vertical: 10.0),
-    padding: EdgeInsets.all(15),
-    height: 100,
-    decoration: BoxDecoration(
-      color: Colors.white,
-      borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(10),
-          topRight: Radius.circular(10),
-          bottomLeft: Radius.circular(10),
-          bottomRight: Radius.circular(10)),
-      boxShadow: [
-        BoxShadow(
-          color: Colors.black.withOpacity(0.4),
-          spreadRadius: 5,
-          blurRadius: 7,
-          offset: Offset(5, 5), // changes position of shadow
-        ),
-      ],
-    ),
-    child: Text(activateName[1],
-        style: TextStyle(
-            fontWeight: FontWeight.bold, fontSize: 23.0, color: Colors.black)),
-  );
-
-  container2();
-}
-
-class container3 implements containerItem {
-  final String activatename = activateName[2];
-  final Container mycon = new Container(
-    margin: EdgeInsets.symmetric(vertical: 10.0),
-    padding: EdgeInsets.all(15),
-    height: 100,
-    decoration: BoxDecoration(
-      color: Colors.white,
-      borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(10),
-          topRight: Radius.circular(10),
-          bottomLeft: Radius.circular(10),
-          bottomRight: Radius.circular(10)),
-      boxShadow: [
-        BoxShadow(
-          color: Colors.black.withOpacity(0.4),
-          spreadRadius: 5,
-          blurRadius: 7,
-          offset: Offset(5, 5), // changes position of shadow
-        ),
-      ],
-    ),
-    child: Text(activateName[2],
-        style: TextStyle(
-            fontWeight: FontWeight.bold, fontSize: 23.0, color: Colors.black)),
-  );
-
-  container3();
-}
-
-class container4 implements containerItem {
-  final String activatename = activateName[3];
-  final Container mycon = new Container(
-    margin: EdgeInsets.symmetric(vertical: 10.0),
-    padding: EdgeInsets.all(15),
-    height: 100,
-    decoration: BoxDecoration(
-      color: Colors.white,
-      borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(10),
-          topRight: Radius.circular(10),
-          bottomLeft: Radius.circular(10),
-          bottomRight: Radius.circular(10)),
-      boxShadow: [
-        BoxShadow(
-          color: Colors.black.withOpacity(0.4),
-          spreadRadius: 5,
-          blurRadius: 7,
-          offset: Offset(5, 5), // changes position of shadow
-        ),
-      ],
-    ),
-    child: Text(activateName[3],
-        style: TextStyle(
-            fontWeight: FontWeight.bold, fontSize: 23.0, color: Colors.black)),
-  );
-
-  container4();
-}
-
-class container5 implements containerItem {
-  final String activatename = activateName[4];
-  final Container mycon = new Container(
-    margin: EdgeInsets.symmetric(vertical: 10.0),
-    padding: EdgeInsets.all(15),
-    height: 100,
-    decoration: BoxDecoration(
-      color: Colors.white,
-      borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(10),
-          topRight: Radius.circular(10),
-          bottomLeft: Radius.circular(10),
-          bottomRight: Radius.circular(10)),
-      boxShadow: [
-        BoxShadow(
-          color: Colors.black.withOpacity(0.4),
-          spreadRadius: 5,
-          blurRadius: 7,
-          offset: Offset(5, 5), // changes position of shadow
-        ),
-      ],
-    ),
-    child: Text(activateName[4],
-        style: TextStyle(
-            fontWeight: FontWeight.bold, fontSize: 23.0, color: Colors.black)),
-  );
-
-  container5();
-}
-
-class container6 implements containerItem {
-  final String activatename = activateName[5];
-  final Container mycon = new Container(
-    margin: EdgeInsets.symmetric(vertical: 10.0),
-    padding: EdgeInsets.all(15),
-    height: 100,
-    decoration: BoxDecoration(
-      color: Colors.white,
-      borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(10),
-          topRight: Radius.circular(10),
-          bottomLeft: Radius.circular(10),
-          bottomRight: Radius.circular(10)),
-      boxShadow: [
-        BoxShadow(
-          color: Colors.black.withOpacity(0.4),
-          spreadRadius: 5,
-          blurRadius: 7,
-          offset: Offset(5, 5), // changes position of shadow
-        ),
-      ],
-    ),
-    child: Text(activateName[5],
-        style: TextStyle(
-            fontWeight: FontWeight.bold, fontSize: 23.0, color: Colors.black)),
-  );
-
-  container6();
-}
-
-class container7 implements containerItem {
-  final String activatename = activateName[6];
-  final Container mycon = new Container(
-    margin: EdgeInsets.symmetric(vertical: 10.0),
-    padding: EdgeInsets.all(15),
-    height: 100,
-    decoration: BoxDecoration(
-      color: Colors.white,
-      borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(10),
-          topRight: Radius.circular(10),
-          bottomLeft: Radius.circular(10),
-          bottomRight: Radius.circular(10)),
-      boxShadow: [
-        BoxShadow(
-          color: Colors.black.withOpacity(0.4),
-          spreadRadius: 5,
-          blurRadius: 7,
-          offset: Offset(5, 5), // changes position of shadow
-        ),
-      ],
-    ),
-    child: Text(activateName[6],
-        style: TextStyle(
-            fontWeight: FontWeight.bold, fontSize: 23.0, color: Colors.black)),
-  );
-
-  container7();
-}
-
 class statisticview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -307,29 +89,8 @@ class statisticviewPage extends StatefulWidget {
 }
 
 class statistic_viewPage extends State<statisticviewPage> {
-  final List<containerItem> ci = [
-    container1(),
-    container2(),
-    container3(),
-    container4(),
-    container5(),
-    container6(),
-    container7()
-  ];
-
   @override
   Widget build(BuildContext context) {
-    List<ListItem> myactivelist = new List();
-    //container 출력을 위해 activate만 myactivelist에 추가하기
-    for (int i = 0; i < mylist.length; i++) {
-      final item = mylist[i];
-      if (item is isActivateItem) {
-        if (item.isactivate) {
-          myactivelist.add(item);
-        }
-      }
-    }
-
     return new Scaffold(
         appBar: new AppBar(
           title: new Center(
@@ -391,53 +152,33 @@ class statistic_viewPage extends State<statisticviewPage> {
                       context,
                       MaterialPageRoute(
                           builder: (context) =>
-                          //현재 list 정보 같이 보내기
+                              //현재 list 정보 같이 보내기
                               WeeklyStatisticsEdit(items: mylist)));
                 })
           ],
         ),
         body: ListView.builder(
             padding: const EdgeInsets.all(20.0),
-            itemCount: myactivelist.length,
+            itemCount: activate.length,
             itemBuilder: (context, index) {
-              final item = myactivelist[index];
-              String name;
-              //activate name 알아내기
-              if (item is isActivateItem) {
-                name = item.Activatename;
-              }
-              //ci(container list)를 전체 돌면서, activatename과 비교 후 해당하면 반환하기
-              for (int i = 0; i < ci.length; i++) {
-                var item = ci[i];
-                if (item is container1) {
-                  if (name.compareTo(item.activatename) == 0) {
-                    return item.mycon;
-                  }
-                } else if (item is container2) {
-                  if (name.compareTo(item.activatename) == 0) {
-                    return item.mycon;
-                  }
-                } else if (item is container3) {
-                  if (name.compareTo(item.activatename) == 0) {
-                    return item.mycon;
-                  }
-                } else if (item is container4) {
-                  if (name.compareTo(item.activatename) == 0) {
-                    return item.mycon;
-                  }
-                } else if (item is container5) {
-                  if (name.compareTo(item.activatename) == 0) {
-                    return item.mycon;
-                  }
-                } else if (item is container6) {
-                  if (name.compareTo(item.activatename) == 0) {
-                    return item.mycon;
-                  }
-                } else if (item is container7) {
-                  if (name.compareTo(item.activatename) == 0) {
-                    return item.mycon;
-                  }
-                }
+              final itemname = activate[index];
+              String name = itemname;
+
+              //name이랑 activatename과 비교해서 같으면 해당 container를 반환하기
+              if (name.compareTo(activateName[0]) == 0) {
+                return new safyscoreContainer().mycon;
+              } else if (name.compareTo(activateName[1]) == 0) {
+                return new economicscoreContainer().mycon;
+              } else if (name.compareTo(activateName[2]) == 0) {
+                return new drivingwarningscoreContainer().mycon;
+              } else if (name.compareTo(activateName[3]) == 0) {
+                return new daliyfuelContainer().mycon;
+              } else if (name.compareTo(activateName[4]) == 0) {
+                return new drivingdistanceContainer().mycon;
+              } else if (name.compareTo(activateName[5]) == 0) {
+                return new spendingContainer().mycon;
+              } else if (name.compareTo(activateName[6]) == 0) {
+                return new inspectionContainer().mycon;
               }
             }));
   }
