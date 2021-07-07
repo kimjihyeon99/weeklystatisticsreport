@@ -93,6 +93,7 @@ class statistic_viewPage extends State<statisticviewPage> {
   Widget build(BuildContext context) {
     return new Scaffold(
         appBar: new AppBar(
+          elevation: 0.0,
           title: new Center(
             child: new Text(
               '주간 통계',
@@ -157,29 +158,40 @@ class statistic_viewPage extends State<statisticviewPage> {
                 })
           ],
         ),
-        body: ListView.builder(
-            padding: const EdgeInsets.all(20.0),
-            itemCount: activate.length,
-            itemBuilder: (context, index) {
-              final itemname = activate[index];
-              String name = itemname;
+        body: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+                colors: [Color(0xff2980b9), Color(0xFFD8BFD8)],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter),
+          ),
+          child: ListView.builder(
+              padding: const EdgeInsets.all(20.0),
+              itemCount: activate.length,
+              itemBuilder: (context, index) {
+                final itemname = activate[index];
+                String name = itemname;
 
-              //name이랑 activatename과 비교해서 같으면 해당 container를 반환하기
-              if (name.compareTo(activateName[0]) == 0) {
-                return new safyscoreContainer().mycon;
-              } else if (name.compareTo(activateName[1]) == 0) {
-                return new economicscoreContainer().mycon;
-              } else if (name.compareTo(activateName[2]) == 0) {
-                return new drivingwarningscoreContainer().mycon;
-              } else if (name.compareTo(activateName[3]) == 0) {
-                return new daliyfuelContainer().mycon;
-              } else if (name.compareTo(activateName[4]) == 0) {
-                return new drivingdistanceContainer().mycon;
-              } else if (name.compareTo(activateName[5]) == 0) {
-                return new spendingContainer().mycon;
-              } else if (name.compareTo(activateName[6]) == 0) {
-                return new inspectionContainer().mycon;
-              }
-            }));
+                //name이랑 activatename과 비교해서 같으면 해당 container를 반환하기
+                if (name.compareTo(activateName[0]) == 0) {
+                  return new safyscoreContainer().mycon;
+                } else if (name.compareTo(activateName[1]) == 0) {
+                  return new economicscoreContainer().mycon;
+                } else if (name.compareTo(activateName[2]) == 0) {
+                  return new drivingwarningscoreContainer().mycon;
+                } else if (name.compareTo(activateName[3]) == 0) {
+                  return new daliyfuelContainer().mycon;
+                } else if (name.compareTo(activateName[4]) == 0) {
+                  return new drivingdistanceContainer().mycon;
+                } else if (name.compareTo(activateName[5]) == 0) {
+                  return new spendingContainer().mycon;
+                } else if (name.compareTo(activateName[6]) == 0) {
+                  return new inspectionContainer().mycon;
+                }
+              }),
+        )
+
+
+    );
   }
 }

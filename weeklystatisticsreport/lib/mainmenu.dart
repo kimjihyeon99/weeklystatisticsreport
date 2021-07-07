@@ -13,8 +13,8 @@ class mainmenu extends StatelessWidget {
       title: 'INFOCAR',
       theme: new ThemeData(
           primaryColor: const Color(0xff2980b9),
-          accentColor: const Color(0xff2980b9),
-          canvasColor: const Color(0xff2980b9)),
+          accentColor: const Color(0x002980b9),
+          canvasColor: const Color(0x002980b9)),
       home: new mainmenuPage(),
     );
   }
@@ -31,64 +31,72 @@ class _mainmenuPage extends State<mainmenuPage> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'INFOCAR',
-          style: TextStyle(fontSize: 23.0, color: Colors.white),
+        appBar: AppBar(
+          elevation: 0.0,
+          title: Text(
+            'INFOCAR',
+            style: TextStyle(fontSize: 23.0, color: Colors.white),
+          ),
+          centerTitle: true,
+          backgroundColor: PrimaryColor,
         ),
-        centerTitle: true,
-        backgroundColor: PrimaryColor,
-      ),
-      body: Column(
-        children: <Widget>[
-          makeRow(context,
-              left: '주간통계',
-              right: '차량진단',
-              icons: Icon(
-                Icons.leaderboard_outlined,
-                size: 100,
-              ),
-              icons2: Icon(
-                Icons.search,
-                size: 100,
-              )),
-          makeRow(context,
-              left: '대시보드',
-              right: '주행기록',
-              icons: Icon(
-                Icons.pie_chart_outline_outlined,
-                size: 100,
-              ),
-              icons2: Icon(
-                Icons.location_on_outlined,
-                size: 100,
-              )),
-          makeRow(context,
-              left: '운전스타일',
-              right: '차량관리',
-              icons: Icon(
-                Icons.directions_car,
-                size: 100,
-              ),
-              icons2: Icon(
-                Icons.handyman_outlined,
-                size: 100,
-              )),
-          makeRow(context,
-              left: '엔진상태',
-              right: '설정',
-              icons: Icon(
-                Icons.local_gas_station,
-                size: 100,
-              ),
-              icons2: Icon(
-                Icons.settings,
-                size: 100,
-              )),
-        ],
-        mainAxisAlignment: MainAxisAlignment.center,
-      ),
-    );
+        body: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+                colors: [PrimaryColor, Color(0xFFD8BFD8)],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter),
+          ),
+          child: Column(
+            children: <Widget>[
+              makeRow(context,
+                  left: '주간통계',
+                  right: '차량진단',
+                  icons: Icon(
+                    Icons.leaderboard_outlined,
+                    size: 70,
+                  ),
+                  icons2: Icon(
+                    Icons.search,
+                    size: 70,
+                  )),
+              makeRow(context,
+                  left: '대시보드',
+                  right: '주행기록',
+                  icons: Icon(
+                    Icons.pie_chart_outline_outlined,
+                    size: 70,
+                  ),
+                  icons2: Icon(
+                    Icons.location_on_outlined,
+                    size: 70,
+                  )),
+              makeRow(context,
+                  left: '운전스타일',
+                  right: '차량관리',
+                  icons: Icon(
+                    Icons.directions_car,
+                    size: 70,
+                  ),
+                  icons2: Icon(
+                    Icons.handyman_outlined,
+                    size: 70,
+                  )),
+              makeRow(context,
+                  left: '엔진상태',
+                  right: '설정',
+                  icons: Icon(
+                    Icons.local_gas_station,
+                    size: 70,
+                  ),
+                  icons2: Icon(
+                    Icons.settings,
+                    size: 70,
+                  )),
+            ],
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          ),
+        ));
   }
 
   Widget makeRow(BuildContext context,
@@ -96,15 +104,19 @@ class _mainmenuPage extends State<mainmenuPage> {
     return Row(
       children: <Widget>[
         Container(
-          child: Center(
-              child: ElevatedButton(
+          child: ElevatedButton(
             style: ButtonStyle(
               backgroundColor: MaterialStateProperty.resolveWith<Color>(
                 (Set<MaterialState> states) {
                   if (states.contains(MaterialState.pressed)) return null;
-                  return new Color(0xff2980b9); // Use the component's default.
+                  return PrimaryColor.withOpacity(
+                      0); // Use the component's default.
                 },
               ),
+              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(18.0),
+              )),
             ),
             onPressed: () {
               if (left.compareTo('주간통계') == 0) {
@@ -114,6 +126,7 @@ class _mainmenuPage extends State<mainmenuPage> {
             },
             child: Column(
               mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 icons,
@@ -124,30 +137,35 @@ class _mainmenuPage extends State<mainmenuPage> {
                 ),
               ],
             ),
-          )),
-          width: 205,
-          height: 150.8,
+          ),
+          width: 180,
+          height: 140.8,
           //150.8
           decoration: BoxDecoration(
-            color: PrimaryColor,
-            border: Border.all(color: Colors.white, width: 1.5),
+            color: Colors.deepPurpleAccent.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(18.0),
           ),
           margin: EdgeInsets.only(left: 0, right: 0),
         ),
         Container(
-          child: Center(
-              child: ElevatedButton(
+          child: ElevatedButton(
             style: ButtonStyle(
               backgroundColor: MaterialStateProperty.resolveWith<Color>(
                 (Set<MaterialState> states) {
                   if (states.contains(MaterialState.pressed)) return null;
-                  return new Color(0xff2980b9); // Use the component's default.
+                  return PrimaryColor.withOpacity(
+                      0); // Use the component's default.
                 },
               ),
+              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(18.0),
+              )),
             ),
             onPressed: () {},
             child: Column(
               mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 icons2,
@@ -158,18 +176,18 @@ class _mainmenuPage extends State<mainmenuPage> {
                 ),
               ],
             ),
-          )),
-          width: 205,
-          height: 150.8,
+          ),
+          width: 180,
+          height: 140.8,
           //150.8
           decoration: BoxDecoration(
-            color: PrimaryColor,
-            border: Border.all(color: Colors.white, width: 1.5),
+            color: Colors.deepPurpleAccent.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(18.0),
           ),
           margin: EdgeInsets.only(left: 0, right: 0),
         ),
       ],
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
     );
   }
 }

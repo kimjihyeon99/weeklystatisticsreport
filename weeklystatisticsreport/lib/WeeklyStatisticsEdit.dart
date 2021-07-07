@@ -86,6 +86,7 @@ class _WeeklyStatisticsEditPage extends State<WeeklyStatisticsEditPage> {
 
     return new Scaffold(
         appBar: new AppBar(
+          elevation: 0.0,
           title: new Text(
             '주간 통계 화면 편집',
             style: new TextStyle(
@@ -102,61 +103,73 @@ class _WeeklyStatisticsEditPage extends State<WeeklyStatisticsEditPage> {
             },
           ),
         ),
-        body: new ReorderableListView.builder(
-          physics: NeverScrollableScrollPhysics(),
-          shrinkWrap: true,
-          itemCount: items.length,
-          itemBuilder: (context, index) {
-            final item = items[index];
+        body:
+        Container(
+            height : MediaQuery.of(context).size.height,
+            decoration: BoxDecoration(
+            gradient: LinearGradient(
+                colors: [PrimaryColor, Color(0xFFD8BFD8)],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter),
+          ),
+          child: new ReorderableListView.builder(
+            physics: NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            itemCount: items.length,
+            itemBuilder: (context, index) {
+              final item = items[index];
 
-            if (item is HeadingItem) {
-              return makeAppbarContainer(item.isActivate, index);
-            } else if (item is isActivateItem) {
-              if (item.isactivate == true) {
-                return makeActivationContainer(item.Activatename, index);
-              } else {
-                return makeDeactivationContainer(item.Activatename, index);
-              }
-            }
-          },
-          onReorder: (int oldIndex, int newIndex) {
-            setState(() {
-              //head를 넘어가면 위치바꾸기 적용 안되게 제한하기
-              final ListItem temp = items[oldIndex];
-
-              for (int i = 0; i < items.length; i++) {
-                var item = items[i];
-                if (item is HeadingItem) {
-                  if (item.isActivate.compareTo("비활성화") == 0) {
-                    baseindex = i;
-                  }
-                }
-              }
-
-              if (temp is isActivateItem) {
-                if (temp.isactivate == true) {
-                  //활성화
-                  if (baseindex >= newIndex && newIndex != 0) {
-                    if (oldIndex < newIndex) {
-                      newIndex -= 1;
-                    }
-                    final ListItem item = items.removeAt(oldIndex);
-                    items.insert(newIndex, item);
-                  }
+              if (item is HeadingItem) {
+                return makeAppbarContainer(item.isActivate, index);
+              } else if (item is isActivateItem) {
+                if (item.isactivate == true) {
+                  return makeActivationContainer(item.Activatename, index);
                 } else {
-                  //비활성화
-                  if (baseindex <= newIndex && newIndex != 0) {
-                    if (oldIndex < newIndex) {
-                      newIndex -= 1;
-                    }
-                    final ListItem item = items.removeAt(oldIndex);
-                    items.insert(newIndex, item);
-                  }
+                  return makeDeactivationContainer(item.Activatename, index);
                 }
               }
-            });
-          },
-        ));
+            },
+            onReorder: (int oldIndex, int newIndex) {
+              setState(() {
+                //head를 넘어가면 위치바꾸기 적용 안되게 제한하기
+                final ListItem temp = items[oldIndex];
+
+                for (int i = 0; i < items.length; i++) {
+                  var item = items[i];
+                  if (item is HeadingItem) {
+                    if (item.isActivate.compareTo("비활성화") == 0) {
+                      baseindex = i;
+                    }
+                  }
+                }
+
+                if (temp is isActivateItem) {
+                  if (temp.isactivate == true) {
+                    //활성화
+                    if (baseindex >= newIndex && newIndex != 0) {
+                      if (oldIndex < newIndex) {
+                        newIndex -= 1;
+                      }
+                      final ListItem item = items.removeAt(oldIndex);
+                      items.insert(newIndex, item);
+                    }
+                  } else {
+                    //비활성화
+                    if (baseindex < newIndex && newIndex != 0) {
+                      if (oldIndex < newIndex) {
+                        newIndex -= 1;
+                      }
+                      final ListItem item = items.removeAt(oldIndex);
+                      items.insert(newIndex, item);
+                    }
+                  }
+                }
+              });
+            },
+          ),
+        )
+
+    );
   }
 
   Widget makeAppbarContainer(String menuName, int index) {
@@ -236,7 +249,10 @@ class _WeeklyStatisticsEditPage extends State<WeeklyStatisticsEditPage> {
         ],
       ),
       decoration:
-          BoxDecoration(border: Border.all(color: SecondColor, width: 1.2)),
+          BoxDecoration(
+              border: Border.all(color: SecondColor, width: 0.1),
+              color:PrimaryColor.withOpacity(0.1)
+          ),
       height: 50,
     );
   }
@@ -296,7 +312,10 @@ class _WeeklyStatisticsEditPage extends State<WeeklyStatisticsEditPage> {
         )
       ]),
       decoration:
-          BoxDecoration(border: Border.all(color: SecondColor, width: 1.2)),
+          BoxDecoration(
+              border: Border.all(color: SecondColor, width: 0.1),
+              color:PrimaryColor.withOpacity(0.1)
+          ),
       height: 50,
     );
   }
