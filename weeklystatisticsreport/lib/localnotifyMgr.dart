@@ -53,22 +53,46 @@ class localnotifyMgr{
   setOnNotificationClick(Function onNotificationClick) async{
     await flutterLocalNotificationsPlugin.initialize(initSetting,
         onSelectNotification: (String payload) async{
+          print(payload);
           onNotificationClick(payload);
+
         });
   }
   
   Future<void> showNotification() async{
-
       var androidChannel = AndroidNotificationDetails('CHANNEL_ID', 'CHANNEL_NAME',
         'CHANNEL_DESCRIPTION',
     importance: Importance.max,
     priority:  Priority.high,
-    playSound: false);
+    playSound: true);
     var iosChannel = IOSNotificationDetails();
     var platformChannel = NotificationDetails(android:androidChannel,iOS: iosChannel);
     print(platformChannel);
     // 알람 내용 설정
     await flutterLocalNotificationsPlugin.show(0, '🔔 주간리포트가 도착했습니다 🔔', '지난 일주일간의 통계를 확인해보세요', platformChannel,payload:'new payload'
+    );
+  }
+
+  //매주 월요일 12시에 알림 기능 제공함
+  Future<void> showWeeklyAtDayTimeNotification() async{
+    var time = Time(12,0,0);
+    var androidChannel = AndroidNotificationDetails('CHANNEL_ID', 'CHANNEL_NAME',
+        'CHANNEL_DESCRIPTION',
+        importance: Importance.max,
+        priority:  Priority.high,
+        playSound: true);
+    var iosChannel = IOSNotificationDetails();
+    var platformChannel = NotificationDetails(android:androidChannel,iOS: iosChannel);
+    print(platformChannel);
+    // 알람 내용 설정
+    await flutterLocalNotificationsPlugin.showWeeklyAtDayAndTime(
+        0,
+        '🔔 주간리포트가 도착했습니다 🔔',
+        '지난 일주일간의 통계를 확인해보세요',
+        Day.monday,
+        time,
+        platformChannel,
+        payload:'new payload'
     );
   }
 }

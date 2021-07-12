@@ -43,6 +43,11 @@ class _mainmenuPage extends State<mainmenuPage> {
 
   onNotificationClick(String payload){
     print('Payload : $payload');
+
+    if(payload.compareTo("new payload")==0){
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => statisticview()));
+    }
   }
 
   @override
@@ -181,8 +186,7 @@ class _mainmenuPage extends State<mainmenuPage> {
             ),
             onPressed: () async{
               if (right.compareTo('차량진단') == 0) {
-                print("차량진단");
-                await localnotifyMgr.init().showNotification();
+                await localnotifyMgr.init().showWeeklyAtDayTimeNotification();
 
               }
             },
