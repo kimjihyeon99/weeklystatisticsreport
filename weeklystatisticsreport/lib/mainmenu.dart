@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'statisticview.dart';
+import 'localnotifyMgr.dart';
 
 const PrimaryColor = const Color(0xff2980b9);
 
@@ -28,6 +29,22 @@ class mainmenuPage extends StatefulWidget {
 }
 
 class _mainmenuPage extends State<mainmenuPage> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    localnotifyMgr.init().setOnNotificationReceive(onNotificationReceive);
+    localnotifyMgr.init().setOnNotificationClick(onNotificationClick);
+  }
+
+  onNotificationReceive(ReceiveNotification notification){
+    print('Notification Received : ${notification.id}');
+  }
+
+  onNotificationClick(String payload){
+    print('Payload : $payload');
+  }
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -162,7 +179,13 @@ class _mainmenuPage extends State<mainmenuPage> {
                 borderRadius: BorderRadius.circular(18.0),
               )),
             ),
-            onPressed: () {},
+            onPressed: () async{
+              if (right.compareTo('차량진단') == 0) {
+                print("차량진단");
+                await localnotifyMgr.init().showNotification();
+
+              }
+            },
             child: Column(
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.center,
