@@ -36,6 +36,7 @@ class Getdaliyfuel {
     );
   }
 }
+
 //주행거리
 class Getdrivingdistance {
   double RecDrvDisSum;
@@ -50,3 +51,38 @@ class Getdrivingdistance {
     );
   }
 }
+
+class GetDrivingwarningscore {
+  int countEvent;
+  String Date;
+
+  GetDrivingwarningscore({
+    this.countEvent,
+    this.Date,
+  });
+
+  factory GetDrivingwarningscore.fromJson(Map<String, dynamic> json){
+    return GetDrivingwarningscore(
+      countEvent: json['countEvent'] as int,
+      Date: json['Date'] as String,
+    );
+  }
+}
+
+class GetSpending {
+  double PRICE;
+  String CBOOK_CODE;
+
+  GetSpending({
+    this.PRICE,
+    this.CBOOK_CODE,
+  });
+
+  factory GetSpending.fromJson(Map<String, dynamic> json){
+    return GetSpending(
+      PRICE: json['PRICE'] as double,
+      CBOOK_CODE: json['CBOOK_CODE'] as String,
+    );
+  }
+}
+
