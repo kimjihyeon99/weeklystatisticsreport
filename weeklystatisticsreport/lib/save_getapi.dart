@@ -10,7 +10,7 @@ class Getsaftyscore {
     this.Date,
   });
 
-  factory Getsaftyscore.fromJson(Map<String, dynamic> json){
+  factory Getsaftyscore.fromJson(Map<String, dynamic> json) {
     return Getsaftyscore(
       eco_avg: json['eco_avg'] as double,
       safe_avg: json['safe_avg'] as double,
@@ -29,7 +29,7 @@ class Getdaliyfuel {
     this.Date,
   });
 
-  factory Getdaliyfuel.fromJson(Map<String, dynamic> json){
+  factory Getdaliyfuel.fromJson(Map<String, dynamic> json) {
     return Getdaliyfuel(
       DrvFuelUsement: json['DrvFuelUsement'] as double,
       Date: json['Date'] as String,
@@ -45,7 +45,7 @@ class Getdrivingdistance {
     this.RecDrvDisSum,
   });
 
-  factory Getdrivingdistance.fromJson(Map<String, dynamic> json){
+  factory Getdrivingdistance.fromJson(Map<String, dynamic> json) {
     return Getdrivingdistance(
       RecDrvDisSum: json['RecDrvDisSum'] as double,
     );
@@ -61,7 +61,7 @@ class GetDrivingwarningscore {
     this.Date,
   });
 
-  factory GetDrivingwarningscore.fromJson(Map<String, dynamic> json){
+  factory GetDrivingwarningscore.fromJson(Map<String, dynamic> json) {
     return GetDrivingwarningscore(
       countEvent: json['countEvent'] as int,
       Date: json['Date'] as String,
@@ -78,11 +78,10 @@ class GetSpending {
     this.CBOOK_CODE,
   });
 
-  factory GetSpending.fromJson(Map<String, dynamic> json){
+  factory GetSpending.fromJson(Map<String, dynamic> json) {
     return GetSpending(
       PRICE: json['PRICE'] as double,
       CBOOK_CODE: json['CBOOK_CODE'] as String,
     );
   }
 }
-

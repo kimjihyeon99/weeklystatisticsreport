@@ -68,8 +68,6 @@ int firstcountactivate() {
   return count;
 }
 
-
-
 class statisticview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -92,14 +90,13 @@ class statisticviewPage extends StatefulWidget {
 }
 
 class statistic_viewPage extends State<statisticviewPage> {
-
   void initState() {
     // TODO: implement initState
     super.initState();
     //api 호출
     getsafyscore();
-    getdaliyfuel();//주간 평균 연비 확인 기능 - 연료소비 api
-    getdrivingdistance();// 주간 주행거리 확인 기능 api
+    getdaliyfuel(); //주간 평균 연비 확인 기능 - 연료소비 api
+    getdrivingdistance(); // 주간 주행거리 확인 기능 api
     getdecelerationscore();
     getaccelerationscore();
     getrotationscore();
@@ -207,9 +204,6 @@ class statistic_viewPage extends State<statisticviewPage> {
                   return new inspectionContainer().mycon;
                 }
               }),
-        )
-
-
-    );
+        ));
   }
 }

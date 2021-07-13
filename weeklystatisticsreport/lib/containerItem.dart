@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 
 //가져온 api 정보 임시 저장소
 List saftyscorelist = new List();
-
 List daliyfuellist = new List();
 List drivingdistancelist = new List();
 List economicscorelist = new List();
