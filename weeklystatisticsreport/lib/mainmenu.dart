@@ -186,8 +186,8 @@ class _mainmenuPage extends State<mainmenuPage> {
             ),
             onPressed: () async{
               if (right.compareTo('차량진단') == 0) {
-                await localnotifyMgr.init().showWeeklyAtDayTimeNotification();
-
+                // await localnotifyMgr.init().showNotification(); //test용
+                await localnotifyMgr.init().showNotification();
               }
             },
             child: Column(

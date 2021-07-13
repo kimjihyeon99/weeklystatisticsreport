@@ -2,10 +2,15 @@ import 'statisticview.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-/////////////////////////container class, 각자의 container 생성을 위한것
+//가져온 api 정보 임시 저장소
+List saftyscorelist = new List();
+List economicscorelist = new List();
+
+
+//각자의 container 생성을 위한것
 abstract class containerItem {}
 
-class safyscoreContainer implements containerItem {
+class saftyscoreContainer implements containerItem {
   final Container mycon = new Container(
     margin: EdgeInsets.symmetric(vertical: 10.0),
     padding: EdgeInsets.all(15),
@@ -26,12 +31,19 @@ class safyscoreContainer implements containerItem {
         ),
       ],
     ),
-    child: Text(activateName[0],
-        style: TextStyle(
-            fontWeight: FontWeight.bold, fontSize: 23.0, color: Colors.black)),
+    child:
+    Column(
+      children: [
+        Text(activateName[0],
+            style: TextStyle(
+                fontWeight: FontWeight.bold, fontSize: 23.0, color: Colors.black)),
+        Text(saftyscorelist[0].Date),
+      ],
+    )
+
   );
 
-  safyscoreContainer();
+  saftyscoreContainer();
 }
 
 class economicscoreContainer implements containerItem {

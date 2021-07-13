@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'mainmenu.dart';
 import 'WeeklyStatisticsEdit.dart';
 import 'containerItem.dart';
+import 'infocarapi_mgr.dart';
 
 //activate 와 deactivate 구분하기 위한 list
 List activate = [
@@ -67,6 +68,8 @@ int firstcountactivate() {
   return count;
 }
 
+
+
 class statisticview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -89,6 +92,15 @@ class statisticviewPage extends StatefulWidget {
 }
 
 class statistic_viewPage extends State<statisticviewPage> {
+
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    //api 호출
+    getsafyscore();
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -174,7 +186,7 @@ class statistic_viewPage extends State<statisticviewPage> {
 
                 //name이랑 activatename과 비교해서 같으면 해당 container를 반환하기
                 if (name.compareTo(activateName[0]) == 0) {
-                  return new safyscoreContainer().mycon;
+                  return new saftyscoreContainer().mycon;
                 } else if (name.compareTo(activateName[1]) == 0) {
                   return new economicscoreContainer().mycon;
                 } else if (name.compareTo(activateName[2]) == 0) {
