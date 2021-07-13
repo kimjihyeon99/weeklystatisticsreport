@@ -98,7 +98,11 @@ class statistic_viewPage extends State<statisticviewPage> {
     super.initState();
     //api 호출
     getsafyscore();
-
+    getdecelerationscore();
+    getaccelerationscore();
+    getrotationscore();
+    getidlescore();
+    getSpending();
   }
 
   @override
