@@ -17,6 +17,7 @@ void getsafyscore() async{
     jr= jr.cast<Map<String, dynamic>>();
     jr = jr.map<Getsaftyscore>((json) => Getsaftyscore.fromJson(json)).toList();
     saftyscorelist= jr;
+    economicscorelist= jr;
   } else {
     print('Request failed with status: ${response.statusCode}.');
   }

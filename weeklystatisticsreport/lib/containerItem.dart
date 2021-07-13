@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 List saftyscorelist = new List();
 List economicscorelist = new List();
 
-
 //각자의 container 생성을 위한것
 abstract class containerItem {}
 
