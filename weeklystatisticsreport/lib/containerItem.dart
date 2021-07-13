@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 
 //가져온 api 정보 임시 저장소
 List saftyscorelist = new List();
+
+List daliyfuellist = new List();
+List drivingdistancelist = new List();
 List economicscorelist = new List();
 List decelerationscorelist = new List(); // 급감속 리스트
 List accelerationscorelist = new List(); // 급가속 리스트
@@ -146,9 +149,14 @@ class daliyfuelContainer implements containerItem {
         ),
       ],
     ),
-    child: Text(activateName[3],
-        style: TextStyle(
-            fontWeight: FontWeight.bold, fontSize: 23.0, color: Colors.black)),
+    child: Column(
+      children: [
+        Text(activateName[3],
+            style: TextStyle(
+                fontWeight: FontWeight.bold, fontSize: 23.0, color: Colors.black)),
+
+        Text(daliyfuellist[0].Date),
+      ],)
   );
 
   daliyfuelContainer();
@@ -175,9 +183,13 @@ class drivingdistanceContainer implements containerItem {
         ),
       ],
     ),
-    child: Text(activateName[4],
-        style: TextStyle(
-            fontWeight: FontWeight.bold, fontSize: 23.0, color: Colors.black)),
+      child: Column(
+        children: [
+          Text(activateName[4],
+              style: TextStyle(
+                  fontWeight: FontWeight.bold, fontSize: 23.0, color: Colors.black)),
+          //double만 가짐.
+        ],)
   );
 
   drivingdistanceContainer();

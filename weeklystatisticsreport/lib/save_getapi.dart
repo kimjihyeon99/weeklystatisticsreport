@@ -17,7 +17,39 @@ class Getsaftyscore {
       Date: json['Date'] as String,
     );
   }
+}
 
+//연료소모
+class Getdaliyfuel {
+  double DrvFuelUsement;
+  String Date;
+
+  Getdaliyfuel({
+    this.DrvFuelUsement,
+    this.Date,
+  });
+
+  factory Getdaliyfuel.fromJson(Map<String, dynamic> json){
+    return Getdaliyfuel(
+      DrvFuelUsement: json['DrvFuelUsement'] as double,
+      Date: json['Date'] as String,
+    );
+  }
+}
+
+//주행거리
+class Getdrivingdistance {
+  double RecDrvDisSum;
+
+  Getdrivingdistance({
+    this.RecDrvDisSum,
+  });
+
+  factory Getdrivingdistance.fromJson(Map<String, dynamic> json){
+    return Getdrivingdistance(
+      RecDrvDisSum: json['RecDrvDisSum'] as double,
+    );
+  }
 }
 
 class GetDrivingwarningscore {
@@ -53,3 +85,4 @@ class GetSpending {
     );
   }
 }
+
