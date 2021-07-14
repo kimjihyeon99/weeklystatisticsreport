@@ -4,6 +4,7 @@ import 'mainmenu.dart';
 import 'WeeklyStatisticsEdit.dart';
 import 'containerItem.dart';
 import 'infocarapi_mgr.dart';
+import 'dart:math'; //random 수 가져오기 위한것
 
 //activate 와 deactivate 구분하기 위한 list
 List activate = [
@@ -69,6 +70,7 @@ int firstcountactivate() {
   return count;
 }
 
+//api delay 시간을 설정
 int durationtime = 3;
 
 class statisticview extends StatelessWidget {
@@ -99,15 +101,17 @@ class statistic_viewPage extends State<statisticviewPage> {
     // TODO: implement initState
     super.initState();
     //api 호출
+
     getsafyscore();
-    getdaliyfuel(); //주간 평균 연비 확인 기능 - 연료소비 api
-    getdrivingdistance(); // 주간 주행거리 확인 기능 api
+    getdaliyfuel();
+    getdrivingdistance();
     getdecelerationscore();
     getaccelerationscore();
     getrotationscore();
     getidlescore();
     getSpending();
 
+    //api load 시간을 주기 위한 것
     _calculation = Future<String>.delayed(
     Duration(seconds: durationtime),
     () => 'Data Loaded',
