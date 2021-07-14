@@ -69,6 +69,8 @@ int firstcountactivate() {
   return count;
 }
 
+int durationtime = 3;
+
 class statisticview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -91,10 +93,7 @@ class statisticviewPage extends StatefulWidget {
 }
 
 class statistic_viewPage extends State<statisticviewPage> {
-  Future<String> _calculation = Future<String>.delayed(
-    Duration(seconds: 2),
-        () => 'Data Loaded',
-  );
+  Future<String> _calculation;
 
   void initState() {
     // TODO: implement initState
@@ -108,6 +107,12 @@ class statistic_viewPage extends State<statisticviewPage> {
     getrotationscore();
     getidlescore();
     getSpending();
+
+    _calculation = Future<String>.delayed(
+    Duration(seconds: durationtime),
+    () => 'Data Loaded',
+    );
+    durationtime=0;
   }
 
   @override
@@ -185,8 +190,12 @@ class statistic_viewPage extends State<statisticviewPage> {
           builder: (context, snapshot) {
             if (snapshot.hasData == false) {
               return Container(
-                  height: 500,
-                  width: 500,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                        colors: [Color(0xff2980b9), Color(0xFFD8BFD8)],
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter),
+                  ),
                   alignment: Alignment.center,
 
                   child: CircularProgressIndicator());
