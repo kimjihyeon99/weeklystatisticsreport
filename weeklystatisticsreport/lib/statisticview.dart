@@ -44,12 +44,13 @@ int initcount = firstcountactivate();
 //보낼 정보 초기화하기
 List<ListItem> mylist = List<ListItem>.generate(
     9,
-    (i) => ((i % (initcount + 1)) == 0 &&
-            ((i ~/ (initcount + 1)) == 0 || (i ~/ (initcount + 1)) == 1))
+        (i) =>
+    ((i % (initcount + 1)) == 0 &&
+        ((i ~/ (initcount + 1)) == 0 || (i ~/ (initcount + 1)) == 1))
         ? (i == 0 ? HeadingItem("활성화") : HeadingItem("비활성화"))
         : ((i ~/ (initcount + 1)) == 0
-            ? isActivateItem(activate[i - 1], true)
-            : isActivateItem(deactivate[i - initcount - 2], false)));
+        ? isActivateItem(activate[i - 1], true)
+        : isActivateItem(deactivate[i - initcount - 2], false)));
 
 //처음 activate 개수를 세기 위한것
 int firstcountactivate() {
@@ -90,6 +91,11 @@ class statisticviewPage extends StatefulWidget {
 }
 
 class statistic_viewPage extends State<statisticviewPage> {
+  Future<String> _calculation = Future<String>.delayed(
+    Duration(seconds: 2),
+        () => 'Data Loaded',
+  );
+
   void initState() {
     // TODO: implement initState
     super.initState();
@@ -110,7 +116,8 @@ class statistic_viewPage extends State<statisticviewPage> {
         appBar: new AppBar(
           elevation: 0.0,
           title: new Center(
-            child: new Text(
+            child:
+            new Text(
               '주간 통계',
               textAlign: TextAlign.center,
               style: new TextStyle(
@@ -168,42 +175,56 @@ class statistic_viewPage extends State<statisticviewPage> {
                       context,
                       MaterialPageRoute(
                           builder: (context) =>
-                              //현재 list 정보 같이 보내기
-                              WeeklyStatisticsEdit(items: mylist)));
+                          //현재 list 정보 같이 보내기
+                          WeeklyStatisticsEdit(items: mylist)));
                 })
           ],
         ),
-        body: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-                colors: [Color(0xff2980b9), Color(0xFFD8BFD8)],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter),
-          ),
-          child: ListView.builder(
-              padding: const EdgeInsets.all(20.0),
-              itemCount: activate.length,
-              itemBuilder: (context, index) {
-                final itemname = activate[index];
-                String name = itemname;
+        body: FutureBuilder(
+          future: _calculation,
+          builder: (context, snapshot) {
+            if (snapshot.hasData == false) {
+              return Container(
+                  height: 500,
+                  width: 500,
+                  alignment: Alignment.center,
 
-                //name이랑 activatename과 비교해서 같으면 해당 container를 반환하기
-                if (name.compareTo(activateName[0]) == 0) {
-                  return new saftyscoreContainer().mycon;
-                } else if (name.compareTo(activateName[1]) == 0) {
-                  return new economicscoreContainer().mycon;
-                } else if (name.compareTo(activateName[2]) == 0) {
-                  return new drivingwarningscoreContainer().mycon;
-                } else if (name.compareTo(activateName[3]) == 0) {
-                  return new daliyfuelContainer().mycon;
-                } else if (name.compareTo(activateName[4]) == 0) {
-                  return new drivingdistanceContainer().mycon;
-                } else if (name.compareTo(activateName[5]) == 0) {
-                  return new spendingContainer().mycon;
-                } else if (name.compareTo(activateName[6]) == 0) {
-                  return new inspectionContainer().mycon;
-                }
-              }),
+                  child: CircularProgressIndicator());
+            }
+           else{
+              return Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                      colors: [Color(0xff2980b9), Color(0xFFD8BFD8)],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter),
+                ),
+                child: ListView.builder(
+                    padding: const EdgeInsets.all(20.0),
+                    itemCount: activate.length,
+                    itemBuilder: (context, index) {
+                      final itemname = activate[index];
+                      String name = itemname;
+                      //name이랑 activatename과 비교해서 같으면 해당 container를 반환하기
+                      if (name.compareTo(activateName[0]) == 0) {
+                        return new saftyscoreContainer().mycon;
+                      } else if (name.compareTo(activateName[1]) == 0) {
+                        return new economicscoreContainer().mycon;
+                      } else if (name.compareTo(activateName[2]) == 0) {
+                        return new drivingwarningscoreContainer().mycon;
+                      } else if (name.compareTo(activateName[3]) == 0) {
+                        return new daliyfuelContainer().mycon;
+                      } else if (name.compareTo(activateName[4]) == 0) {
+                        return new drivingdistanceContainer().mycon;
+                      } else if (name.compareTo(activateName[5]) == 0) {
+                        return new spendingContainer().mycon;
+                      } else if (name.compareTo(activateName[6]) == 0) {
+                        return new inspectionContainer().mycon;
+                      }
+                    }),
+              );
+            }
+          },
         ));
   }
 }
