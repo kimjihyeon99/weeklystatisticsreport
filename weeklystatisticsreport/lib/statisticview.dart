@@ -4,6 +4,7 @@ import 'mainmenu.dart';
 import 'WeeklyStatisticsEdit.dart';
 import 'containerItem.dart';
 import 'infocarapi_mgr.dart';
+import 'dart:math'; //random 수 가져오기 위한것
 
 //activate 와 deactivate 구분하기 위한 list
 List activate = [
@@ -68,6 +69,8 @@ int firstcountactivate() {
   return count;
 }
 
+
+
 class statisticview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -90,19 +93,6 @@ class statisticviewPage extends StatefulWidget {
 }
 
 class statistic_viewPage extends State<statisticviewPage> {
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    //api 호출
-    getsafyscore();
-    getdaliyfuel(); //주간 평균 연비 확인 기능 - 연료소비 api
-    getdrivingdistance(); // 주간 주행거리 확인 기능 api
-    getdecelerationscore();
-    getaccelerationscore();
-    getrotationscore();
-    getidlescore();
-    getSpending();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -173,37 +163,53 @@ class statistic_viewPage extends State<statisticviewPage> {
                 })
           ],
         ),
-        body: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-                colors: [Color(0xff2980b9), Color(0xFFD8BFD8)],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter),
-          ),
-          child: ListView.builder(
-              padding: const EdgeInsets.all(20.0),
-              itemCount: activate.length,
-              itemBuilder: (context, index) {
-                final itemname = activate[index];
-                String name = itemname;
-
-                //name이랑 activatename과 비교해서 같으면 해당 container를 반환하기
-                if (name.compareTo(activateName[0]) == 0) {
-                  return new saftyscoreContainer().mycon;
-                } else if (name.compareTo(activateName[1]) == 0) {
-                  return new economicscoreContainer().mycon;
-                } else if (name.compareTo(activateName[2]) == 0) {
-                  return new drivingwarningscoreContainer().mycon;
-                } else if (name.compareTo(activateName[3]) == 0) {
-                  return new daliyfuelContainer().mycon;
-                } else if (name.compareTo(activateName[4]) == 0) {
-                  return new drivingdistanceContainer().mycon;
-                } else if (name.compareTo(activateName[5]) == 0) {
-                  return new spendingContainer().mycon;
-                } else if (name.compareTo(activateName[6]) == 0) {
-                  return new inspectionContainer().mycon;
-                }
-              }),
+        body: FutureBuilder(
+          future: getallapi(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData == false) {
+              return Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                        colors: [Color(0xff2980b9), Color(0xFFD8BFD8)],
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter),
+                  ),
+                  alignment: Alignment.center,
+                  child: CircularProgressIndicator());
+            } else {
+              return Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                      colors: [Color(0xff2980b9), Color(0xFFD8BFD8)],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter),
+                ),
+                child: ListView.builder(
+                    padding: const EdgeInsets.all(20.0),
+                    itemCount: activate.length,
+                    itemBuilder: (context, index) {
+                      final itemname = activate[index];
+                      String name = itemname;
+                      //name이랑 activatename과 비교해서 같으면 해당 container를 반환하기
+                      if (name.compareTo(activateName[0]) == 0) {
+                        return new saftyscoreContainer().mycon;
+                      } else if (name.compareTo(activateName[1]) == 0) {
+                        return new economicscoreContainer().mycon;
+                      } else if (name.compareTo(activateName[2]) == 0) {
+                        return new drivingwarningscoreContainer().mycon;
+                      } else if (name.compareTo(activateName[3]) == 0) {
+                        return new daliyfuelContainer().mycon;
+                      } else if (name.compareTo(activateName[4]) == 0) {
+                        return new drivingdistanceContainer().mycon;
+                      } else if (name.compareTo(activateName[5]) == 0) {
+                        return new spendingContainer().mycon;
+                      } else if (name.compareTo(activateName[6]) == 0) {
+                        return new inspectionContainer().mycon;
+                      }
+                    }),
+              );
+            }
+          },
         ));
   }
 }

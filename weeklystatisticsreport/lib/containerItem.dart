@@ -1,9 +1,9 @@
 import 'statisticview.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'save_getapi.dart';
-import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:intl/intl.dart';
+import 'save_getapi.dart';
 
 import 'dart:math'; //random 수 가져오기 위한것
 
@@ -11,6 +11,7 @@ import 'dart:math'; //random 수 가져오기 위한것
 List<Getsaftyscore> saftyscorelist = []; //안전운전 점수리스트
 List<Getsaftyscore> economicscorelist = []; // 경제운전 점수 리스트
 List<Getdaliyfuel> daliyfuellist = []; //연비 리스트
+
 List drivingdistancelist = []; //주행 거리 리스트
 List decelerationscorelist = []; // 급감속 리스트
 List accelerationscorelist = []; // 급가속 리스트
@@ -80,65 +81,176 @@ abstract class containerItem {}
 
 class saftyscoreContainer implements containerItem {
   final Container mycon = new Container(
-    margin: EdgeInsets.symmetric(vertical: 10.0),
-    padding: EdgeInsets.all(15),
-    height: 100,
-    decoration: BoxDecoration(
-      color: Colors.white,
-      borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(10),
-          topRight: Radius.circular(10),
-          bottomLeft: Radius.circular(10),
-          bottomRight: Radius.circular(10)),
-      boxShadow: [
-        BoxShadow(
-          color: Colors.black.withOpacity(0.4),
-          spreadRadius: 5,
-          blurRadius: 7,
-          offset: Offset(5, 5), // changes position of shadow
-        ),
-      ],
-    ),
-    child:
-    Column(
-      children: [
-        Text(activateName[0],
-            style: TextStyle(
-                fontWeight: FontWeight.bold, fontSize: 23.0, color: Colors.black)),
-        Text(saftyscorelist[0].Date),
-      ],
-    )
-
-  );
+      margin: EdgeInsets.symmetric(vertical: 10.0),
+      padding: EdgeInsets.all(15),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(10),
+            topRight: Radius.circular(10),
+            bottomLeft: Radius.circular(10),
+            bottomRight: Radius.circular(10)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.4),
+            spreadRadius: 5,
+            blurRadius: 7,
+            offset: Offset(5, 5), // changes position of shadow
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          Align(
+            alignment: Alignment.topLeft,
+            child: Text(activateName[0],
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 27.0,
+                    color: Colors.black)),
+          ),
+          SfCartesianChart(
+            legend: Legend(isVisible: true, position: LegendPosition.top),
+            tooltipBehavior: TooltipBehavior(enable: true),
+            series: <ChartSeries>[
+              ColumnSeries<Getsaftyscore, String>(
+                  name: "지난주",
+                  dataSource: saftyscorelist.getRange(0, 7).toList(),
+                  xValueMapper: (Getsaftyscore gf, _) => DateFormat('EEE')
+                      .format(new DateTime(
+                          int.parse(gf.Date.split("-")[0]),
+                          int.parse(gf.Date.split("-")[1]),
+                          int.parse(gf.Date.split("-")[2]))),
+                  yValueMapper: (Getsaftyscore gf, _) => gf.safe_avg),
+              ColumnSeries<Getsaftyscore, String>(
+                  name: "이번주",
+                  dataSource: saftyscorelist.getRange(7, 14).toList(),
+                  xValueMapper: (Getsaftyscore gf, _) => DateFormat('EEE')
+                      .format(new DateTime(
+                          int.parse(gf.Date.split("-")[0]),
+                          int.parse(gf.Date.split("-")[1]),
+                          int.parse(gf.Date.split("-")[2]))),
+                  yValueMapper: (Getsaftyscore gf, _) => gf.safe_avg)
+            ],
+            primaryXAxis: CategoryAxis(),
+            primaryYAxis: NumericAxis(
+              maximum: 100,
+            ),
+          ),
+          Align(
+              alignment: Alignment.center,
+              child: (lastweekcnt > 3)
+                  ? (thisavg > 90)
+                      ? Text(ment2.getRange(0, 3).toList()[mentrandom],
+                          style: TextStyle(fontSize: 18.0, color: Colors.black),
+                          textAlign: TextAlign.center)
+                      : (thisavg > 80)
+                          ? Text(ment2.getRange(3, 6).toList()[mentrandom],
+                              style: TextStyle(
+                                  fontSize: 18.0, color: Colors.black),
+                              textAlign: TextAlign.center)
+                          : Text(ment2.getRange(6, 9).toList()[mentrandom],
+                              style: TextStyle(
+                                  fontSize: 18.0, color: Colors.black),
+                              textAlign: TextAlign.center)
+                  : (thisavg > lastavg)
+                      ? Text(ment.getRange(0, 3).toList()[mentrandom],
+                          style: TextStyle(fontSize: 18.0, color: Colors.black),
+                          textAlign: TextAlign.center)
+                      : Text(ment.getRange(3, 6).toList()[mentrandom],
+                          style: TextStyle(fontSize: 18.0, color: Colors.black),
+                          textAlign: TextAlign.center)),
+        ],
+      ));
 
   saftyscoreContainer();
 }
 
 class economicscoreContainer implements containerItem {
   final Container mycon = new Container(
-    margin: EdgeInsets.symmetric(vertical: 10.0),
-    padding: EdgeInsets.all(15),
-    height: 100,
-    decoration: BoxDecoration(
-      color: Colors.white,
-      borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(10),
-          topRight: Radius.circular(10),
-          bottomLeft: Radius.circular(10),
-          bottomRight: Radius.circular(10)),
-      boxShadow: [
-        BoxShadow(
-          color: Colors.black.withOpacity(0.4),
-          spreadRadius: 5,
-          blurRadius: 7,
-          offset: Offset(5, 5), // changes position of shadow
-        ),
-      ],
-    ),
-    child: Text(activateName[1],
-        style: TextStyle(
-            fontWeight: FontWeight.bold, fontSize: 23.0, color: Colors.black)),
-  );
+      margin: EdgeInsets.symmetric(vertical: 10.0),
+      padding: EdgeInsets.all(15),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(10),
+            topRight: Radius.circular(10),
+            bottomLeft: Radius.circular(10),
+            bottomRight: Radius.circular(10)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.4),
+            spreadRadius: 5,
+            blurRadius: 7,
+            offset: Offset(5, 5), // changes position of shadow
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          Align(
+            alignment: Alignment.topLeft,
+            child: Text(activateName[1],
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 27.0,
+                    color: Colors.black)),
+          ),
+          SfCartesianChart(
+            legend: Legend(isVisible: true, position: LegendPosition.top),
+            tooltipBehavior: TooltipBehavior(enable: true),
+            series: <ChartSeries>[
+              ColumnSeries<Getsaftyscore, String>(
+                  name: "지난주",
+                  dataSource: economicscorelist.getRange(0, 7).toList(),
+                  xValueMapper: (Getsaftyscore gf, _) => DateFormat('EEE')
+                      .format(new DateTime(
+                          int.parse(gf.Date.split("-")[0]),
+                          int.parse(gf.Date.split("-")[1]),
+                          int.parse(gf.Date.split("-")[2]))),
+                  yValueMapper: (Getsaftyscore gf, _) => gf.eco_avg),
+              ColumnSeries<Getsaftyscore, String>(
+                  name: "이번주",
+                  dataSource: economicscorelist.getRange(7, 14).toList(),
+                  xValueMapper: (Getsaftyscore gf, _) => DateFormat('EEE')
+                      .format(new DateTime(
+                          int.parse(gf.Date.split("-")[0]),
+                          int.parse(gf.Date.split("-")[1]),
+                          int.parse(gf.Date.split("-")[2]))),
+                  yValueMapper: (Getsaftyscore gf, _) => gf.eco_avg)
+            ],
+            primaryXAxis: CategoryAxis(),
+            primaryYAxis: NumericAxis(
+              maximum: 100,
+            ),
+          ),
+          Align(
+              alignment: Alignment.center,
+              child: (lastweekcnt > 3)
+                  ? (ecothisavg > 90)
+                      ? Text(ecoment2.getRange(0, 3).toList()[ecomentrandom],
+                          style: TextStyle(fontSize: 18.0, color: Colors.black),
+                          textAlign: TextAlign.center)
+                      : (ecothisavg > 80)
+                          ? Text(
+                              ecoment2.getRange(3, 6).toList()[ecomentrandom],
+                              style: TextStyle(
+                                  fontSize: 18.0, color: Colors.black),
+                              textAlign: TextAlign.center)
+                          : Text(
+                              ecoment2.getRange(6, 9).toList()[ecomentrandom],
+                              style: TextStyle(
+                                  fontSize: 18.0, color: Colors.black),
+                              textAlign: TextAlign.center)
+                  : (ecothisavg > ecolastavg)
+                      ? Text(ecoment.getRange(0, 3).toList()[ecomentrandom],
+                          style: TextStyle(fontSize: 18.0, color: Colors.black),
+                          textAlign: TextAlign.center)
+                      : Text(ecoment.getRange(3, 6).toList()[ecomentrandom],
+                          style: TextStyle(fontSize: 18.0, color: Colors.black),
+                          textAlign: TextAlign.center)),
+        ],
+      ));
 
   economicscoreContainer();
 }
@@ -164,27 +276,28 @@ class drivingwarningscoreContainer implements containerItem {
           ),
         ],
       ),
-      child:  Column(
+      child: Column(
         children: [
           Text(activateName[2],
               style: TextStyle(
-                  fontWeight: FontWeight.bold, fontSize: 23.0, color: Colors.black)),
-          Text('급감속', style: TextStyle(
-              fontWeight: FontWeight.bold, fontSize: 18.0)),
+                  fontWeight: FontWeight.bold,
+                  fontSize: 23.0,
+                  color: Colors.black)),
+          Text('급감속',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0)),
           Text(decelerationscorelist[0].Date),
           Text(decelerationscorelist[0].countEvent.toString() + '번'),
-          Text('급가속', style: TextStyle(
-              fontWeight: FontWeight.bold, fontSize: 18.0)),
+          Text('급가속',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0)),
           Text(accelerationscorelist[0].Date),
           Text(accelerationscorelist[0].countEvent.toString() + '번'),
-          Text('급회전', style: TextStyle(
-              fontWeight: FontWeight.bold, fontSize: 18.0)),
+          Text('급회전',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0)),
           Text(rotationscorelist[0].Date),
           Text(rotationscorelist[0].countEvent.toString() + '번'),
           //공회전 데이터는 아직 없어서 추가하지 않았습니다.
         ],
-      )
-  );
+      ));
 
   drivingwarningscoreContainer();
 }
@@ -254,33 +367,35 @@ class daliyfuelContainer implements containerItem {
 
 class drivingdistanceContainer implements containerItem {
   final Container mycon = new Container(
-    margin: EdgeInsets.symmetric(vertical: 10.0),
-    padding: EdgeInsets.all(15),
-    height: 100,
-    decoration: BoxDecoration(
-      color: Colors.white,
-      borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(10),
-          topRight: Radius.circular(10),
-          bottomLeft: Radius.circular(10),
-          bottomRight: Radius.circular(10)),
-      boxShadow: [
-        BoxShadow(
-          color: Colors.black.withOpacity(0.4),
-          spreadRadius: 5,
-          blurRadius: 7,
-          offset: Offset(5, 5), // changes position of shadow
-        ),
-      ],
-    ),
+      margin: EdgeInsets.symmetric(vertical: 10.0),
+      padding: EdgeInsets.all(15),
+      height: 100,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(10),
+            topRight: Radius.circular(10),
+            bottomLeft: Radius.circular(10),
+            bottomRight: Radius.circular(10)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.4),
+            spreadRadius: 5,
+            blurRadius: 7,
+            offset: Offset(5, 5), // changes position of shadow
+          ),
+        ],
+      ),
       child: Column(
         children: [
           Text(activateName[4],
               style: TextStyle(
-                  fontWeight: FontWeight.bold, fontSize: 23.0, color: Colors.black)),
+                  fontWeight: FontWeight.bold,
+                  fontSize: 23.0,
+                  color: Colors.black)),
           //double만 가짐.
-        ],)
-  );
+        ],
+      ));
 
   drivingdistanceContainer();
 }
@@ -310,12 +425,13 @@ class spendingContainer implements containerItem {
         children: [
           Text(activateName[5],
               style: TextStyle(
-                  fontWeight: FontWeight.bold, fontSize: 23.0, color: Colors.black)),
+                  fontWeight: FontWeight.bold,
+                  fontSize: 23.0,
+                  color: Colors.black)),
           Text('차계부 구매 코드: ' + spendinglist[0].CBOOK_CODE),
           Text('총 지출 금액: ' + spendinglist[0].PRICE.toString() + '원'),
         ],
-      )
-  );
+      ));
 
   spendingContainer();
 }
