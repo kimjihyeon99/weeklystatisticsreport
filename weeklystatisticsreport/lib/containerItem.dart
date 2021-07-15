@@ -10,7 +10,8 @@ import 'dart:math'; //random 수 가져오기 위한것
 //가져온 api 정보 임시 저장소
 List<Getsaftyscore> saftyscorelist = []; //안전운전 점수리스트
 List<Getsaftyscore> economicscorelist = []; // 경제운전 점수 리스트
-List daliyfuellist = []; //연비 리스트
+List<Getdaliyfuel> daliyfuellist = []; //연비 리스트
+
 List drivingdistancelist = []; //주행 거리 리스트
 List decelerationscorelist = []; // 급감속 리스트
 List accelerationscorelist = []; // 급가속 리스트
@@ -305,7 +306,6 @@ class daliyfuelContainer implements containerItem {
   final Container mycon = new Container(
       margin: EdgeInsets.symmetric(vertical: 10.0),
       padding: EdgeInsets.all(15),
-      height: 100,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.only(
@@ -324,14 +324,44 @@ class daliyfuelContainer implements containerItem {
       ),
       child: Column(
         children: [
-          Text(activateName[3],
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 23.0,
-                  color: Colors.black)),
+          Align(
+            alignment: Alignment.topLeft,
+            child: Text(activateName[3],
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 27.0,
+                    color: Colors.black)),
+          ),
+          SfCartesianChart(
+            legend: Legend(isVisible: true, position: LegendPosition.top),
+            tooltipBehavior: TooltipBehavior(enable: true),
+            series: <ChartSeries>[
+              LineSeries<Getdaliyfuel, String>(
+                  name: "지난주",
+                  dataSource: daliyfuellist.getRange(0, 7).toList(),
+                  xValueMapper: (Getdaliyfuel gf, _) => DateFormat('EEE')
+                      .format(new DateTime(
+                      int.parse(gf.Date.split("-")[0]),
+                      int.parse(gf.Date.split("-")[1]),
+                      int.parse(gf.Date.split("-")[2]))),
+                  yValueMapper: (Getdaliyfuel gf, _) => gf.DrvFuelUsement),
+              LineSeries<Getdaliyfuel, String>(
+                  name: "이번주",
+                  dataSource: daliyfuellist.getRange(7, 14).toList(),
+                  xValueMapper: (Getdaliyfuel gf, _) => DateFormat('EEE')
+                      .format(new DateTime(
+                      int.parse(gf.Date.split("-")[0]),
+                      int.parse(gf.Date.split("-")[1]),
+                      int.parse(gf.Date.split("-")[2]))),
+                  yValueMapper: (Getdaliyfuel gf, _) => gf.DrvFuelUsement)
+            ],
+            primaryXAxis: CategoryAxis(),
+            // primaryYAxis: NumericAxis(
+            // ),
+          ),
         ],
-      ));
-
+      )
+  );
   daliyfuelContainer();
 }
 
