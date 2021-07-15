@@ -9,7 +9,7 @@ import 'dart:math'; //random 수 가져오기 위한것
 
 //가져온 api 정보 임시 저장소
 List<Getsaftyscore> saftyscorelist = []; //안전운전 점수리스트
-List economicscorelist = []; // 경제운전 점수 리스트
+List<Getsaftyscore> economicscorelist = []; // 경제운전 점수 리스트
 List daliyfuellist = []; //연비 리스트
 List drivingdistancelist = []; //주행 거리 리스트
 List decelerationscorelist = []; // 급감속 리스트
@@ -18,7 +18,7 @@ List rotationscorelist = []; // 급회전 리스트
 List idlescorelist = []; // 공회전 리스트
 List spendinglist = []; //지출 내역 리스트
 
-//지난주와  비교하는 코멘트
+//안전 점수 : 지난주와  비교하는 코멘트
 List ment = [
   "지난주보다 안전하게 운전한 덕분에 안전점수가 더 높아졌어요o(*￣▽￣*)o \n 앞으로도 안전운전 부탁해요✨",
   "지난주보다 안전점수가 높아졌어요😀 \n 점차 안전점수를 높여보세요!",
@@ -28,7 +28,7 @@ List ment = [
   "안전점수가 지난번보다 떨어졌어요.. \n 조금 더 분발하세요💪 ",
 ];
 
-//이번주만 데이터 있을 경우 코멘트
+//안전 점수 : 이번주만 데이터 있을 경우 코멘트
 List ment2 = [
   "베스트 드라이버!! 앞으로도 안전운전 약속🤙",
   "안전 점수가 상위 5% 이네요🏆",
@@ -40,16 +40,43 @@ List ment2 = [
   "한발먼저 가기전에 한발멈춰 여유를 가지세요.",
   "바쁠수록 양보운전! 급할수록 안전운전!"
 ];
+
+//경제 점수 : 지난주와  비교하는 코멘트
+List ecoment = [
+  "지난주보다 더 절약해서 운전 하셨네요! \n 돈도 천원 벌었어요💰",
+  "저번주보다 더 경제적으로 운전하셨네요🤩 \n 아주 멋져요👍👍",
+  "지난주보다 경제점수가 높아졌어요😀 \n 점차 경제점수를 높여보세요!",
+  "이런, 지난주보다 경제점수가 떨어졌어요.. \n 이번주는 조금 더 노력해봐요😅",
+  "저번주보다 경제점수가 낮아지다니💦.\n 더 노력해서 점수를 올려주세요🤦 ♀",
+  "지난주보다 경제점수가 떨어졌어요😥 \n 다음에는 좀 더 경제적으로 운전해봐요!",
+];
+
+//경제 점수 : 이번주만 데이터 있을 경우 코멘트
+List ecoment2 = [
+  "베스트 드라이버!! 앞으로도 절약하기 약속🤙",
+  "90점 달성 축하드려요~ \n 앞으로도 쭉 이대로만🏃‍♂️",
+  "절약 운행으로 5천원 벌었어요! 축하합니다👏",
+  "경제적으로 운전하려 노력하셨네요👏 \n 아주 멋져요q(≧▽≦q)",
+  "80점을 넘다니! \n 경제 운전 습관이 점차 배어질거에요😁",
+  "한주도 고생했어요! \n 평균 90점을 목표로 더 노력해보아요!✨",
+  "경제운전으로 환경문제의 주범인 이산화탄소를 줄여보는 것이 어떨까요?😊",
+  "한 템포 느린 운전으로 연비를 감소시켜봐요!",
+  "경제운전으로 기름값 아끼고 치킨 한마리 더!🍗"
+];
+
 int lastweekcnt = 0;
+//safe
 double thisavg = 0;
 double lastavg = 0;
+// eco
+double ecothisavg = 0;
+double ecolastavg = 0;
 
-
+final int mentrandom = Random().nextInt(3);
+final int ecomentrandom = Random().nextInt(3);
 
 //각자의 container 생성을 위한것
 abstract class containerItem {}
-
-final int mentrandom = Random().nextInt(3);
 
 class saftyscoreContainer implements containerItem {
   final Container mycon = new Container(
@@ -114,26 +141,24 @@ class saftyscoreContainer implements containerItem {
               child: (lastweekcnt > 3)
                   ? (thisavg > 90)
                       ? Text(ment2.getRange(0, 3).toList()[mentrandom],
-                          style: TextStyle(fontSize: 18.0, color: Colors.black))
+                          style: TextStyle(fontSize: 18.0, color: Colors.black),
+                          textAlign: TextAlign.center)
                       : (thisavg > 80)
-                          ? Text(
-                              ment2
-                                  .getRange(3, 6)
-                                  .toList()[mentrandom],
+                          ? Text(ment2.getRange(3, 6).toList()[mentrandom],
                               style: TextStyle(
-                                  fontSize: 18.0, color: Colors.black))
-                          : Text(
-                              ment2
-                                  .getRange(6, 9)
-                                  .toList()[mentrandom],
+                                  fontSize: 18.0, color: Colors.black),
+                              textAlign: TextAlign.center)
+                          : Text(ment2.getRange(6, 9).toList()[mentrandom],
                               style: TextStyle(
-                                  fontSize: 18.0, color: Colors.black))
+                                  fontSize: 18.0, color: Colors.black),
+                              textAlign: TextAlign.center)
                   : (thisavg > lastavg)
                       ? Text(ment.getRange(0, 3).toList()[mentrandom],
-                          style: TextStyle(fontSize: 18.0, color: Colors.black))
+                          style: TextStyle(fontSize: 18.0, color: Colors.black),
+                          textAlign: TextAlign.center)
                       : Text(ment.getRange(3, 6).toList()[mentrandom],
-                          style:
-                              TextStyle(fontSize: 18.0, color: Colors.black))),
+                          style: TextStyle(fontSize: 18.0, color: Colors.black),
+                          textAlign: TextAlign.center)),
         ],
       ));
 
@@ -142,29 +167,89 @@ class saftyscoreContainer implements containerItem {
 
 class economicscoreContainer implements containerItem {
   final Container mycon = new Container(
-    margin: EdgeInsets.symmetric(vertical: 10.0),
-    padding: EdgeInsets.all(15),
-    height: 100,
-    decoration: BoxDecoration(
-      color: Colors.white,
-      borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(10),
-          topRight: Radius.circular(10),
-          bottomLeft: Radius.circular(10),
-          bottomRight: Radius.circular(10)),
-      boxShadow: [
-        BoxShadow(
-          color: Colors.black.withOpacity(0.4),
-          spreadRadius: 5,
-          blurRadius: 7,
-          offset: Offset(5, 5), // changes position of shadow
-        ),
-      ],
-    ),
-    child: Text(activateName[1],
-        style: TextStyle(
-            fontWeight: FontWeight.bold, fontSize: 23.0, color: Colors.black)),
-  );
+      margin: EdgeInsets.symmetric(vertical: 10.0),
+      padding: EdgeInsets.all(15),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(10),
+            topRight: Radius.circular(10),
+            bottomLeft: Radius.circular(10),
+            bottomRight: Radius.circular(10)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.4),
+            spreadRadius: 5,
+            blurRadius: 7,
+            offset: Offset(5, 5), // changes position of shadow
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          Align(
+            alignment: Alignment.topLeft,
+            child: Text(activateName[1],
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 27.0,
+                    color: Colors.black)),
+          ),
+          SfCartesianChart(
+            legend: Legend(isVisible: true, position: LegendPosition.top),
+            tooltipBehavior: TooltipBehavior(enable: true),
+            series: <ChartSeries>[
+              ColumnSeries<Getsaftyscore, String>(
+                  name: "지난주",
+                  dataSource: economicscorelist.getRange(0, 7).toList(),
+                  xValueMapper: (Getsaftyscore gf, _) => DateFormat('EEE')
+                      .format(new DateTime(
+                          int.parse(gf.Date.split("-")[0]),
+                          int.parse(gf.Date.split("-")[1]),
+                          int.parse(gf.Date.split("-")[2]))),
+                  yValueMapper: (Getsaftyscore gf, _) => gf.eco_avg),
+              ColumnSeries<Getsaftyscore, String>(
+                  name: "이번주",
+                  dataSource: economicscorelist.getRange(7, 14).toList(),
+                  xValueMapper: (Getsaftyscore gf, _) => DateFormat('EEE')
+                      .format(new DateTime(
+                          int.parse(gf.Date.split("-")[0]),
+                          int.parse(gf.Date.split("-")[1]),
+                          int.parse(gf.Date.split("-")[2]))),
+                  yValueMapper: (Getsaftyscore gf, _) => gf.eco_avg)
+            ],
+            primaryXAxis: CategoryAxis(),
+            primaryYAxis: NumericAxis(
+              maximum: 100,
+            ),
+          ),
+          Align(
+              alignment: Alignment.center,
+              child: (lastweekcnt > 3)
+                  ? (ecothisavg > 90)
+                      ? Text(ecoment2.getRange(0, 3).toList()[ecomentrandom],
+                          style: TextStyle(fontSize: 18.0, color: Colors.black),
+                          textAlign: TextAlign.center)
+                      : (ecothisavg > 80)
+                          ? Text(
+                              ecoment2.getRange(3, 6).toList()[ecomentrandom],
+                              style: TextStyle(
+                                  fontSize: 18.0, color: Colors.black),
+                              textAlign: TextAlign.center)
+                          : Text(
+                              ecoment2.getRange(6, 9).toList()[ecomentrandom],
+                              style: TextStyle(
+                                  fontSize: 18.0, color: Colors.black),
+                              textAlign: TextAlign.center)
+                  : (ecothisavg > ecolastavg)
+                      ? Text(ecoment.getRange(0, 3).toList()[ecomentrandom],
+                          style: TextStyle(fontSize: 18.0, color: Colors.black),
+                          textAlign: TextAlign.center)
+                      : Text(ecoment.getRange(3, 6).toList()[ecomentrandom],
+                          style: TextStyle(fontSize: 18.0, color: Colors.black),
+                          textAlign: TextAlign.center)),
+        ],
+      ));
 
   economicscoreContainer();
 }

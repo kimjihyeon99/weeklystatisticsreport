@@ -106,6 +106,7 @@ void getsafyscore() async {
     saftyscorelist = new List.from(newjr.reversed);
 
     double sum = 0;
+    double ecosum =0;
     int lastonecount = 0;
     //지난주 운전 횟수 계산, 지난주 평균 계산
     saftyscorelist.getRange(0, 7).toList().forEach((element) {
@@ -113,22 +114,32 @@ void getsafyscore() async {
         lastweekcnt = lastweekcnt + 1;
       } else {
         sum = sum + element.safe_avg;
+        ecosum = ecosum+ element.eco_avg;
+        //경제 점수 평균
         lastonecount = lastonecount + 1;
       }
     });
+
     lastavg = sum / lastonecount;
+    ecolastavg = ecosum / lastonecount;
+
     print(1);
 
     //이번주 평균 계산
     sum = 0;
+    ecosum =0;
     int onecount = 0;
     saftyscorelist.getRange(7, 14).toList().forEach((element) {
       if (element.safe_avg != 0) {
         sum = sum + element.safe_avg;
+        ecosum = ecosum + element.eco_avg;
+        // 경제점수 평균
         onecount = onecount + 1;
       }
     });
     thisavg = sum / onecount;
+    ecothisavg = ecosum / onecount;
+
 
     //경제운전 점수 리스트에 추가
     economicscorelist = new List.from(newjr.reversed);
