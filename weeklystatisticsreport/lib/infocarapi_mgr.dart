@@ -6,15 +6,43 @@ import 'package:intl/intl.dart';
 
 //infocar api 서버와 연결
 
+Future<String> getallapi() async {
+  await getsafyscore();
+  await getdaliyfuel();
+  await getdrivingdistance();
+  await getdecelerationscore();
+  await getaccelerationscore();
+  await getrotationscore();
+  await getidlescore();
+  await getSpending();
+
+  return 'Data Loaded';
+}
+
 //// 안전운전, 경제운전 점수 기능 api
 void getsafyscore() async {
   final DateTime originnow = DateTime.now();
+  Map yoil = {
+    "Mon": 1,
+    "Tue": 2,
+    "Wed": 3,
+    "Thu": 4,
+    "Fri": 5,
+    "Sat": 6,
+    "Sun": 7
+  };
+
+  String todayyoil = DateFormat('EEE').format(originnow);
+
+  int numyoil = yoil[todayyoil];
 
   //현재 날짜와 지난주 날짜 가져오기
-  final DateTime now = new DateTime(originnow.year,originnow.month,originnow.day-3);
-  final DateTime lastweek = new DateTime(originnow.year, originnow.month, originnow.day - 16);
+  final DateTime now =
+      new DateTime(originnow.year, originnow.month, originnow.day - numyoil);
+  final DateTime lastweek = new DateTime(
+      originnow.year, originnow.month, originnow.day - 13 - numyoil);
 
-  final DateFormat formatter = DateFormat('yyyy-MM-dd');// string으로 바꾸기 위함
+  final DateFormat formatter = DateFormat('yyyy-MM-dd'); // string으로 바꾸기 위함
 
   //날짜를 문자열로 변환하기, class에 넣어주기 위함
   final String today = formatter.format(now);
@@ -25,7 +53,7 @@ void getsafyscore() async {
   //api 연결
   String url =
       'https://server2.mureung.com/infocarAdminPageAPI/sideproject/scoreAvg?userKey=1147&startDate=$lastweekday&endDate=$today';
-  final response = await http.get(
+  var response = await http.get(
     Uri.parse(url),
     headers: {
       "F_TOKEN":
@@ -39,11 +67,11 @@ void getsafyscore() async {
     jr = jr.cast<Map<String, dynamic>>();
     jr = jr.map<Getsaftyscore>((json) => Getsaftyscore.fromJson(json)).toList();
 
-    List<Getsaftyscore> newjr = [];//json 받아왔을 때 비어있는 데이터 처리를 위한 리스트
+    List<Getsaftyscore> newjr = []; //json 받아왔을 때 비어있는 데이터 처리를 위한 리스트
 
     int index = 0;
 
-    DateTime lastday;//다 돌아간 날짜를 체크하기 위함
+    DateTime lastday; //다 돌아간 날짜를 체크하기 위함
     jr.forEach((x) {
       int day = int.parse(x.Date.split("-")[2]);
       while (date != day) {
@@ -64,11 +92,11 @@ void getsafyscore() async {
     });
 
     //마지막 날짜와 원하는 날짜까지의 차이
-    int countday =  lastday.difference(lastweek).inDays-1;
+    int countday = lastday.difference(lastweek).inDays - 1;
 
     int len = newjr.length;
     //만약에 들어있는 데이터가 마지막 날짜가 아니라면, 나머지 데이터 모두 0으로 채우기
-    for(int i=len;i<len+countday;i++){
+    for (int i = len; i < len + countday; i++) {
       DateTime mydate = new DateTime(now.year, now.month, now.day - i);
       String mydateday = formatter.format(mydate);
       newjr.insert(
@@ -77,26 +105,27 @@ void getsafyscore() async {
     //거꾸로 들어온 데이터 뒤집기
     saftyscorelist = new List.from(newjr.reversed);
 
-    double sum=0;
-    int lastonecount=0;
+    double sum = 0;
+    int lastonecount = 0;
     //지난주 운전 횟수 계산, 지난주 평균 계산
     saftyscorelist.getRange(0, 7).toList().forEach((element) {
-      if(element.safe_avg ==0){
-        lastweekcnt= lastweekcnt+1;
-      }else{
-        sum = sum+ element.safe_avg;
-        lastonecount = lastonecount+1;
+      if (element.safe_avg == 0) {
+        lastweekcnt = lastweekcnt + 1;
+      } else {
+        sum = sum + element.safe_avg;
+        lastonecount = lastonecount + 1;
       }
     });
     lastavg = sum / lastonecount;
+    print(1);
 
     //이번주 평균 계산
-    sum=0;
-    int onecount=0;
+    sum = 0;
+    int onecount = 0;
     saftyscorelist.getRange(7, 14).toList().forEach((element) {
-      if(element.safe_avg !=0){
-        sum = sum + element.safe_avg ;
-        onecount = onecount+1;
+      if (element.safe_avg != 0) {
+        sum = sum + element.safe_avg;
+        onecount = onecount + 1;
       }
     });
     thisavg = sum / onecount;
@@ -108,7 +137,7 @@ void getsafyscore() async {
   }
 }
 
-////주간 평균 연비 확인 기능 - 연료소비 api
+// 연비 점수 api
 void getdaliyfuel() async {
   String url =
       'https://server2.mureung.com/infocarAdminPageAPI/sideproject/recdrvFuelUsement?userKey=1147&startDate=2021-07-04&endDate=2021-07-11';
@@ -131,7 +160,6 @@ void getdaliyfuel() async {
   }
 }
 
-////주간 주행거리 확인 기능 api
 void getdrivingdistance() async {
   String url =
       'https://server2.mureung.com/infocarAdminPageAPI/sideproject/recdrvDisSum?userKey=1147&startDate=2021-07-04&endDate=2021-07-11';
@@ -145,6 +173,12 @@ void getdrivingdistance() async {
   if (response.statusCode == 200) {
     var jsonResponse = convert.jsonDecode(response.body);
     var jr = jsonResponse['response']['body']['items'];
+
+    // 전처리
+    List tempjr = [];
+    tempjr.add(jr);
+    jr = tempjr;
+
     jr = jr.cast<Map<String, dynamic>>();
     jr = jr
         .map<Getdrivingdistance>((json) => Getdrivingdistance.fromJson(json))
@@ -154,7 +188,6 @@ void getdrivingdistance() async {
     print('Request failed with status: ${response.statusCode}.');
   }
 }
-
 
 ////위험 운전행동 발생 횟수 기능 api
 
@@ -167,7 +200,7 @@ void getdecelerationscore() async {
     Uri.parse(url),
     headers: {
       "F_TOKEN":
-      "D5CFB732E7BA8E56356AA766B61EEF32F5F1BCA6F554FB0A9432D285A7E012A3"
+          "D5CFB732E7BA8E56356AA766B61EEF32F5F1BCA6F554FB0A9432D285A7E012A3"
     },
   );
   if (response.statusCode == 200) {

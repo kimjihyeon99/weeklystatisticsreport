@@ -44,8 +44,12 @@ int lastweekcnt = 0;
 double thisavg = 0;
 double lastavg = 0;
 
+
+
 //각자의 container 생성을 위한것
 abstract class containerItem {}
+
+final int mentrandom = Random().nextInt(3);
 
 class saftyscoreContainer implements containerItem {
   final Container mycon = new Container(
@@ -109,25 +113,25 @@ class saftyscoreContainer implements containerItem {
               alignment: Alignment.center,
               child: (lastweekcnt > 3)
                   ? (thisavg > 90)
-                      ? Text(ment2.getRange(0, 3).toList()[Random().nextInt(3)],
+                      ? Text(ment2.getRange(0, 3).toList()[mentrandom],
                           style: TextStyle(fontSize: 18.0, color: Colors.black))
                       : (thisavg > 80)
                           ? Text(
                               ment2
                                   .getRange(3, 6)
-                                  .toList()[Random().nextInt(3)],
+                                  .toList()[mentrandom],
                               style: TextStyle(
                                   fontSize: 18.0, color: Colors.black))
                           : Text(
                               ment2
                                   .getRange(6, 9)
-                                  .toList()[Random().nextInt(3)],
+                                  .toList()[mentrandom],
                               style: TextStyle(
                                   fontSize: 18.0, color: Colors.black))
                   : (thisavg > lastavg)
-                      ? Text(ment.getRange(0, 3).toList()[Random().nextInt(3)],
+                      ? Text(ment.getRange(0, 3).toList()[mentrandom],
                           style: TextStyle(fontSize: 18.0, color: Colors.black))
-                      : Text(ment.getRange(3, 6).toList()[Random().nextInt(3)],
+                      : Text(ment.getRange(3, 6).toList()[mentrandom],
                           style:
                               TextStyle(fontSize: 18.0, color: Colors.black))),
         ],

@@ -45,13 +45,12 @@ int initcount = firstcountactivate();
 //보낼 정보 초기화하기
 List<ListItem> mylist = List<ListItem>.generate(
     9,
-        (i) =>
-    ((i % (initcount + 1)) == 0 &&
-        ((i ~/ (initcount + 1)) == 0 || (i ~/ (initcount + 1)) == 1))
+    (i) => ((i % (initcount + 1)) == 0 &&
+            ((i ~/ (initcount + 1)) == 0 || (i ~/ (initcount + 1)) == 1))
         ? (i == 0 ? HeadingItem("활성화") : HeadingItem("비활성화"))
         : ((i ~/ (initcount + 1)) == 0
-        ? isActivateItem(activate[i - 1], true)
-        : isActivateItem(deactivate[i - initcount - 2], false)));
+            ? isActivateItem(activate[i - 1], true)
+            : isActivateItem(deactivate[i - initcount - 2], false)));
 
 //처음 activate 개수를 세기 위한것
 int firstcountactivate() {
@@ -70,8 +69,7 @@ int firstcountactivate() {
   return count;
 }
 
-//api delay 시간을 설정
-int durationtime = 3;
+
 
 class statisticview extends StatelessWidget {
   @override
@@ -95,29 +93,6 @@ class statisticviewPage extends StatefulWidget {
 }
 
 class statistic_viewPage extends State<statisticviewPage> {
-  Future<String> _calculation;
-
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    //api 호출
-
-    getsafyscore();
-    getdaliyfuel();
-    getdrivingdistance();
-    getdecelerationscore();
-    getaccelerationscore();
-    getrotationscore();
-    getidlescore();
-    getSpending();
-
-    //api load 시간을 주기 위한 것
-    _calculation = Future<String>.delayed(
-    Duration(seconds: durationtime),
-    () => 'Data Loaded',
-    );
-    durationtime=0;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -125,8 +100,7 @@ class statistic_viewPage extends State<statisticviewPage> {
         appBar: new AppBar(
           elevation: 0.0,
           title: new Center(
-            child:
-            new Text(
+            child: new Text(
               '주간 통계',
               textAlign: TextAlign.center,
               style: new TextStyle(
@@ -184,13 +158,13 @@ class statistic_viewPage extends State<statisticviewPage> {
                       context,
                       MaterialPageRoute(
                           builder: (context) =>
-                          //현재 list 정보 같이 보내기
-                          WeeklyStatisticsEdit(items: mylist)));
+                              //현재 list 정보 같이 보내기
+                              WeeklyStatisticsEdit(items: mylist)));
                 })
           ],
         ),
         body: FutureBuilder(
-          future: _calculation,
+          future: getallapi(),
           builder: (context, snapshot) {
             if (snapshot.hasData == false) {
               return Container(
@@ -201,10 +175,8 @@ class statistic_viewPage extends State<statisticviewPage> {
                         end: Alignment.bottomCenter),
                   ),
                   alignment: Alignment.center,
-
                   child: CircularProgressIndicator());
-            }
-           else{
+            } else {
               return Container(
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
