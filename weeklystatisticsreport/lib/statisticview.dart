@@ -100,6 +100,7 @@ class statistic_viewPage extends State<statisticviewPage> {
     getsafyscore();
     getdaliyfuel();//주간 평균 연비 확인 기능 - 연료소비 api
     getdrivingdistance();// 주간 주행거리 확인 기능 api
+    getdrivingdistance_last();//지난 주 주행거리 확인 기능 api
     getdecelerationscore();
     getaccelerationscore();
     getrotationscore();
