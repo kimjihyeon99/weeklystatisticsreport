@@ -13,10 +13,9 @@ List<Getsaftyscore> economicscorelist = []; // 경제운전 점수 리스트
 List<Getdaliyfuel> daliyfuellist = []; //연비 리스트
 
 List drivingdistancelist = []; //주행 거리 리스트
-List decelerationscorelist = []; // 급감속 리스트
-List accelerationscorelist = []; // 급가속 리스트
-List rotationscorelist = []; // 급회전 리스트
-List idlescorelist = []; // 공회전 리스트
+List<GetDrivingwarningscore> countAllEventForEachDay = [];
+List<CountEventForEvent> countEventForLastWeek = [];
+List<CountEventForEvent> countEventForThisWeek = [];
 List spendinglist = []; //지출 내역 리스트
 
 //안전 점수 : 지난주와  비교하는 코멘트
@@ -259,7 +258,6 @@ class drivingwarningscoreContainer implements containerItem {
   final Container mycon = new Container(
       margin: EdgeInsets.symmetric(vertical: 10.0),
       padding: EdgeInsets.all(15),
-      height: 300,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.only(
@@ -278,24 +276,78 @@ class drivingwarningscoreContainer implements containerItem {
       ),
       child: Column(
         children: [
-          Text(activateName[2],
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 23.0,
-                  color: Colors.black)),
-          Text('급감속',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0)),
-          Text(decelerationscorelist[0].Date),
-          Text(decelerationscorelist[0].countEvent.toString() + '번'),
-          Text('급가속',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0)),
-          Text(accelerationscorelist[0].Date),
-          Text(accelerationscorelist[0].countEvent.toString() + '번'),
-          Text('급회전',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0)),
-          Text(rotationscorelist[0].Date),
-          Text(rotationscorelist[0].countEvent.toString() + '번'),
-          //공회전 데이터는 아직 없어서 추가하지 않았습니다.
+          Align(
+            alignment: Alignment.topLeft,
+            child: Text(activateName[2],
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 27.0,
+                    color: Colors.black)),
+          ),
+          SfCartesianChart(
+            legend: Legend(isVisible: true, position: LegendPosition.top),
+            tooltipBehavior: TooltipBehavior(enable: true),
+            series: <ChartSeries>[
+              ColumnSeries<GetDrivingwarningscore, String>(
+                  name: "지난주",
+                  dataSource: countAllEventForEachDay.getRange(0, 7).toList(),
+                  xValueMapper: (GetDrivingwarningscore gf, _) => DateFormat('EEE')
+                      .format(new DateTime(
+                      int.parse(gf.Date.split("-")[0]),
+                      int.parse(gf.Date.split("-")[1]),
+                      int.parse(gf.Date.split("-")[2]))),
+                  yValueMapper: (GetDrivingwarningscore gf, _) => gf.countEvent),
+              ColumnSeries<GetDrivingwarningscore, String>(
+                  name: "이번주",
+                  dataSource: countAllEventForEachDay.getRange(7, 14).toList(),
+                  xValueMapper: (GetDrivingwarningscore gf, _) => DateFormat('EEE')
+                      .format(new DateTime(
+                      int.parse(gf.Date.split("-")[0]),
+                      int.parse(gf.Date.split("-")[1]),
+                      int.parse(gf.Date.split("-")[2]))),
+                  yValueMapper: (GetDrivingwarningscore gf, _) => gf.countEvent)
+            ],
+            primaryXAxis: CategoryAxis(),
+          ),
+          // Align(
+          //     alignment: Alignment.center,
+          //     child: (lastweekcnt > 3)
+          //         ? (thisavg > 90)
+          //         ? Text(ment2.getRange(0, 3).toList()[mentrandom],
+          //         style: TextStyle(fontSize: 18.0, color: Colors.black),
+          //         textAlign: TextAlign.center)
+          //         : (thisavg > 80)
+          //         ? Text(ment2.getRange(3, 6).toList()[mentrandom],
+          //         style: TextStyle(
+          //             fontSize: 18.0, color: Colors.black),
+          //         textAlign: TextAlign.center)
+          //         : Text(ment2.getRange(6, 9).toList()[mentrandom],
+          //         style: TextStyle(
+          //             fontSize: 18.0, color: Colors.black),
+          //         textAlign: TextAlign.center)
+          //         : (thisavg > lastavg)
+          //         ? Text(ment.getRange(0, 3).toList()[mentrandom],
+          //         style: TextStyle(fontSize: 18.0, color: Colors.black),
+          //         textAlign: TextAlign.center)
+          //         : Text(ment.getRange(3, 6).toList()[mentrandom],
+          //         style: TextStyle(fontSize: 18.0, color: Colors.black),
+          //         textAlign: TextAlign.center)),
+          SfCircularChart(
+            legend: Legend(isVisible: true, position: LegendPosition.top),
+            tooltipBehavior: TooltipBehavior(enable: true),
+            series: <CircularSeries>[
+              DoughnutSeries<CountEventForEvent, String>(
+                  name: "지난주",
+                  dataSource: countEventForLastWeek,
+                  xValueMapper: (CountEventForEvent ce, _) => ce.name,
+                  yValueMapper: (CountEventForEvent ce, _) => ce.count),
+              DoughnutSeries<CountEventForEvent, String>(
+                  name: "이번주",
+                  dataSource: countEventForThisWeek,
+                  xValueMapper: (CountEventForEvent ce, _) => ce.name,
+                  yValueMapper: (CountEventForEvent ce, _) => ce.count),
+            ],
+          ),
         ],
       ));
 
