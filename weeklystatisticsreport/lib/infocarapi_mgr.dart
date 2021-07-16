@@ -1,4 +1,5 @@
 import 'dart:convert' as convert;
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'containerItem.dart';
 import 'save_getapi.dart';
@@ -90,9 +91,6 @@ void getdaliyfuel() async{
   }
 }
 
-
-
-
 //지난주 주행거리 합 api
 void getdrivingdistance_last() async {
   final DateTime originnow = DateTime.now();
@@ -111,64 +109,9 @@ void getdrivingdistance_last() async {
 
   //현재 날짜와 지난주 날짜 가져오기
   final DateTime now =
-  new DateTime(originnow.year, originnow.month, originnow.day - numyoil-8);                       //여기 확인
+  new DateTime(originnow.year, originnow.month, originnow.day -7 -numyoil);
   final DateTime lastweek = new DateTime(
-      originnow.year, originnow.month, originnow.day - 13 - numyoil -14);
-
-  final DateFormat formatter = DateFormat('yyyy-MM-dd'); // string으로 바꾸기 위함
-
-  //날짜를 문자열로 변환하기, class에 넣어주기 위함
-  final String today = formatter.format(now);
-  final String lastweekday = formatter.format(lastweek);
-
-  String url =
-      'https://server2.mureung.com/infocarAdminPageAPI/sideproject/recdrvDisSum?userKey=1147&startDate=$lastweekday&endDate=$today';
-
-  final response = await http.get(
-    Uri.parse(url),
-    headers: {"F_TOKEN": "D5CFB732E7BA8E56356AA766B61EEF32F5F1BCA6F554FB0A9432D285A7E012A3"},
-  );
-  if (response.statusCode == 200) {
-    var jsonResponse =
-    convert.jsonDecode(response.body);
-    var jr= jsonResponse['response']['body']['items'];
-
-    jr = jr.cast<Map<String, dynamic>>();
-    jr = jr
-        .map<Getdrivingdistance>((json) => Getdrivingdistance.fromJson(json))
-        .toList();
-    drivingdistancelist_last = jr;
-  } else {
-    print('Request failed with status: ${response.statusCode}.');
-  }
-
-}
-
-
-
-
-//이번주 주행거리 합
-void getdrivingdistance() async {
-  final DateTime originnow = DateTime.now();
-  Map yoil = {
-    "Mon": 1,
-    "Tue": 2,
-    "Wed": 3,
-    "Thu": 4,
-    "Fri": 5,
-    "Sat": 6,
-    "Sun": 7
-  };
-
-  String todayyoil = DateFormat('EEE').format(originnow);
-  int numyoil = yoil[todayyoil];
-
-  //현재 날짜와 지난주 날짜 가져오기
-  final DateTime now =
-  new DateTime(originnow.year, originnow.month, originnow.day - numyoil);
-  final DateTime lastweek = new DateTime(
-                                                                                          //여기 확인
-      originnow.year, originnow.month, originnow.day - 13 - numyoil-7);
+      originnow.year, originnow.month, originnow.day - 13 - numyoil);
 
   final DateFormat formatter = DateFormat('yyyy-MM-dd'); // string으로 바꾸기 위함
 
@@ -197,7 +140,72 @@ void getdrivingdistance() async {
     jr = jr
         .map<Getdrivingdistance>((json) => Getdrivingdistance.fromJson(json))
         .toList();
-    drivingdistancelist = jr;
+
+    drivingdistancelist_last = jr[0].RecDrvDisSum;
+    // print(drivingdistancelist_last);
+
+  } else {
+    print('Request failed with status: ${response.statusCode}.');
+  }
+
+
+}
+
+
+
+
+//이번주 주행거리 합
+void getdrivingdistance() async {
+  final DateTime originnow = DateTime.now();
+  Map yoil = {
+    "Mon": 1,
+    "Tue": 2,
+    "Wed": 3,
+    "Thu": 4,
+    "Fri": 5,
+    "Sat": 6,
+    "Sun": 7
+  };
+
+  String todayyoil = DateFormat('EEE').format(originnow);
+  int numyoil = yoil[todayyoil];
+
+  //현재 날짜와 지난주 날짜 가져오기
+  final DateTime now =
+  new DateTime(originnow.year, originnow.month, originnow.day - numyoil);
+  final DateTime lastweek = new DateTime(
+      originnow.year, originnow.month, originnow.day - 6 - numyoil);
+
+  final DateFormat formatter = DateFormat('yyyy-MM-dd'); // string으로 바꾸기 위함
+
+  //날짜를 문자열로 변환하기, class에 넣어주기 위함
+  final String today = formatter.format(now);
+  final String lastweekday = formatter.format(lastweek);
+  print(today);
+  print(lastweekday);
+  String url =
+      'https://server2.mureung.com/infocarAdminPageAPI/sideproject/recdrvDisSum?userKey=1147&startDate=$lastweekday&endDate=$today';
+  final response = await http.get(
+    Uri.parse(url),
+    headers: {
+      "F_TOKEN":
+      "D5CFB732E7BA8E56356AA766B61EEF32F5F1BCA6F554FB0A9432D285A7E012A3"
+    },
+  );
+  if (response.statusCode == 200) {
+    var jsonResponse = convert.jsonDecode(response.body);
+    var jr = jsonResponse['response']['body']['items'];
+    // 전처리
+    List tempjr = [];
+    tempjr.add(jr);
+    jr = tempjr;
+
+    jr = jr.cast<Map<String, dynamic>>();
+    jr = jr
+        .map<Getdrivingdistance>((json) => Getdrivingdistance.fromJson(json))
+        .toList();
+
+    drivingdistancelist = jr[0].RecDrvDisSum;
   } else {
     print('Request failed with status: ${response.statusCode}.');
   }

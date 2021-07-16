@@ -1,3 +1,7 @@
+import 'dart:ffi';
+
+import 'package:weeklystatisticsreport/infocarapi_mgr.dart';
+
 import 'statisticview.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,8 +15,8 @@ import 'dart:math'; //random 수 가져오기 위한것
 List<Getsaftyscore> saftyscorelist = []; //안전운전 점수리스트
 List<Getsaftyscore> economicscorelist = []; // 경제운전 점수 리스트
 List daliyfuellist = []; //연비 리스트
-List<Getdrivingdistance>  drivingdistancelist = []; //이번주 주행 거리 리스트
-List<Getdrivingdistance> drivingdistancelist_last = [];//지난주 주행거리 리스트
+double drivingdistancelist; //이번주 주행 거리 리스트
+double drivingdistancelist_last;//지난주 주행거리 리스트
 List decelerationscorelist = []; // 급감속 리스트
 List accelerationscorelist = []; // 급가속 리스트
 List rotationscorelist = []; // 급회전 리스트
@@ -48,7 +52,7 @@ List ecoment = [
   "저번주보다 더 경제적으로 운전하셨네요🤩 \n 아주 멋져요👍👍",
   "지난주보다 경제점수가 높아졌어요😀 \n 점차 경제점수를 높여보세요!",
   "이런, 지난주보다 경제점수가 떨어졌어요.. \n 이번주는 조금 더 노력해봐요😅",
-  "저번주보다 경제점수가 낮아지다니💦.\n 더 노력해서 점수를 올려주세요🤦 ♀",
+  "저번주보다 경제점수가 낮아지다니💦.\n 더 노력해서 점수를 올려주세요🤦",
   "지난주보다 경제점수가 떨어졌어요😥 \n 다음에는 좀 더 경제적으로 운전해봐요!",
 ];
 
@@ -65,6 +69,17 @@ List ecoment2 = [
   "경제운전으로 기름값 아끼고 치킨 한마리 더!🍗"
 ];
 
+//주행거리 멘트
+//지난주 > 이번주
+List drvment = [
+  "이번주에는 저번주보다 덜 운전하셨네요👏 \n환경에 큰 도움이 될 거에요🤩",
+  "지난주보다 더 적게 달리셨어요~ \n시간 날때 드라이브 한번 다녀오세요🚗",
+  "주행거리가 지난주보다 감소했네요!\n덕분에 미세먼지 감축에 도움이 되었어요!",
+  "저번주보다 이번주에 운전을 더 많이하셨어요! \n안전운전에 주의하세요😉",
+  "저번주보다 더 많이 달리셨어요~ \n세차한번 하고 오세요🌊  ",
+  "주행거리가 저번주보다 증가했네요!\n여행이라도 다녀오신건가요?⛱",
+];
+
 int lastweekcnt = 0;
 //safe
 double thisavg = 0;
@@ -75,6 +90,7 @@ double ecolastavg = 0;
 
 final int mentrandom = Random().nextInt(3);
 final int ecomentrandom = Random().nextInt(3);
+final int drvmentrandom = Random().nextInt(3);
 //각자의 container 생성을 위한것
 abstract class containerItem {}
 
@@ -266,13 +282,15 @@ class drivingdistanceContainer implements containerItem {
                     image: AssetImage('assets/car_img.png'),
                   ),
                   SizedBox(width: 200,
-                    child:
-                    LinearProgressIndicator(
-                      minHeight: 20,
-                      value: 0.70,//퍼센티지 나중에 계산해서 설정
-                      valueColor: AlwaysStoppedAnimation<Color>(Colors.grey),
-                      backgroundColor: Colors.white,
-
+                    child:ClipRRect(
+                      // The border radius (`borderRadius`) property, the border radius of the rounded corners.
+                      borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                      child: LinearProgressIndicator(
+                        minHeight: 20,
+                        value: drivingdistancelist_last ?? 0,
+                        backgroundColor: Colors.white,
+                        valueColor: AlwaysStoppedAnimation<Color>(Color(0xffFF4964)),
+                      ),
                     ),
                   ),
                 ],
@@ -282,16 +300,17 @@ class drivingdistanceContainer implements containerItem {
                   Text("지난주",
                     style: TextStyle(
                       fontSize: 20,
-                    ),
+                    ),textAlign: TextAlign.center
                   ),
-
-                  Text(
-                    "km",
-                    ////////////////////////////////////////////////////////////////////////////////////
+                  SizedBox(width: 100,
+                  child: Text (
+                    "${drivingdistancelist_last ?? (0 as int)} km",
+                    //${drivingdistancelist_last.toStringAsFixed(2) ?? 0 as int} km",
                     style: TextStyle(
                       fontSize: 20,
-                    ),
+                    ),textAlign: TextAlign.center,
                   ),
+                  )
                 ],
               ),
               
@@ -309,56 +328,56 @@ class drivingdistanceContainer implements containerItem {
                   ),
                   SizedBox(width: 200,
                     child:
-                    LinearProgressIndicator(
-                      minHeight: 20,
-                      value: 0.40,//퍼센티지 나중에 계산해서 설정
-                      valueColor: AlwaysStoppedAnimation<Color>(Colors.yellow),
-                      backgroundColor: Colors.white,
-
+                    ClipRRect(
+                      // The border radius (`borderRadius`) property, the border radius of the rounded corners.
+                      borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                      child: LinearProgressIndicator(
+                        minHeight: 20,
+                        value: drivingdistancelist*0.005 ?? 0,
+                        backgroundColor: Colors.white,
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.yellow),
+                      ),
                     ),
+
                   ),
                 ],
               ),
 
-              Text("이번주",
-                style: TextStyle(
-                  fontSize: 20,
-                ),
-              ),
-            ],
+              Column (
+                children: [
+                  Text("이번주",
+                      style: TextStyle(
+                        fontSize: 20,
+                      ),textAlign: TextAlign.center
+                  ),
+                  SizedBox(width: 100,
+                    child: Text (
+                      "${drivingdistancelist.toStringAsFixed(2) ?? 0 as int} km",
+                      style: TextStyle(
+                        fontSize: 20,
+                      ),textAlign: TextAlign.center,
+                    ),
+                  )
+                ],
+              )
+            ]
           )
-
-
       //주행거리 멘트 넣을 곳
           ,Align(
               alignment: Alignment.center,
-              //지난주 합이 이번주보다 클경우 칭찬
-              child: (lastweekcnt > 3)
-                  ? (ecothisavg > 90)
-                  ? Text(ecoment2.getRange(0, 3).toList()[ecomentrandom],
+              //지난주 주행거리가 이번주 주행거리보다 클 경우
+              //null인 경우 0으로 대체
+              child: (drivingdistancelist_last??0 > drivingdistancelist??0) ?
+              Text(
+                  drvment.getRange(0, 3).toList()[drvmentrandom],
                   style: TextStyle(fontSize: 18.0, color: Colors.black),
                   textAlign: TextAlign.center)
-                  : (ecothisavg > 80)
-                  ? Text(
-                  ecoment2.getRange(3, 6).toList()[ecomentrandom],
-                  style: TextStyle(
-                      fontSize: 18.0, color: Colors.black),
-                  textAlign: TextAlign.center)
-                  : Text(
-                  ecoment2.getRange(6, 9).toList()[ecomentrandom],
-                  style: TextStyle(
-                      fontSize: 18.0, color: Colors.black),
-                  textAlign: TextAlign.center)
-                  : (ecothisavg > ecolastavg)
-                  ? Text(ecoment.getRange(0, 3).toList()[ecomentrandom],
-                  style: TextStyle(fontSize: 18.0, color: Colors.black),
-                  textAlign: TextAlign.center)
-                  : Text(ecoment.getRange(3, 6).toList()[ecomentrandom],
+                  :
+              Text(drvment.getRange(3, 6).toList()[drvmentrandom],
                   style: TextStyle(fontSize: 18.0, color: Colors.black),
                   textAlign: TextAlign.center)),
         ],
       ));
-
   drivingdistanceContainer();
 }
 
