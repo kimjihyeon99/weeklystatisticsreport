@@ -188,7 +188,6 @@ void getdrivingdistance() async {
   if (response.statusCode == 200) {
     var jsonResponse = convert.jsonDecode(response.body);
     var jr = jsonResponse['response']['body']['items'];
-
     // 전처리
     List tempjr = [];
     tempjr.add(jr);

@@ -12,7 +12,7 @@ List<Getsaftyscore> saftyscorelist = []; //안전운전 점수리스트
 List<Getsaftyscore> economicscorelist = []; // 경제운전 점수 리스트
 List daliyfuellist = []; //연비 리스트
 List<Getdrivingdistance>  drivingdistancelist = []; //이번주 주행 거리 리스트
-List<Getdrivingdistance>drivingdistancelist_last = [];//지난주 주행거리 리스트
+List<Getdrivingdistance> drivingdistancelist_last = [];//지난주 주행거리 리스트
 List decelerationscorelist = []; // 급감속 리스트
 List accelerationscorelist = []; // 급가속 리스트
 List rotationscorelist = []; // 급회전 리스트
@@ -106,7 +106,7 @@ class saftyscoreContainer implements containerItem {
         Text(activateName[0],
             style: TextStyle(
                 fontWeight: FontWeight.bold, fontSize: 23.0, color: Colors.black)),
-        Text(saftyscorelist[0].Date),
+
       ],
     )
 
@@ -225,6 +225,7 @@ class daliyfuelContainer implements containerItem {
 }
 
 class drivingdistanceContainer implements containerItem {
+
   final Container mycon = new Container(
       margin: EdgeInsets.symmetric(vertical: 10.0),
       padding: EdgeInsets.all(15),
@@ -254,48 +255,82 @@ class drivingdistanceContainer implements containerItem {
                     fontSize: 27.0,
                     color: Colors.black)),
           ),
-          Column(
-              children: [
-                Text("지난주",
-                  style: TextStyle(
-                    fontSize: 20,
-                  ),
-                ),
-                Image(
-                  //위치는 나중에 설정
-                  height: 70,
-                  width: 70,
-                  image: AssetImage('assets/car_img.png'),
-                ),
-                LinearProgressIndicator(
-                  minHeight: 20,
-                  value: 0.4,//퍼센티지 나중에 계산해서 설정
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.grey),
-                  backgroundColor: Colors.white,
-
-                ),
-
-                Text("이번주",
-                  style: TextStyle(
-                    fontSize: 20,
-                  ),
-                ),
-
-                Image(
-                    height: 70,//위치 나중에 계산해서 설정
+          Row(
+            children: [
+              Column (
+                children: <Widget>[
+                  Image(
+                    //위치는 나중에 설정
+                    height: 70,
                     width: 70,
-                    image: AssetImage('assets/car_img.png')),
-                LinearProgressIndicator(
-                  minHeight: 20,
-                  value: 0.3,//퍼센티지 나중에 계산해서 설정
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.yellow),
-                  backgroundColor: Colors.white,
-                ),
-              ]
+                    image: AssetImage('assets/car_img.png'),
+                  ),
+                  SizedBox(width: 200,
+                    child:
+                    LinearProgressIndicator(
+                      minHeight: 20,
+                      value: 0.70,//퍼센티지 나중에 계산해서 설정
+                      valueColor: AlwaysStoppedAnimation<Color>(Colors.grey),
+                      backgroundColor: Colors.white,
+
+                    ),
+                  ),
+                ],
+              ),
+              Column (
+                children: [
+                  Text("지난주",
+                    style: TextStyle(
+                      fontSize: 20,
+                    ),
+                  ),
+
+                  Text(
+                    "km",
+                    ////////////////////////////////////////////////////////////////////////////////////
+                    style: TextStyle(
+                      fontSize: 20,
+                    ),
+                  ),
+                ],
+              ),
+              
+            ],
           ),
+          Row(
+            children: [
+              Column (
+                children: <Widget>[
+                  Image(
+                    //위치는 나중에 설정
+                    height: 70,
+                    width: 70,
+                    image: AssetImage('assets/car_img.png'),
+                  ),
+                  SizedBox(width: 200,
+                    child:
+                    LinearProgressIndicator(
+                      minHeight: 20,
+                      value: 0.40,//퍼센티지 나중에 계산해서 설정
+                      valueColor: AlwaysStoppedAnimation<Color>(Colors.yellow),
+                      backgroundColor: Colors.white,
+
+                    ),
+                  ),
+                ],
+              ),
+
+              Text("이번주",
+                style: TextStyle(
+                  fontSize: 20,
+                ),
+              ),
+            ],
+          )
+
 
       //주행거리 멘트 넣을 곳
-          Align(
+          ,Align(
               alignment: Alignment.center,
               //지난주 합이 이번주보다 클경우 칭찬
               child: (lastweekcnt > 3)
