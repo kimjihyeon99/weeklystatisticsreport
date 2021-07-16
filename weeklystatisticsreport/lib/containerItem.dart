@@ -11,7 +11,6 @@ import 'dart:math'; //random 수 가져오기 위한것
 List<Getsaftyscore> saftyscorelist = []; //안전운전 점수리스트
 List<Getsaftyscore> economicscorelist = []; // 경제운전 점수 리스트
 List<Getdaliyfuel> daliyfuellist = []; //연비 리스트
-
 List drivingdistancelist = []; //주행 거리 리스트
 List<GetDrivingwarningscore> countAllEventForEachDay = [];
 List<CountEventForEvent> countEventForLastWeek = [];
@@ -47,7 +46,7 @@ List ecoment = [
   "저번주보다 더 경제적으로 운전하셨네요🤩 \n 아주 멋져요👍👍",
   "지난주보다 경제점수가 높아졌어요😀 \n 점차 경제점수를 높여보세요!",
   "이런, 지난주보다 경제점수가 떨어졌어요.. \n 이번주는 조금 더 노력해봐요😅",
-  "저번주보다 경제점수가 낮아지다니💦.\n 더 노력해서 점수를 올려주세요🤦 ♀",
+  "저번주보다 경제점수가 낮아지다니💦.\n 더 노력해서 점수를 올려주세요🤦",
   "지난주보다 경제점수가 떨어졌어요😥 \n 다음에는 좀 더 경제적으로 운전해봐요!",
 ];
 
@@ -64,6 +63,18 @@ List ecoment2 = [
   "경제운전으로 기름값 아끼고 치킨 한마리 더!🍗"
 ];
 
+
+//주행거리 멘트
+//지난주 > 이번주
+List drvment = [
+  "이번주에는 저번주보다 덜 운전하셨네요👏 \n환경에 큰 도움이 될 거에요🤩",
+  "지난주보다 더 적게 달리셨어요~ \n시간 날때 드라이브 한번 다녀오세요🚗",
+  "주행거리가 지난주보다 감소했네요!\n덕분에 미세먼지 감축에 도움이 되었어요!",
+  "저번주보다 이번주에 운전을 더 많이하셨어요! \n안전운전에 주의하세요😉",
+  "저번주보다 더 많이 달리셨어요~ \n세차한번 하고 오세요🌊  ",
+  "주행거리가 저번주보다 증가했네요!\n여행이라도 다녀오신건가요?⛱",
+];
+
 int lastweekcnt = 0;
 //safe
 double thisavg = 0;
@@ -75,8 +86,20 @@ double ecolastavg = 0;
 final int mentrandom = Random().nextInt(3);
 final int ecomentrandom = Random().nextInt(3);
 
+int lastweekcnt = 0;
+//safe
+double thisavg = 0;
+double lastavg = 0;
+// eco
+double ecothisavg = 0;
+double ecolastavg = 0;
+
+final int mentrandom = Random().nextInt(3);
+final int ecomentrandom = Random().nextInt(3);
+final int drvmentrandom = Random().nextInt(3);
 //각자의 container 생성을 위한것
 abstract class containerItem {}
+
 
 class saftyscoreContainer implements containerItem {
   final Container mycon = new Container(
@@ -161,7 +184,7 @@ class saftyscoreContainer implements containerItem {
                           textAlign: TextAlign.center)),
         ],
       ));
-
+  
   saftyscoreContainer();
 }
 
@@ -418,10 +441,10 @@ class daliyfuelContainer implements containerItem {
 }
 
 class drivingdistanceContainer implements containerItem {
+
   final Container mycon = new Container(
       margin: EdgeInsets.symmetric(vertical: 10.0),
       padding: EdgeInsets.all(15),
-      height: 100,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.only(
@@ -440,15 +463,119 @@ class drivingdistanceContainer implements containerItem {
       ),
       child: Column(
         children: [
-          Text(activateName[4],
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 23.0,
-                  color: Colors.black)),
-          //double만 가짐.
+          Align(
+            alignment: Alignment.topLeft,
+            child: Text(activateName[4],
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 27.0,
+                    color: Colors.black)),
+          ),
+          Row(
+            children: [
+              Column (
+                children: <Widget>[
+                  Image(
+                    //위치는 나중에 설정
+                    height: 70,
+                    width: 70,
+                    image: AssetImage('assets/car_img.png'),
+                  ),
+                  SizedBox(width: 200,
+                    child:ClipRRect(
+                      // The border radius (`borderRadius`) property, the border radius of the rounded corners.
+                      borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                      child: LinearProgressIndicator(
+                        minHeight: 20,
+                        value: drivingdistancelist_last==null ? 0 : drivingdistancelist_last*0.005,
+                        backgroundColor: Colors.white,
+                        valueColor: AlwaysStoppedAnimation<Color>(Color(0xffFF4964)),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Column (
+                children: [
+                  Text("지난주",
+                    style: TextStyle(
+                      fontSize: 20,
+                    ),textAlign: TextAlign.center
+                  ),
+                  SizedBox(width: 100,
+                  child: Text (
+                    "${drivingdistancelist_last==null ? 0 : drivingdistancelist_last.toInt()} km",
+                    style: TextStyle(
+                      fontSize: 20,
+                    ),textAlign: TextAlign.center,
+                  ),
+                  )
+                ],
+              ),
+              
+            ],
+          ),
+          Row(
+            children: [
+              Column (
+                children: <Widget>[
+                  Image(
+                    //위치는 나중에 설정
+                    height: 70,
+                    width: 70,
+                    image: AssetImage('assets/car_img.png'),
+                  ),
+                  SizedBox(width: 200,
+                    child:
+                    ClipRRect(
+                      // The border radius (`borderRadius`) property, the border radius of the rounded corners.
+                      borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                      child: LinearProgressIndicator(
+                        minHeight: 20,
+                        value:  drivingdistancelist==null ? 0 : drivingdistancelist*0.005,
+                        backgroundColor: Colors.white,
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.yellow),
+                      ),
+                    ),
+
+                  ),
+                ],
+              ),
+              Column (
+                children: [
+                  Text("이번주",
+                      style: TextStyle(
+                        fontSize: 20,
+                      ),textAlign: TextAlign.center
+                  ),
+                  SizedBox(width: 100,
+                    child: Text (
+                      "${drivingdistancelist==null ? 0 : drivingdistancelist.toInt()} km",
+                      style: TextStyle(
+                        fontSize: 20,
+                      ),textAlign: TextAlign.center,
+                    ),
+                  )
+                ],
+              )
+            ]
+          )
+      //주행거리 멘트 넣을 곳
+          ,Align(
+              alignment: Alignment.center,
+              //지난주 주행거리가 이번주 주행거리보다 클 경우
+              child: ((drivingdistancelist_last==null ? 0: drivingdistancelist_last) >
+                            (drivingdistancelist==null ? 0: drivingdistancelist)  ) ?
+              Text(
+                  drvment.getRange(0, 3).toList()[drvmentrandom],
+                  style: TextStyle(fontSize: 18.0, color: Colors.black),
+                  textAlign: TextAlign.center)
+                  :
+              Text(drvment.getRange(3, 6).toList()[drvmentrandom],
+                  style: TextStyle(fontSize: 18.0, color: Colors.black),
+                  textAlign: TextAlign.center)),
         ],
       ));
-
   drivingdistanceContainer();
 }
 
