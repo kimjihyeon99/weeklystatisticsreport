@@ -85,17 +85,6 @@ double ecolastavg = 0;
 
 final int mentrandom = Random().nextInt(3);
 final int ecomentrandom = Random().nextInt(3);
-
-int lastweekcnt = 0;
-//safe
-double thisavg = 0;
-double lastavg = 0;
-// eco
-double ecothisavg = 0;
-double ecolastavg = 0;
-
-final int mentrandom = Random().nextInt(3);
-final int ecomentrandom = Random().nextInt(3);
 final int drvmentrandom = Random().nextInt(3);
 //각자의 container 생성을 위한것
 abstract class containerItem {}
