@@ -10,8 +10,8 @@ import 'package:intl/intl.dart';
 Future<String> getallapi() async {
   await getsafyscore();
   await getdaliyfuel();
-  await getdrivingdistance_last();//지난주
   await getdrivingdistance();//이번주
+  await getdrivingdistance_last();//지난주
   await getdecelerationscore();
   await getaccelerationscore();
   await getrotationscore();
@@ -23,6 +23,7 @@ Future<String> getallapi() async {
 
 //// 안전운전, 경제운전 점수 기능 api
 void getsafyscore() async {
+  print("안전운전 경제운전 점수");
   final DateTime originnow = DateTime.now();
   Map yoil = {
     "Mon": 1,
@@ -154,6 +155,7 @@ void getsafyscore() async {
 
 // 연비 점수 api
 void getdaliyfuel() async {
+  print("연비점수");
   final DateTime originnow = DateTime.now();
   Map yoil = {
     "Mon": 1,
@@ -182,7 +184,6 @@ void getdaliyfuel() async {
   final String lastweekday = formatter.format(lastweek);
 
   int date = now.day as int; //현재 날짜에서 '일'만 가져와서 아래에서 카운트 하기 위함
-
 
   String url =
       'https://server2.mureung.com/infocarAdminPageAPI/sideproject/recdrvFuelUsement?userKey=1147&startDate=$lastweekday&endDate=$today';
@@ -245,7 +246,7 @@ void getdaliyfuel() async {
 
 //지난주 주행거리 합 api
 void getdrivingdistance_last() async {
-  print("지난주");
+  print("지난주 주행");
   final DateTime originnow = DateTime.now();
   Map yoil = {
     "Mon": 1,
@@ -304,9 +305,9 @@ void getdrivingdistance_last() async {
 
 //이번주 주행거리 합
 void getdrivingdistance() async {
+  print("이번주");
   final DateTime originnow = DateTime.now();
-  
-    Map yoil = {
+  Map yoil = {
     "Mon": 1,
     "Tue": 2,
     "Wed": 3,
@@ -315,23 +316,22 @@ void getdrivingdistance() async {
     "Sat": 6,
     "Sun": 7
   };
-  
+
   String todayyoil = DateFormat('EEE').format(originnow);
   int numyoil = yoil[todayyoil];
 
   //현재 날짜와 지난주 날짜 가져오기
   final DateTime now =
-   new DateTime(originnow.year, originnow.month, originnow.day - numyoil);
+  new DateTime(originnow.year, originnow.month, originnow.day -numyoil);
   final DateTime lastweek = new DateTime(
-      originnow.year, originnow.month, originnow.day - 6 - numyoil);
-  
-   final DateFormat formatter = DateFormat('yyyy-MM-dd'); // string으로 바꾸기 위함
+      originnow.year, originnow.month, originnow.day -6 -numyoil);
+
+  final DateFormat formatter = DateFormat('yyyy-MM-dd'); // string으로 바꾸기 위함
 
   //날짜를 문자열로 변환하기, class에 넣어주기 위함
   final String today = formatter.format(now);
-  
   final String lastweekday = formatter.format(lastweek);
-  
+
   String url =
       'https://server2.mureung.com/infocarAdminPageAPI/sideproject/recdrvDisSum?userKey=1147&startDate=$lastweekday&endDate=$today';
   final response = await http.get(
@@ -339,14 +339,14 @@ void getdrivingdistance() async {
     headers: {
       "F_TOKEN":
       "D5CFB732E7BA8E56356AA766B61EEF32F5F1BCA6F554FB0A9432D285A7E012A3"
-           },
+    },
   );
 
   if (response.statusCode == 200) {
     var jsonResponse = convert.jsonDecode(response.body);
     var jr = jsonResponse['response']['body']['items'];
-    
-      // 전처리
+
+    // 전처리
     List tempjr = [];
     tempjr.add(jr);
     jr = tempjr;
@@ -356,11 +356,10 @@ void getdrivingdistance() async {
         .map<Getdrivingdistance>((json) => Getdrivingdistance.fromJson(json))
         .toList();
 
-    drivingdistancelist = jr[0].RecDrvDisSum;
-  } else {
+    drivingdistancelist = jr[0].RecDrvDisSum ;
+  } else {//불러오기 실패!
     print('Request failed with status: ${response.statusCode}.');
   }
-
 }
 
 
@@ -368,6 +367,7 @@ void getdrivingdistance() async {
 
 //급감속 api
 void getdecelerationscore() async {
+  print("급감속");
   final DateTime originnow = DateTime.now();
 
   Map yoil = {

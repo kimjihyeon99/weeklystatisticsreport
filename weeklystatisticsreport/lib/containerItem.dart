@@ -11,7 +11,8 @@ import 'dart:math'; //random 수 가져오기 위한것
 List<Getsaftyscore> saftyscorelist = []; //안전운전 점수리스트
 List<Getsaftyscore> economicscorelist = []; // 경제운전 점수 리스트
 List<Getdaliyfuel> daliyfuellist = []; //연비 리스트
-List drivingdistancelist = []; //주행 거리 리스트
+double drivingdistancelist = 0; //주행 거리 리스트
+double drivingdistancelist_last = 0; //이전주 주행 거리 리스트
 List<GetDrivingwarningscore> countAllEventForEachDay = [];
 List<CountEventForEvent> countEventForLastWeek = [];
 List<CountEventForEvent> countEventForThisWeek = [];
