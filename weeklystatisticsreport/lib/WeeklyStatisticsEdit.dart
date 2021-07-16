@@ -103,10 +103,9 @@ class _WeeklyStatisticsEditPage extends State<WeeklyStatisticsEditPage> {
             },
           ),
         ),
-        body:
-        Container(
-            height : MediaQuery.of(context).size.height,
-            decoration: BoxDecoration(
+        body: Container(
+          height: MediaQuery.of(context).size.height,
+          decoration: BoxDecoration(
             gradient: LinearGradient(
                 colors: [PrimaryColor, Color(0xFFD8BFD8)],
                 begin: Alignment.topCenter,
@@ -167,9 +166,7 @@ class _WeeklyStatisticsEditPage extends State<WeeklyStatisticsEditPage> {
               });
             },
           ),
-        )
-
-    );
+        ));
   }
 
   Widget makeAppbarContainer(String menuName, int index) {
@@ -248,11 +245,9 @@ class _WeeklyStatisticsEditPage extends State<WeeklyStatisticsEditPage> {
           )
         ],
       ),
-      decoration:
-          BoxDecoration(
-              border: Border.all(color: SecondColor, width: 0.1),
-              color:PrimaryColor.withOpacity(0.1)
-          ),
+      decoration: BoxDecoration(
+          border: Border.all(color: SecondColor, width: 0.1),
+          color: PrimaryColor.withOpacity(0.1)),
       height: 50,
     );
   }
@@ -311,11 +306,9 @@ class _WeeklyStatisticsEditPage extends State<WeeklyStatisticsEditPage> {
           ),
         )
       ]),
-      decoration:
-          BoxDecoration(
-              border: Border.all(color: SecondColor, width: 0.1),
-              color:PrimaryColor.withOpacity(0.1)
-          ),
+      decoration: BoxDecoration(
+          border: Border.all(color: SecondColor, width: 0.1),
+          color: PrimaryColor.withOpacity(0.1)),
       height: 50,
     );
   }

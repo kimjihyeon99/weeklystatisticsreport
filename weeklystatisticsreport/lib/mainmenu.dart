@@ -37,16 +37,16 @@ class _mainmenuPage extends State<mainmenuPage> {
     localnotifyMgr.init().setOnNotificationClick(onNotificationClick);
   }
 
-  onNotificationReceive(ReceiveNotification notification){
+  onNotificationReceive(ReceiveNotification notification) {
     print('Notification Received : ${notification.id}');
   }
 
-  onNotificationClick(String payload){
+  onNotificationClick(String payload) {
     print('Payload : $payload');
 
-    if(payload.compareTo("new payload")==0){
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => statisticview()));
+    if (payload.compareTo("new payload") == 0) {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => statisticview()));
     }
   }
 
@@ -184,7 +184,7 @@ class _mainmenuPage extends State<mainmenuPage> {
                 borderRadius: BorderRadius.circular(18.0),
               )),
             ),
-            onPressed: () async{
+            onPressed: () async {
               if (right.compareTo('차량진단') == 0) {
                 // await localnotifyMgr.init().showNotification(); //test용
                 await localnotifyMgr.init().showNotification();
