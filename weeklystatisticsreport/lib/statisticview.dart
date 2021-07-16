@@ -69,8 +69,6 @@ int firstcountactivate() {
   return count;
 }
 
-
-
 class statisticview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
