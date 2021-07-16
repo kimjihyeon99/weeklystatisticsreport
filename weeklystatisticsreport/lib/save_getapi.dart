@@ -69,6 +69,18 @@ class GetDrivingwarningscore {
   }
 }
 
+class CountEventForEvent {
+  String name;
+  int count;
+
+  CountEventForEvent({
+    this.name,
+    this.count,
+  });
+}
+
+
+
 class GetSpending {
   double PRICE;
   String CBOOK_CODE;
