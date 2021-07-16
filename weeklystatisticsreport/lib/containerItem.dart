@@ -15,8 +15,8 @@ import 'dart:math'; //random 수 가져오기 위한것
 List<Getsaftyscore> saftyscorelist = []; //안전운전 점수리스트
 List<Getsaftyscore> economicscorelist = []; // 경제운전 점수 리스트
 List daliyfuellist = []; //연비 리스트
-double drivingdistancelist; //이번주 주행 거리 리스트
-double drivingdistancelist_last;//지난주 주행거리 리스트
+double drivingdistancelist=0; //이번주 주행 거리 리스트
+double drivingdistancelist_last=0;//지난주 주행거리 리스트
 List decelerationscorelist = []; // 급감속 리스트
 List accelerationscorelist = []; // 급가속 리스트
 List rotationscorelist = []; // 급회전 리스트
@@ -287,7 +287,7 @@ class drivingdistanceContainer implements containerItem {
                       borderRadius: BorderRadius.all(Radius.circular(10.0)),
                       child: LinearProgressIndicator(
                         minHeight: 20,
-                        value: drivingdistancelist_last ?? 0,
+                        value: drivingdistancelist_last==null ? 0 : drivingdistancelist_last*0.005,
                         backgroundColor: Colors.white,
                         valueColor: AlwaysStoppedAnimation<Color>(Color(0xffFF4964)),
                       ),
@@ -304,8 +304,7 @@ class drivingdistanceContainer implements containerItem {
                   ),
                   SizedBox(width: 100,
                   child: Text (
-                    "${drivingdistancelist_last ?? (0 as int)} km",
-                    //${drivingdistancelist_last.toStringAsFixed(2) ?? 0 as int} km",
+                    "${drivingdistancelist_last==null ? 0 : drivingdistancelist_last.toInt()} km",
                     style: TextStyle(
                       fontSize: 20,
                     ),textAlign: TextAlign.center,
@@ -333,7 +332,7 @@ class drivingdistanceContainer implements containerItem {
                       borderRadius: BorderRadius.all(Radius.circular(10.0)),
                       child: LinearProgressIndicator(
                         minHeight: 20,
-                        value: drivingdistancelist*0.005 ?? 0,
+                        value:  drivingdistancelist==null ? 0 : drivingdistancelist*0.005,
                         backgroundColor: Colors.white,
                         valueColor: AlwaysStoppedAnimation<Color>(Colors.yellow),
                       ),
@@ -352,7 +351,7 @@ class drivingdistanceContainer implements containerItem {
                   ),
                   SizedBox(width: 100,
                     child: Text (
-                      "${drivingdistancelist.toStringAsFixed(2) ?? 0 as int} km",
+                      "${drivingdistancelist==null ? 0 : drivingdistancelist.toInt()} km",
                       style: TextStyle(
                         fontSize: 20,
                       ),textAlign: TextAlign.center,
@@ -366,8 +365,8 @@ class drivingdistanceContainer implements containerItem {
           ,Align(
               alignment: Alignment.center,
               //지난주 주행거리가 이번주 주행거리보다 클 경우
-              //null인 경우 0으로 대체
-              child: (drivingdistancelist_last??0 > drivingdistancelist??0) ?
+              child: ((drivingdistancelist_last==null ? 0: drivingdistancelist_last) >
+                            (drivingdistancelist==null ? 0: drivingdistancelist)  ) ?
               Text(
                   drvment.getRange(0, 3).toList()[drvmentrandom],
                   style: TextStyle(fontSize: 18.0, color: Colors.black),
@@ -407,8 +406,8 @@ class spendingContainer implements containerItem {
           Text(activateName[5],
               style: TextStyle(
                   fontWeight: FontWeight.bold, fontSize: 23.0, color: Colors.black)),
-          Text('차계부 구매 코드: ' + spendinglist[0].CBOOK_CODE),
-          Text('총 지출 금액: ' + spendinglist[0].PRICE.toString() + '원'),
+          // Text('차계부 구매 코드: ' + spendinglist[0].CBOOK_CODE),
+          // Text('총 지출 금액: ' + spendinglist[0].PRICE.toString() + '원'),
         ],
       )
   );

@@ -10,8 +10,9 @@ import 'package:intl/intl.dart';
 Future<String> getallapi() async {
   await getsafyscore();
   await getdaliyfuel();
-  await getdrivingdistance();
+
   await getdrivingdistance_last();//지난주
+  await getdrivingdistance();//이번주
   await getdecelerationscore();
   await getaccelerationscore();
   await getrotationscore();
@@ -93,6 +94,7 @@ void getdaliyfuel() async{
 
 //지난주 주행거리 합 api
 void getdrivingdistance_last() async {
+  print("지난주");
   final DateTime originnow = DateTime.now();
   Map yoil = {
     "Mon": 1,
@@ -111,7 +113,7 @@ void getdrivingdistance_last() async {
   final DateTime now =
   new DateTime(originnow.year, originnow.month, originnow.day -7 -numyoil);
   final DateTime lastweek = new DateTime(
-      originnow.year, originnow.month, originnow.day - 13 - numyoil);
+      originnow.year, originnow.month, originnow.day -13 -numyoil);
 
   final DateFormat formatter = DateFormat('yyyy-MM-dd'); // string으로 바꾸기 위함
 
@@ -128,6 +130,8 @@ void getdrivingdistance_last() async {
       "D5CFB732E7BA8E56356AA766B61EEF32F5F1BCA6F554FB0A9432D285A7E012A3"
     },
   );
+
+  print("dklfjdklfjdklf");
   if (response.statusCode == 200) {
     var jsonResponse = convert.jsonDecode(response.body);
     var jr = jsonResponse['response']['body']['items'];
@@ -141,21 +145,17 @@ void getdrivingdistance_last() async {
         .map<Getdrivingdistance>((json) => Getdrivingdistance.fromJson(json))
         .toList();
 
-    drivingdistancelist_last = jr[0].RecDrvDisSum;
-    // print(drivingdistancelist_last);
-
-  } else {
+    drivingdistancelist_last = jr[0].RecDrvDisSum ;
+    print(jr[0].RecDrvDisSum);
+  } else {//불러오기 실패!
     print('Request failed with status: ${response.statusCode}.');
   }
-
-
 }
-
-
 
 
 //이번주 주행거리 합
 void getdrivingdistance() async {
+  print("이번주");
   final DateTime originnow = DateTime.now();
   Map yoil = {
     "Mon": 1,
