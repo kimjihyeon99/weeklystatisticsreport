@@ -218,6 +218,7 @@ void getdaliyfuel() async {
       String mydateday = formatter.format(mydate);
       newjr.insert(
           i, new Getdaliyfuel(DrvFuelUsement: 0, Date: mydateday));
+    }
       //거꾸로 들어온 데이터 뒤집기
       daliyfuellist = new List.from(newjr.reversed);
 
