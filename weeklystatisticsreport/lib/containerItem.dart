@@ -16,6 +16,8 @@ List drivingdistancelist = []; //주행 거리 리스트
 List<GetDrivingwarningscore> countAllEventForEachDay = [];
 List<CountEventForEvent> countEventForLastWeek = [];
 List<CountEventForEvent> countEventForThisWeek = [];
+int countAllEventForLastWeek = 0;
+int countAllEventForThisWeek = 0;
 List spendinglist = []; //지출 내역 리스트
 
 //안전 점수 : 지난주와  비교하는 코멘트
@@ -71,6 +73,9 @@ double lastavg = 0;
 // eco
 double ecothisavg = 0;
 double ecolastavg = 0;
+
+bool isZeroEventCountForLastWeek = true;
+bool isZeroEventCountForThisWeek = true;
 
 final int mentrandom = Random().nextInt(3);
 final int ecomentrandom = Random().nextInt(3);
@@ -291,20 +296,21 @@ class drivingwarningscoreContainer implements containerItem {
               ColumnSeries<GetDrivingwarningscore, String>(
                   name: "지난주",
                   dataSource: countAllEventForEachDay.getRange(0, 7).toList(),
-                  xValueMapper: (GetDrivingwarningscore gf, _) => DateFormat('EEE')
-                      .format(new DateTime(
-                      int.parse(gf.Date.split("-")[0]),
-                      int.parse(gf.Date.split("-")[1]),
-                      int.parse(gf.Date.split("-")[2]))),
-                  yValueMapper: (GetDrivingwarningscore gf, _) => gf.countEvent),
+                  xValueMapper: (GetDrivingwarningscore gf, _) =>
+                      DateFormat('EEE').format(new DateTime(
+                          int.parse(gf.Date.split("-")[0]),
+                          int.parse(gf.Date.split("-")[1]),
+                          int.parse(gf.Date.split("-")[2]))),
+                  yValueMapper: (GetDrivingwarningscore gf, _) =>
+                      gf.countEvent),
               ColumnSeries<GetDrivingwarningscore, String>(
                   name: "이번주",
                   dataSource: countAllEventForEachDay.getRange(7, 14).toList(),
-                  xValueMapper: (GetDrivingwarningscore gf, _) => DateFormat('EEE')
-                      .format(new DateTime(
-                      int.parse(gf.Date.split("-")[0]),
-                      int.parse(gf.Date.split("-")[1]),
-                      int.parse(gf.Date.split("-")[2]))),
+                  xValueMapper: (GetDrivingwarningscore gf, _) =>
+                      DateFormat('EEE').format(new DateTime(
+                          int.parse(gf.Date.split("-")[0]),
+                          int.parse(gf.Date.split("-")[1]),
+                          int.parse(gf.Date.split("-")[2]))),
                   yValueMapper: (GetDrivingwarningscore gf, _) => gf.countEvent)
             ],
             primaryXAxis: CategoryAxis(),
@@ -332,22 +338,180 @@ class drivingwarningscoreContainer implements containerItem {
           //         : Text(ment.getRange(3, 6).toList()[mentrandom],
           //         style: TextStyle(fontSize: 18.0, color: Colors.black),
           //         textAlign: TextAlign.center)),
-          SfCircularChart(
-            legend: Legend(isVisible: true, position: LegendPosition.top),
-            tooltipBehavior: TooltipBehavior(enable: true),
-            series: <CircularSeries>[
-              DoughnutSeries<CountEventForEvent, String>(
-                  name: "지난주",
-                  dataSource: countEventForLastWeek,
-                  xValueMapper: (CountEventForEvent ce, _) => ce.name,
-                  yValueMapper: (CountEventForEvent ce, _) => ce.count),
-              DoughnutSeries<CountEventForEvent, String>(
-                  name: "이번주",
-                  dataSource: countEventForThisWeek,
-                  xValueMapper: (CountEventForEvent ce, _) => ce.name,
-                  yValueMapper: (CountEventForEvent ce, _) => ce.count),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Row(children: [
+                Container(
+                  width: 10,
+                  height: 5,
+                  decoration: BoxDecoration(
+                    color: Color(0xff4A86B8),
+                    borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                  ),
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                //text
+                Text("급감속"),
+              ]),
+              Row(children: [
+                Container(
+                  width: 10,
+                  height: 5,
+                  decoration: BoxDecoration(
+                    color: Color(0xffC06C84),
+                    borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                  ),
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                //text
+                Text("급가속")
+              ]),
+              Row(children: [
+                Container(
+                  width: 10,
+                  height: 5,
+                  decoration: BoxDecoration(
+                    color: Color(0xffF67280),
+                    borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                  ),
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                //text
+                Text("급회전"),
+              ]),
+              Row(children: [
+                Container(
+                  width: 10,
+                  height: 5,
+                  decoration: BoxDecoration(
+                    color: Color(0xffF8B094),
+                    borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                  ),
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                //text
+                Text("공회전"),
+              ]),
             ],
           ),
+          Row(
+            children: [
+              isZeroEventCountForLastWeek
+                  ? Container(
+                      child: Text('지난주에 이벤트가\n아예 일어나지 않았네요.'),
+                    )
+                  : Column(
+                      children: [
+                        Container(
+                          width: 170,
+                          height: 170,
+                          child: Stack(children: <Widget>[
+                            SfCircularChart(
+                              tooltipBehavior: TooltipBehavior(enable: true),
+                              series: <CircularSeries>[
+                                DoughnutSeries<CountEventForEvent, String>(
+                                    dataLabelSettings: DataLabelSettings(
+                                        isVisible: true,
+                                        labelPosition:
+                                            ChartDataLabelPosition.outside,
+                                        labelIntersectAction:
+                                            LabelIntersectAction.none),
+                                    name: "지난주",
+                                    dataSource: countEventForLastWeek,
+                                    xValueMapper: (CountEventForEvent ce, _) =>
+                                        ce.name,
+                                    yValueMapper: (CountEventForEvent ce, _) =>
+                                        ce.count),
+                              ],
+                            ),
+                            Center(
+                              child: Text(
+                                countAllEventForLastWeek.toString() + '회',
+                                style: TextStyle(
+                                    fontSize: 15.0,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            )
+                          ]),
+                        ),
+                        Text(
+                          '지난주',
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        )
+                      ],
+                    ),
+              isZeroEventCountForThisWeek
+                  ? Container(
+                      child: Text('이번주에 이벤트가\n아예 일어나지 않았네요.'),
+                    )
+                  : Column(
+                      children: [
+                        Container(
+                          width: 170,
+                          height: 170,
+                          child: Stack(children: <Widget>[SfCircularChart(
+                            legend: Legend(
+                              isVisible: false,
+                              position: LegendPosition.bottom,
+                              title: LegendTitle(
+                                  text: '이번주',
+                                  textStyle: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w900)),
+                            ),
+                            tooltipBehavior: TooltipBehavior(enable: true),
+                            series: <CircularSeries>[
+                              DoughnutSeries<CountEventForEvent, String>(
+                                  dataLabelSettings: DataLabelSettings(
+                                      isVisible: true,
+                                      labelPosition:
+                                          ChartDataLabelPosition.outside,
+                                      labelIntersectAction:
+                                          LabelIntersectAction.none),
+                                  name: "이번주",
+                                  dataSource: countEventForThisWeek,
+                                  xValueMapper: (CountEventForEvent ce, _) =>
+                                      ce.name,
+                                  yValueMapper: (CountEventForEvent ce, _) =>
+                                      ce.count),
+                            ],
+                          ),
+                            Center(
+                              child: Text(
+                                countAllEventForThisWeek.toString() + '회',
+                                style: TextStyle(
+                                    fontSize: 15.0,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            )
+                          ]
+                          ),
+                        ),
+                        Text(
+                          '이번주',
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        )
+                      ],
+                    )
+            ],
+          )
         ],
       ));
 
@@ -393,18 +557,18 @@ class daliyfuelContainer implements containerItem {
                   dataSource: daliyfuellist.getRange(0, 7).toList(),
                   xValueMapper: (Getdaliyfuel gf, _) => DateFormat('EEE')
                       .format(new DateTime(
-                      int.parse(gf.Date.split("-")[0]),
-                      int.parse(gf.Date.split("-")[1]),
-                      int.parse(gf.Date.split("-")[2]))),
+                          int.parse(gf.Date.split("-")[0]),
+                          int.parse(gf.Date.split("-")[1]),
+                          int.parse(gf.Date.split("-")[2]))),
                   yValueMapper: (Getdaliyfuel gf, _) => gf.DrvFuelUsement),
               LineSeries<Getdaliyfuel, String>(
                   name: "이번주",
                   dataSource: daliyfuellist.getRange(7, 14).toList(),
                   xValueMapper: (Getdaliyfuel gf, _) => DateFormat('EEE')
                       .format(new DateTime(
-                      int.parse(gf.Date.split("-")[0]),
-                      int.parse(gf.Date.split("-")[1]),
-                      int.parse(gf.Date.split("-")[2]))),
+                          int.parse(gf.Date.split("-")[0]),
+                          int.parse(gf.Date.split("-")[1]),
+                          int.parse(gf.Date.split("-")[2]))),
                   yValueMapper: (Getdaliyfuel gf, _) => gf.DrvFuelUsement)
             ],
             primaryXAxis: CategoryAxis(),
@@ -412,8 +576,8 @@ class daliyfuelContainer implements containerItem {
             // ),
           ),
         ],
-      )
-  );
+      ));
+
   daliyfuelContainer();
 }
 
@@ -480,8 +644,8 @@ class spendingContainer implements containerItem {
                   fontWeight: FontWeight.bold,
                   fontSize: 23.0,
                   color: Colors.black)),
-          Text('차계부 구매 코드: ' + spendinglist[0].CBOOK_CODE),
-          Text('총 지출 금액: ' + spendinglist[0].PRICE.toString() + '원'),
+          //Text('차계부 구매 코드: ' + spendinglist[0].CBOOK_CODE),
+          //Text('총 지출 금액: ' + spendinglist[0].PRICE.toString() + '원'),
         ],
       ));
 
