@@ -331,6 +331,14 @@ void getdrivingdistance() async {
 
 //급감속 api
 void getdecelerationscore() async {
+  
+  // 초기화
+  countAllEventForLastWeek = 0;
+  countAllEventForThisWeek = 0;
+  countAllEventForEachDay = [];
+  countEventForLastWeek = [];
+  countEventForThisWeek = [];
+
   //현재 날짜와 지난주 날짜 가져오기
   final DateTime now =
       new DateTime(originnow.year, originnow.month, originnow.day - numyoil);
@@ -402,8 +410,14 @@ void getdecelerationscore() async {
       date = date - 1;
     });
 
+
+    if(countSum > 0) {
+      isZeroEventCountForThisWeek = false;
+    }
+
     countEventForThisWeek
         .add(new CountEventForEvent(name: "급감속", count: countSum));
+    countAllEventForThisWeek += countSum;
 
     int countday = lastday.difference(thisMonday).inDays;
 
@@ -475,8 +489,16 @@ void getdecelerationscore() async {
           i, new GetDrivingwarningscore(countEvent: 0, Date: mydateday));
     }
 
+    if(countSum > 0) {
+      isZeroEventCountForLastWeek = false;
+    }
+
     countEventForLastWeek
         .add(new CountEventForEvent(name: "급감속", count: countSum));
+
+    countAllEventForLastWeek += countSum;
+
+
   } else {
     print('Request failed with status: ${response.statusCode}.');
   }
@@ -538,8 +560,14 @@ void getaccelerationscore() async {
       date = date - 1;
     });
 
+    if(countSum > 0) {
+      isZeroEventCountForThisWeek = false;
+    }
+
     countEventForThisWeek
         .add(new CountEventForEvent(name: "급가속", count: countSum));
+    countAllEventForThisWeek += countSum;
+
   } else {
     print('Request failed with status: ${response.statusCode}.');
   }
@@ -578,10 +606,14 @@ void getaccelerationscore() async {
       date = date - 1;
     });
 
+    if(countSum > 0) {
+      isZeroEventCountForLastWeek = false;
+    }
+
     countEventForLastWeek
         .add(new CountEventForEvent(name: "급가속", count: countSum));
+    countAllEventForLastWeek += countSum;
 
-    print('급가속');
   } else {
     print('Request failed with status: ${response.statusCode}.');
   }
@@ -611,7 +643,7 @@ void getrotationscore() async {
 
   // 이번주
   String url =
-      'https://server2.mureung.com/infocarAdminPageAPI/sideproject/eventCount?userKey=1147&startDate=$thisMondayDay&endDate=$today&eventCode=EventCode02';
+      'https://server2.mureung.com/infocarAdminPageAPI/sideproject/eventCount?userKey=1147&startDate=$thisMondayDay&endDate=$today&eventCode=EventCode10';
   var response = await http.get(
     Uri.parse(url),
     headers: {
@@ -643,15 +675,22 @@ void getrotationscore() async {
       date = date - 1;
     });
 
+    if(countSum > 0) {
+      isZeroEventCountForThisWeek = false;
+    }
+
     countEventForThisWeek
         .add(new CountEventForEvent(name: "급회전", count: countSum));
+    countAllEventForThisWeek += countSum;
+
   } else {
     print('Request failed with status: ${response.statusCode}.');
   }
 
   // 저번주
   url =
-      'https://server2.mureung.com/infocarAdminPageAPI/sideproject/eventCount?userKey=1147&startDate=$lastweekday&endDate=$lastSundayDay&eventCode=EventCode02';
+  'https://server2.mureung.com/infocarAdminPageAPI/sideproject/eventCount?userKey=1147&startDate=$lastweekday&endDate=$lastSundayDay&eventCode=EventCode10';
+
   response = await http.get(
     Uri.parse(url),
     headers: {
@@ -683,10 +722,14 @@ void getrotationscore() async {
       date = date - 1;
     });
 
+    if(countSum > 0) {
+      isZeroEventCountForLastWeek = false;
+    }
+
     countEventForLastWeek
         .add(new CountEventForEvent(name: "급회전", count: countSum));
-    print(countEventForLastWeek);
-    print('급회전');
+    countAllEventForLastWeek += countSum;
+
   } else {
     print('Request failed with status: ${response.statusCode}.');
   }
@@ -716,7 +759,7 @@ void getidlescore() async {
 
   // 이번주
   String url =
-      'https://server2.mureung.com/infocarAdminPageAPI/sideproject/eventCount?userKey=1147&startDate=$thisMondayDay&endDate=$today&eventCode=EventCode02';
+      'https://server2.mureung.com/infocarAdminPageAPI/sideproject/eventCount?userKey=1147&startDate=$thisMondayDay&endDate=$today&eventCode=EventCode01';
   var response = await http.get(
     Uri.parse(url),
     headers: {
@@ -748,18 +791,23 @@ void getidlescore() async {
       date = date - 1;
     });
 
+    if(countSum > 0) {
+      isZeroEventCountForThisWeek = false;
+    }
+
     countEventForThisWeek
         .add(new CountEventForEvent(name: "공회전", count: countSum));
 
-    print('공회전');
-    print(countEventForLastWeek);
+    countAllEventForThisWeek += countSum;
+
   } else {
     print('Request failed with status: ${response.statusCode}.');
   }
 
   // 저번주
   url =
-      'https://server2.mureung.com/infocarAdminPageAPI/sideproject/eventCount?userKey=1147&startDate=$lastweekday&endDate=$lastSundayDay&eventCode=EventCode02';
+  'https://server2.mureung.com/infocarAdminPageAPI/sideproject/eventCount?userKey=1147&startDate=$lastweekday&endDate=$lastSundayDay&eventCode=EventCode01';
+
   response = await http.get(
     Uri.parse(url),
     headers: {
@@ -791,8 +839,13 @@ void getidlescore() async {
       date = date - 1;
     });
 
+    if(countSum > 0) {
+      isZeroEventCountForLastWeek = false;
+    }
+
     countEventForLastWeek
         .add(new CountEventForEvent(name: "공회전", count: countSum));
+    countAllEventForLastWeek += countSum;
 
     countAllEventForEachDay = new List.from(countAllEventForEachDay.reversed);
   } else {
