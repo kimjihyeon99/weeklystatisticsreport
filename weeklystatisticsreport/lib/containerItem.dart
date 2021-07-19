@@ -460,70 +460,125 @@ class drivingdistanceContainer implements containerItem {
                     fontSize: 27.0,
                     color: Colors.black)),
           ),
-          Row(
-            children: [
-              Column(
-                children: <Widget>[
-                  Image(
-                    //위치는 나중에 설정
-                    height: 70,
-                    width: 70,
-                    image: AssetImage('assets/car_img.png'),
-                  ),
-                  SizedBox(
-                    width: 200,
-                    child: ClipRRect(
-                      // The border radius (`borderRadius`) property, the border radius of the rounded corners.
-                      borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                      child: LinearProgressIndicator(
-                        minHeight: 20,
-                        value: drivingdistancelist_last == null
-                            ? 0
-                            : drivingdistancelist_last * 0.005,
-                        backgroundColor: Colors.white,
-                        valueColor:
-                            AlwaysStoppedAnimation<Color>(Color(0xffFF4964)),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Column(
+          Column(
+            children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Text("지난주",
-                      style: TextStyle(
-                        fontSize: 20,
-                      ),
-                      textAlign: TextAlign.center),
-                  SizedBox(
-                    width: 100,
-                    child: Text(
-                      "${drivingdistancelist_last == null ? 0 : drivingdistancelist_last.toInt()} km",
-                      style: TextStyle(
-                        fontSize: 20,
-                      ),
-                      textAlign: TextAlign.center,
+                  //box
+                  Container(
+                    width: 10,
+                    height: 5,
+                    decoration: BoxDecoration(
+                      color: Colors.grey,
+                      borderRadius: BorderRadius.all(Radius.circular(5.0)),
                     ),
-                  )
+                  ),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  //text
+                  Text("지난주")
                 ],
               ),
+              SizedBox(
+                height: 5,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  //box
+                  Container(
+                    width: 10,
+                    height: 5,
+                    decoration: BoxDecoration(
+                      color: Colors.yellow,
+                      borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  //text
+                  Text("이번주")
+                ],
+              )
             ],
           ),
-          Row(children: [
-            Column(
-              children: <Widget>[
-                Image(
-                  //위치는 나중에 설정
-                  height: 70,
-                  width: 70,
-                  image: AssetImage('assets/car_img.png'),
-                ),
-                SizedBox(
-                  width: 200,
-                  child: ClipRRect(
-                    // The border radius (`borderRadius`) property, the border radius of the rounded corners.
-                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                    child: LinearProgressIndicator(
+          SizedBox(
+            width: 300,
+            child: ClipRRect(
+                // The border radius (`borderRadius`) property, the border radius of the rounded corners.
+                borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                child: Column(
+                  children: [
+                    Align(
+                        alignment: Alignment.lerp(
+                            Alignment.topLeft,
+                            Alignment.topRight,
+                            drivingdistancelist_last == null
+                                ? 0
+                                : drivingdistancelist_last * 0.005),
+                        child: Column(
+                          children: [
+                            Text(
+                              "${drivingdistancelist_last == null ? 0 : drivingdistancelist_last.toInt()} km",
+                              style: TextStyle(
+                                fontSize: 15,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                            Image(
+                              //위치는 나중에 설정
+                              height: 40,
+                              width: 40,
+                              image: AssetImage('assets/car_img.png'),
+                            ),
+                          ],
+                        )),
+                    LinearProgressIndicator(
+                      minHeight: 20,
+                      value: drivingdistancelist_last == null
+                          ? 0
+                          : drivingdistancelist_last * 0.005,
+                      backgroundColor: Colors.white,
+                      valueColor: AlwaysStoppedAnimation<Color>(Colors.grey),
+                    ),
+                  ],
+                )),
+          ),
+          SizedBox(
+            width: 300,
+            child: ClipRRect(
+                // The border radius (`borderRadius`) property, the border radius of the rounded corners.
+                borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                child: Column(
+                  children: [
+                    Align(
+                        alignment: Alignment.lerp(
+                            Alignment.topLeft,
+                            Alignment.topRight,
+                            drivingdistancelist == null
+                                ? 0
+                                : drivingdistancelist * 0.005),
+                        child: Column(
+                          children: [
+                            Text(
+                              "${drivingdistancelist == null ? 0 : drivingdistancelist.toInt()} km",
+                              style: TextStyle(
+                                fontSize: 15,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                            Image(
+                              //위치는 나중에 설정
+                              height: 40,
+                              width: 40,
+                              image: AssetImage('assets/car_img.png'),
+                            ),
+                          ],
+                        )),
+                    LinearProgressIndicator(
                       minHeight: 20,
                       value: drivingdistancelist == null
                           ? 0
@@ -531,32 +586,12 @@ class drivingdistanceContainer implements containerItem {
                       backgroundColor: Colors.white,
                       valueColor: AlwaysStoppedAnimation<Color>(Colors.yellow),
                     ),
-                  ),
-                ),
-              ],
-            ),
-            Column(
-              children: [
-                Text("이번주",
-                    style: TextStyle(
-                      fontSize: 20,
-                    ),
-                    textAlign: TextAlign.center),
-                SizedBox(
-                  width: 100,
-                  child: Text(
-                    "${drivingdistancelist == null ? 0 : drivingdistancelist.toInt()} km",
-                    style: TextStyle(
-                      fontSize: 20,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                )
-              ],
-            )
-          ])
-          //주행거리 멘트 넣을 곳
-          ,
+                  ],
+                )),
+          ),
+          SizedBox(
+            height: 20,
+          ),
           Align(
               alignment: Alignment.center,
               //지난주 주행거리가 이번주 주행거리보다 클 경우
@@ -604,8 +639,8 @@ class spendingContainer implements containerItem {
                   fontWeight: FontWeight.bold,
                   fontSize: 23.0,
                   color: Colors.black)),
-          Text('차계부 구매 코드: ' + spendinglist[0].CBOOK_CODE),
-          Text('총 지출 금액: ' + spendinglist[0].PRICE.toString() + '원'),
+          // Text('차계부 구매 코드: ' + spendinglist[0].CBOOK_CODE),
+          // Text('총 지출 금액: ' + spendinglist[0].PRICE.toString() + '원'),
         ],
       ));
 
