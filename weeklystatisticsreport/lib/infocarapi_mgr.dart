@@ -127,7 +127,7 @@ void getsafyscore() async {
       }
     });
 
-    lastavg = sum / lastonecount;
+    lastavg = (sum / lastonecount);
     ecolastavg = ecosum / lastonecount;
 
 
@@ -219,6 +219,7 @@ void getdaliyfuel() async {
         date = date - 1;
         index = index + 1;
       }
+<<<<<<< Updated upstream
       //기존 데이터 넣기
       newjr.insert(index, x);
 
@@ -236,6 +237,40 @@ void getdaliyfuel() async {
       String mydateday = formatter.format(mydate);
       newjr.insert(
           i, new Getdaliyfuel(DrvFuelUsement: 0, Date: mydateday));
+=======
+      //거꾸로 들어온 데이터 뒤집기
+      daliyfuellist = new List.from(newjr.reversed);
+
+      double feulsum = 0;
+      int lastonecount = 0;
+      //지난주 연비평균 계산, 지난주 평균 계산
+      daliyfuellist.getRange(0, 7).toList().forEach((element) {
+        if (element.DrvFuelUsement == 0) {
+          lastweekcnt = lastweekcnt + 1;
+        } else {
+          feulsum = feulsum + element.DrvFuelUsement;
+          //경제 점수 평균
+          lastonecount = lastonecount + 1;
+        }
+      });
+
+      fuellastavg = feulsum / lastonecount;
+
+      //이번주 평균 계산
+      feulsum = 0;
+      int onecount = 0;
+      daliyfuellist.getRange(7, 14).toList().forEach((element) {
+        if (element.DrvFuelUsement != 0) {
+          feulsum = feulsum + element.DrvFuelUsement;
+          // 연비점수 평균
+          onecount = onecount + 1;
+        }
+      });
+      fuelthisavg = feulsum / lastonecount;
+
+    } else {
+      //빈 파일 처리
+>>>>>>> Stashed changes
     }
     //거꾸로 들어온 데이터 뒤집기
     daliyfuellist = new List.from(newjr.reversed);
