@@ -49,6 +49,7 @@ class Getdrivingdistance {
     return Getdrivingdistance(
       RecDrvDisSum:
       json['RecDrvDisSum'].isNaN ? 0.0 : json['RecDrvDisSum'] as double,
+
     );
   }
 }
@@ -79,6 +80,7 @@ class CountEventForEvent {
     this.count,
   });
 }
+
 class GetSpending {
   String name;
   double cost;
