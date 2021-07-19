@@ -69,8 +69,6 @@ int firstcountactivate() {
   return count;
 }
 
-
-
 class statisticview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -93,7 +91,6 @@ class statisticviewPage extends StatefulWidget {
 }
 
 class statistic_viewPage extends State<statisticviewPage> {
-
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
