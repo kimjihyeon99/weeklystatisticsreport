@@ -16,6 +16,8 @@ double drivingdistancelist_last = 0; //이전주 주행 거리 리스트
 List<GetDrivingwarningscore> countAllEventForEachDay = [];
 List<CountEventForEvent> countEventForLastWeek = [];
 List<CountEventForEvent> countEventForThisWeek = [];
+int countAllEventForLastWeek = 0;
+int countAllEventForThisWeek = 0;
 List spendinglist = []; //지출 내역 리스트
 
 //안전 점수 : 지난주와  비교하는 코멘트
@@ -64,7 +66,6 @@ List ecoment2 = [
   "\n경제운전으로 기름값 아끼고\n치킨 한마리 더!🍗"
 ];
 
-
 //주행거리 멘트
 //지난주 > 이번주
 List drvment = [
@@ -87,12 +88,15 @@ double ecolastavg = 0;
 double fuelthisavg = 0;
 double fuellastavg = 0;
 
+bool isZeroEventCountForLastWeek = true;
+bool isZeroEventCountForThisWeek = true;
+
 final int mentrandom = Random().nextInt(3);
 final int ecomentrandom = Random().nextInt(3);
 final int drvmentrandom = Random().nextInt(3);
+
 //각자의 container 생성을 위한것
 abstract class containerItem {}
-
 
 class saftyscoreContainer implements containerItem {
 
@@ -200,7 +204,7 @@ class saftyscoreContainer implements containerItem {
                           textAlign: TextAlign.center)),
         ],
       ));
-  
+
   saftyscoreContainer();
 }
 
@@ -349,20 +353,21 @@ class drivingwarningscoreContainer implements containerItem {
               ColumnSeries<GetDrivingwarningscore, String>(
                   name: "지난주",
                   dataSource: countAllEventForEachDay.getRange(0, 7).toList(),
-                  xValueMapper: (GetDrivingwarningscore gf, _) => DateFormat('EEE')
-                      .format(new DateTime(
-                      int.parse(gf.Date.split("-")[0]),
-                      int.parse(gf.Date.split("-")[1]),
-                      int.parse(gf.Date.split("-")[2]))),
-                  yValueMapper: (GetDrivingwarningscore gf, _) => gf.countEvent),
+                  xValueMapper: (GetDrivingwarningscore gf, _) =>
+                      DateFormat('EEE').format(new DateTime(
+                          int.parse(gf.Date.split("-")[0]),
+                          int.parse(gf.Date.split("-")[1]),
+                          int.parse(gf.Date.split("-")[2]))),
+                  yValueMapper: (GetDrivingwarningscore gf, _) =>
+                      gf.countEvent),
               ColumnSeries<GetDrivingwarningscore, String>(
                   name: "이번주",
                   dataSource: countAllEventForEachDay.getRange(7, 14).toList(),
-                  xValueMapper: (GetDrivingwarningscore gf, _) => DateFormat('EEE')
-                      .format(new DateTime(
-                      int.parse(gf.Date.split("-")[0]),
-                      int.parse(gf.Date.split("-")[1]),
-                      int.parse(gf.Date.split("-")[2]))),
+                  xValueMapper: (GetDrivingwarningscore gf, _) =>
+                      DateFormat('EEE').format(new DateTime(
+                          int.parse(gf.Date.split("-")[0]),
+                          int.parse(gf.Date.split("-")[1]),
+                          int.parse(gf.Date.split("-")[2]))),
                   yValueMapper: (GetDrivingwarningscore gf, _) => gf.countEvent)
             ],
             primaryXAxis: CategoryAxis(),
@@ -390,30 +395,180 @@ class drivingwarningscoreContainer implements containerItem {
           //         : Text(ment.getRange(3, 6).toList()[mentrandom],
           //         style: TextStyle(fontSize: 18.0, color: Colors.black),
           //         textAlign: TextAlign.center)),
-          SfCircularChart(
-            legend: Legend(isVisible: true, position: LegendPosition.top),
-            tooltipBehavior: TooltipBehavior(enable: true),
-            series: <CircularSeries>[
-              DoughnutSeries<CountEventForEvent, String>(
-
-                  name: "지난주",
-                  dataSource: countEventForLastWeek,
-                  xValueMapper: (CountEventForEvent ce, _) => ce.name,
-                  yValueMapper: (CountEventForEvent ce, _) => ce.count
-              ),
-
-              DoughnutSeries<CountEventForEvent, String>(
-                  name: "이번주",
-                  dataSource: countEventForThisWeek,
-                  xValueMapper: (CountEventForEvent ce, _) => ce.name,
-                  yValueMapper: (CountEventForEvent ce, _) => ce.count,
-                  dataLabelSettings: DataLabelSettings(isVisible:true,
-                      labelPosition: ChartDataLabelPosition.outside,
-                      labelIntersectAction: LabelIntersectAction.none),
-
-              ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Row(children: [
+                Container(
+                  width: 10,
+                  height: 5,
+                  decoration: BoxDecoration(
+                    color: Color(0xff4A86B8),
+                    borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                  ),
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                //text
+                Text("급감속"),
+              ]),
+              Row(children: [
+                Container(
+                  width: 10,
+                  height: 5,
+                  decoration: BoxDecoration(
+                    color: Color(0xffC06C84),
+                    borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                  ),
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                //text
+                Text("급가속")
+              ]),
+              Row(children: [
+                Container(
+                  width: 10,
+                  height: 5,
+                  decoration: BoxDecoration(
+                    color: Color(0xffF67280),
+                    borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                  ),
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                //text
+                Text("급회전"),
+              ]),
+              Row(children: [
+                Container(
+                  width: 10,
+                  height: 5,
+                  decoration: BoxDecoration(
+                    color: Color(0xffF8B094),
+                    borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                  ),
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                //text
+                Text("공회전"),
+              ]),
             ],
           ),
+          Row(
+            children: [
+              isZeroEventCountForLastWeek
+                  ? Container(
+                      child: Text('지난주에 이벤트가\n아예 일어나지 않았네요.'),
+                    )
+                  : Column(
+                      children: [
+                        Container(
+                          width: 170,
+                          height: 170,
+                          child: Stack(children: <Widget>[
+                            SfCircularChart(
+                              tooltipBehavior: TooltipBehavior(enable: true),
+                              series: <CircularSeries>[
+                                DoughnutSeries<CountEventForEvent, String>(
+                                    dataLabelSettings: DataLabelSettings(
+                                        isVisible: true,
+                                        labelPosition:
+                                            ChartDataLabelPosition.outside,
+                                        labelIntersectAction:
+                                            LabelIntersectAction.none),
+                                    name: "지난주",
+                                    dataSource: countEventForLastWeek,
+                                    xValueMapper: (CountEventForEvent ce, _) =>
+                                        ce.name,
+                                    yValueMapper: (CountEventForEvent ce, _) =>
+                                        ce.count),
+                              ],
+                            ),
+                            Center(
+                              child: Text(
+                                countAllEventForLastWeek.toString() + '회',
+                                style: TextStyle(
+                                    fontSize: 15.0,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            )
+                          ]),
+                        ),
+                        Text(
+                          '지난주',
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        )
+                      ],
+                    ),
+              isZeroEventCountForThisWeek
+                  ? Container(
+                      child: Text('이번주에 이벤트가\n아예 일어나지 않았네요.'),
+                    )
+                  : Column(
+                      children: [
+                        Container(
+                          width: 170,
+                          height: 170,
+                          child: Stack(children: <Widget>[SfCircularChart(
+                            legend: Legend(
+                              isVisible: false,
+                              position: LegendPosition.bottom,
+                              title: LegendTitle(
+                                  text: '이번주',
+                                  textStyle: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w900)),
+                            ),
+                            tooltipBehavior: TooltipBehavior(enable: true),
+                            series: <CircularSeries>[
+                              DoughnutSeries<CountEventForEvent, String>(
+                                  dataLabelSettings: DataLabelSettings(
+                                      isVisible: true,
+                                      labelPosition:
+                                          ChartDataLabelPosition.outside,
+                                      labelIntersectAction:
+                                          LabelIntersectAction.none),
+                                  name: "이번주",
+                                  dataSource: countEventForThisWeek,
+                                  xValueMapper: (CountEventForEvent ce, _) =>
+                                      ce.name,
+                                  yValueMapper: (CountEventForEvent ce, _) =>
+                                      ce.count),
+                            ],
+                          ),
+                            Center(
+                              child: Text(
+                                countAllEventForThisWeek.toString() + '회',
+                                style: TextStyle(
+                                    fontSize: 15.0,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            )
+                          ]
+                          ),
+                        ),
+                        Text(
+                          '이번주',
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        )
+                      ],
+                    )
+            ],
+          )
         ],
       ));
 
@@ -459,18 +614,18 @@ class daliyfuelContainer implements containerItem {
                   dataSource: daliyfuellist.getRange(0, 7).toList(),
                   xValueMapper: (Getdaliyfuel gf, _) => DateFormat('EEE')
                       .format(new DateTime(
-                      int.parse(gf.Date.split("-")[0]),
-                      int.parse(gf.Date.split("-")[1]),
-                      int.parse(gf.Date.split("-")[2]))),
+                          int.parse(gf.Date.split("-")[0]),
+                          int.parse(gf.Date.split("-")[1]),
+                          int.parse(gf.Date.split("-")[2]))),
                   yValueMapper: (Getdaliyfuel gf, _) => gf.DrvFuelUsement),
               LineSeries<Getdaliyfuel, String>(
                   name: "이번주",
                   dataSource: daliyfuellist.getRange(7, 14).toList(),
                   xValueMapper: (Getdaliyfuel gf, _) => DateFormat('EEE')
                       .format(new DateTime(
-                      int.parse(gf.Date.split("-")[0]),
-                      int.parse(gf.Date.split("-")[1]),
-                      int.parse(gf.Date.split("-")[2]))),
+                          int.parse(gf.Date.split("-")[0]),
+                          int.parse(gf.Date.split("-")[1]),
+                          int.parse(gf.Date.split("-")[2]))),
                   yValueMapper: (Getdaliyfuel gf, _) => gf.DrvFuelUsement)
             ],
             primaryXAxis: CategoryAxis(),
@@ -497,13 +652,12 @@ class daliyfuelContainer implements containerItem {
             ),
           ),
         ],
-      )
-  );
+      ));
+
   daliyfuelContainer();
 }
 
 class drivingdistanceContainer implements containerItem {
-
   final Container mycon = new Container(
       margin: EdgeInsets.symmetric(vertical: 10.0),
       padding: EdgeInsets.all(15),
@@ -533,111 +687,154 @@ class drivingdistanceContainer implements containerItem {
                     fontSize: 27.0,
                     color: Colors.black)),
           ),
-          Row(
-            children: [
-              Column (
-                children: <Widget>[
-                  Image(
-                    //위치는 나중에 설정
-                    height: 70,
-                    width: 70,
-                    image: AssetImage('assets/car_img.png'),
-                  ),
-                  SizedBox(width: 200,
-                    child:ClipRRect(
-                      // The border radius (`borderRadius`) property, the border radius of the rounded corners.
-                      borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                      child: LinearProgressIndicator(
-                        minHeight: 20,
-                        value: drivingdistancelist_last==null ? 0 : drivingdistancelist_last*0.005,
-                        backgroundColor: Colors.white,
-                        valueColor: AlwaysStoppedAnimation<Color>(Color(0xffFF4964)),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Column (
+          Column(
+            children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Text("지난주",
-                    style: TextStyle(
-                      fontSize: 20,
-                    ),textAlign: TextAlign.center
-                  ),
-                  SizedBox(width: 100,
-                  child: Text (
-                    "${drivingdistancelist_last==null ? 0 : drivingdistancelist_last.toInt()} km",
-                    style: TextStyle(
-                      fontSize: 20,
-                    ),textAlign: TextAlign.center,
-                  ),
-                  )
-                ],
-              ),
-              
-            ],
-          ),
-          Row(
-            children: [
-              Column (
-                children: <Widget>[
-                  Image(
-                    //위치는 나중에 설정
-                    height: 70,
-                    width: 70,
-                    image: AssetImage('assets/car_img.png'),
-                  ),
-                  SizedBox(width: 200,
-                    child:
-                    ClipRRect(
-                      // The border radius (`borderRadius`) property, the border radius of the rounded corners.
-                      borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                      child: LinearProgressIndicator(
-                        minHeight: 20,
-                        value:  drivingdistancelist==null ? 0 : drivingdistancelist*0.005,
-                        backgroundColor: Colors.white,
-                        valueColor: AlwaysStoppedAnimation<Color>(Colors.yellow),
-                      ),
+                  //box
+                  Container(
+                    width: 10,
+                    height: 5,
+                    decoration: BoxDecoration(
+                      color: Colors.grey,
+                      borderRadius: BorderRadius.all(Radius.circular(5.0)),
                     ),
-
                   ),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  //text
+                  Text("지난주")
                 ],
               ),
-              Column (
+              SizedBox(
+                height: 5,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Text("이번주",
-                      style: TextStyle(
-                        fontSize: 20,
-                      ),textAlign: TextAlign.center
-                  ),
-                  SizedBox(width: 100,
-                    child: Text (
-                      "${drivingdistancelist==null ? 0 : drivingdistancelist.toInt()} km",
-                      style: TextStyle(
-                        fontSize: 20,
-                      ),textAlign: TextAlign.center,
+                  //box
+                  Container(
+                    width: 10,
+                    height: 5,
+                    decoration: BoxDecoration(
+                      color: Colors.yellow,
+                      borderRadius: BorderRadius.all(Radius.circular(5.0)),
                     ),
-                  )
+                  ),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  //text
+                  Text("이번주")
                 ],
               )
-            ]
-          )
-      //주행거리 멘트 넣을 곳
-          ,Align(
+            ],
+          ),
+          SizedBox(
+            width: 300,
+            child: ClipRRect(
+                // The border radius (`borderRadius`) property, the border radius of the rounded corners.
+                borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                child: Column(
+                  children: [
+                    Align(
+                        alignment: Alignment.lerp(
+                            Alignment.topLeft,
+                            Alignment.topRight,
+                            drivingdistancelist_last == null
+                                ? 0
+                                : drivingdistancelist_last * 0.005),
+                        child: Column(
+                          children: [
+                            Text(
+                              "${drivingdistancelist_last == null ? 0 : drivingdistancelist_last.toInt()} km",
+                              style: TextStyle(
+                                fontSize: 15,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                            Image(
+                              //위치는 나중에 설정
+                              height: 40,
+                              width: 40,
+                              image: AssetImage('assets/car_img.png'),
+                            ),
+                          ],
+                        )),
+                    LinearProgressIndicator(
+                      minHeight: 20,
+                      value: drivingdistancelist_last == null
+                          ? 0
+                          : drivingdistancelist_last * 0.005,
+                      backgroundColor: Colors.white,
+                      valueColor: AlwaysStoppedAnimation<Color>(Colors.grey),
+                    ),
+                  ],
+                )),
+          ),
+          SizedBox(
+            width: 300,
+            child: ClipRRect(
+                // The border radius (`borderRadius`) property, the border radius of the rounded corners.
+                borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                child: Column(
+                  children: [
+                    Align(
+                        alignment: Alignment.lerp(
+                            Alignment.topLeft,
+                            Alignment.topRight,
+                            drivingdistancelist == null
+                                ? 0
+                                : drivingdistancelist * 0.005),
+                        child: Column(
+                          children: [
+                            Text(
+                              "${drivingdistancelist == null ? 0 : drivingdistancelist.toInt()} km",
+                              style: TextStyle(
+                                fontSize: 15,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                            Image(
+                              //위치는 나중에 설정
+                              height: 40,
+                              width: 40,
+                              image: AssetImage('assets/car_img.png'),
+                            ),
+                          ],
+                        )),
+                    LinearProgressIndicator(
+                      minHeight: 20,
+                      value: drivingdistancelist == null
+                          ? 0
+                          : drivingdistancelist * 0.005,
+                      backgroundColor: Colors.white,
+                      valueColor: AlwaysStoppedAnimation<Color>(Colors.yellow),
+                    ),
+                  ],
+                )),
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Align(
               alignment: Alignment.center,
               //지난주 주행거리가 이번주 주행거리보다 클 경우
-              child: ((drivingdistancelist_last==null ? 0: drivingdistancelist_last) >
-                            (drivingdistancelist==null ? 0: drivingdistancelist)  ) ?
-              Text(
-                  drvment.getRange(0, 3).toList()[drvmentrandom],
-                  style: TextStyle(fontSize: 18.0, color: Colors.black),
-                  textAlign: TextAlign.center)
-                  :
-              Text(drvment.getRange(3, 6).toList()[drvmentrandom],
-                  style: TextStyle(fontSize: 18.0, color: Colors.black),
-                  textAlign: TextAlign.center)),
+              child: ((drivingdistancelist_last == null
+                          ? 0
+                          : drivingdistancelist_last) >
+                      (drivingdistancelist == null ? 0 : drivingdistancelist))
+                  ? Text(drvment.getRange(0, 3).toList()[drvmentrandom],
+                      style: TextStyle(fontSize: 18.0, color: Colors.black),
+                      textAlign: TextAlign.center)
+                  : Text(drvment.getRange(3, 6).toList()[drvmentrandom],
+                      style: TextStyle(fontSize: 18.0, color: Colors.black),
+                      textAlign: TextAlign.center)),
         ],
       ));
+
   drivingdistanceContainer();
 }
 
@@ -669,8 +866,9 @@ class spendingContainer implements containerItem {
                   fontWeight: FontWeight.bold,
                   fontSize: 23.0,
                   color: Colors.black)),
-          Text('차계부 구매 코드: ' + spendinglist[0].CBOOK_CODE),
-          Text('총 지출 금액: ' + spendinglist[0].PRICE.toString() + '원'),
+
+          //Text('차계부 구매 코드: ' + spendinglist[0].CBOOK_CODE),
+          //Text('총 지출 금액: ' + spendinglist[0].PRICE.toString() + '원'),
         ],
       ));
 

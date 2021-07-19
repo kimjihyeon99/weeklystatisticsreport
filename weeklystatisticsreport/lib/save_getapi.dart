@@ -47,7 +47,8 @@ class Getdrivingdistance {
 
   factory Getdrivingdistance.fromJson(Map<String, dynamic> json) {
     return Getdrivingdistance(
-      RecDrvDisSum: json['RecDrvDisSum'].isNaN ? 0.0 : json['RecDrvDisSum'] as double,
+      RecDrvDisSum:
+          json['RecDrvDisSum'].isNaN ? 0.0 : json['RecDrvDisSum'] as double,
     );
   }
 }
@@ -78,8 +79,6 @@ class CountEventForEvent {
     this.count,
   });
 }
-
-
 
 class GetSpending {
   double PRICE;

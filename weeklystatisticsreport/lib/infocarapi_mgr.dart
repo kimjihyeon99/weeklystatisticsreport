@@ -5,13 +5,26 @@ import 'containerItem.dart';
 import 'save_getapi.dart';
 import 'package:intl/intl.dart';
 
+//날짜 선언
+final DateTime originnow = DateTime.now();
+Map yoil = {
+  "Mon": 1,
+  "Tue": 2,
+  "Wed": 3,
+  "Thu": 4,
+  "Fri": 5,
+  "Sat": 6,
+  "Sun": 7
+};
+String todayyoil = DateFormat('EEE').format(originnow);
+int numyoil = yoil[todayyoil];
 //infocar api 서버와 연결
 
 Future<String> getallapi() async {
   await getsafyscore();
   await getdaliyfuel();
-  await getdrivingdistance();//이번주
-  await getdrivingdistance_last();//지난주
+  await getdrivingdistance(); //이번주
+  await getdrivingdistance_last(); //지난주
   await getdecelerationscore();
   await getaccelerationscore();
   await getrotationscore();
@@ -23,22 +36,6 @@ Future<String> getallapi() async {
 
 //// 안전운전, 경제운전 점수 기능 api
 void getsafyscore() async {
-  print("안전운전 경제운전 점수");
-  final DateTime originnow = DateTime.now();
-  Map yoil = {
-    "Mon": 1,
-    "Tue": 2,
-    "Wed": 3,
-    "Thu": 4,
-    "Fri": 5,
-    "Sat": 6,
-    "Sun": 7
-  };
-
-  String todayyoil = DateFormat('EEE').format(originnow);
-
-  int numyoil = yoil[todayyoil];
-
   //현재 날짜와 지난주 날짜 가져오기
   final DateTime now =
       new DateTime(originnow.year, originnow.month, originnow.day - numyoil);
@@ -74,7 +71,8 @@ void getsafyscore() async {
 
     int index = 0;
 
-    DateTime lastday= new DateTime(now.year, now.month, now.day  + 1); //다 돌아간 날짜를 체크하기 위함
+    DateTime lastday =
+        new DateTime(now.year, now.month, now.day + 1); //다 돌아간 날짜를 체크하기 위함
     jr.forEach((x) {
       int day = int.parse(x.Date.split("-")[2]);
       while (date != day) {
@@ -130,7 +128,6 @@ void getsafyscore() async {
     lastavg = (sum / lastonecount);
     ecolastavg = ecosum / lastonecount;
 
-
     //이번주 평균 계산
     sum = 0;
     ecosum = 0;
@@ -155,25 +152,9 @@ void getsafyscore() async {
 
 // 연비 점수 api
 void getdaliyfuel() async {
-  print("연비점수");
-  final DateTime originnow = DateTime.now();
-  Map yoil = {
-    "Mon": 1,
-    "Tue": 2,
-    "Wed": 3,
-    "Thu": 4,
-    "Fri": 5,
-    "Sat": 6,
-    "Sun": 7
-  };
-
-  String todayyoil = DateFormat('EEE').format(originnow);
-
-  int numyoil = yoil[todayyoil];
-
   //현재 날짜와 지난주 날짜 가져오기
   final DateTime now =
-  new DateTime(originnow.year, originnow.month, originnow.day - numyoil);
+      new DateTime(originnow.year, originnow.month, originnow.day - numyoil);
   final DateTime lastweek = new DateTime(
       originnow.year, originnow.month, originnow.day - 13 - numyoil);
 
@@ -195,40 +176,40 @@ void getdaliyfuel() async {
     },
   );
   if (response.statusCode == 200) {
-    var jsonResponse = convert.jsonDecode(response.body);
-    var jr = jsonResponse['response']['body']['items'];
-    jr = jr.cast<Map<String, dynamic>>();
-    jr = jr.map<Getdaliyfuel>((json) => Getdaliyfuel.fromJson(json)).toList();
+    if (response.body.isNotEmpty) {
+      var jsonResponse = convert.jsonDecode(response.body);
+      var jr = jsonResponse['response']['body']['items'];
+      jr = jr.cast<Map<String, dynamic>>();
+      jr = jr.map<Getdaliyfuel>((json) => Getdaliyfuel.fromJson(json)).toList();
 
-    daliyfuellist = jr;
+      daliyfuellist = jr;
 
-    List<Getdaliyfuel> newjr = []; //json 받아왔을 때 비어있는 데이터 처리를 위한 리스트
+      List<Getdaliyfuel> newjr = []; //json 받아왔을 때 비어있는 데이터 처리를 위한 리스트
 
-    int index = 0;
+      int index = 0;
 
-    DateTime lastday; //다 돌아간 날짜를 체크하기 위함
-    jr.forEach((x) {
-      int day = int.parse(x.Date.split("-")[2]);
-      while (date != day) {
-        DateTime mydate = new DateTime(now.year, now.month, now.day - index);
-        lastday = mydate;
-        String mydateday = formatter.format(mydate);
-        //비어있는 데이터 넣기
-        newjr.insert(
-            index, new Getdaliyfuel(DrvFuelUsement: 0,  Date: mydateday));
+      DateTime lastday; //다 돌아간 날짜를 체크하기 위함
+      jr.forEach((x) {
+        int day = int.parse(x.Date.split("-")[2]);
+        while (date != day) {
+          DateTime mydate = new DateTime(now.year, now.month, now.day - index);
+          lastday = mydate;
+          String mydateday = formatter.format(mydate);
+          //비어있는 데이터 넣기
+          newjr.insert(
+              index, new Getdaliyfuel(DrvFuelUsement: 0, Date: mydateday));
+          date = date - 1;
+          index = index + 1;
+        }
+        //기존 데이터 넣기
+        newjr.insert(index, x);
+
         date = date - 1;
         index = index + 1;
-      }
-<<<<<<< Updated upstream
-      //기존 데이터 넣기
-      newjr.insert(index, x);
 
-      date = date - 1;
-      index = index + 1;
-    });
-
-    //마지막 날짜와 원하는 날짜까지의 차이
-    int countday = lastday.difference(lastweek).inDays - 1;
+      });
+      //마지막 날짜와 원하는 날짜까지의 차이
+      int countday = lastday.difference(lastweek).inDays - 1;
 
     int len = newjr.length;
     //만약에 들어있는 데이터가 마지막 날짜가 아니라면, 나머지 데이터 모두 0으로 채우기
@@ -237,19 +218,17 @@ void getdaliyfuel() async {
       String mydateday = formatter.format(mydate);
       newjr.insert(
           i, new Getdaliyfuel(DrvFuelUsement: 0, Date: mydateday));
-=======
       //거꾸로 들어온 데이터 뒤집기
       daliyfuellist = new List.from(newjr.reversed);
 
       double feulsum = 0;
       int lastonecount = 0;
-      //지난주 연비평균 계산, 지난주 평균 계산
+      //지난주 연비평균 계산
       daliyfuellist.getRange(0, 7).toList().forEach((element) {
         if (element.DrvFuelUsement == 0) {
           lastweekcnt = lastweekcnt + 1;
         } else {
           feulsum = feulsum + element.DrvFuelUsement;
-          //경제 점수 평균
           lastonecount = lastonecount + 1;
         }
       });
@@ -262,7 +241,6 @@ void getdaliyfuel() async {
       daliyfuellist.getRange(7, 14).toList().forEach((element) {
         if (element.DrvFuelUsement != 0) {
           feulsum = feulsum + element.DrvFuelUsement;
-          // 연비점수 평균
           onecount = onecount + 1;
         }
       });
@@ -270,10 +248,7 @@ void getdaliyfuel() async {
 
     } else {
       //빈 파일 처리
->>>>>>> Stashed changes
     }
-    //거꾸로 들어온 데이터 뒤집기
-    daliyfuellist = new List.from(newjr.reversed);
   } else {
     print('Request failed with status: ${response.statusCode}.');
   }
@@ -281,26 +256,11 @@ void getdaliyfuel() async {
 
 //지난주 주행거리 합 api
 void getdrivingdistance_last() async {
-  print("지난주 주행");
-  final DateTime originnow = DateTime.now();
-  Map yoil = {
-    "Mon": 1,
-    "Tue": 2,
-    "Wed": 3,
-    "Thu": 4,
-    "Fri": 5,
-    "Sat": 6,
-    "Sun": 7
-  };
-
-  String todayyoil = DateFormat('EEE').format(originnow);
-  int numyoil = yoil[todayyoil];
-
   //현재 날짜와 지난주 날짜 가져오기
-  final DateTime now =
-  new DateTime(originnow.year, originnow.month, originnow.day -7 -numyoil);
+  final DateTime now = new DateTime(
+      originnow.year, originnow.month, originnow.day - 7 - numyoil);
   final DateTime lastweek = new DateTime(
-      originnow.year, originnow.month, originnow.day -13 -numyoil);
+      originnow.year, originnow.month, originnow.day - 13 - numyoil);
 
   final DateFormat formatter = DateFormat('yyyy-MM-dd'); // string으로 바꾸기 위함
 
@@ -319,47 +279,39 @@ void getdrivingdistance_last() async {
   );
 
   if (response.statusCode == 200) {
-    var jsonResponse = convert.jsonDecode(response.body);
-    var jr = jsonResponse['response']['body']['items'];
+    if (response.body.isNotEmpty) {
+      //데이터가 있는 경우
+      var jsonResponse = convert.jsonDecode(response.body);
+      var jr = jsonResponse['response']['body']['items'];
 
-    // 전처리
-    List tempjr = [];
-    tempjr.add(jr);
-    jr = tempjr;
+      // 전처리
+      List tempjr = [];
+      tempjr.add(jr);
+      jr = tempjr;
 
-    jr = jr.cast<Map<String, dynamic>>();
-    jr = jr
-        .map<Getdrivingdistance>((json) => Getdrivingdistance.fromJson(json))
-        .toList();
+      jr = jr.cast<Map<String, dynamic>>();
+      jr = jr
+          .map<Getdrivingdistance>((json) => Getdrivingdistance.fromJson(json))
+          .toList();
 
-    drivingdistancelist_last = jr[0].RecDrvDisSum ;
-  } else {//불러오기 실패!
+      drivingdistancelist_last = jr[0].RecDrvDisSum;
+    } else {
+      //데이터가 없는 경우
+      drivingdistancelist_last = 0;
+    }
+  } else {
+    //불러오기 실패!
     print('Request failed with status: ${response.statusCode}.');
   }
 }
 
 //이번주 주행거리 합
 void getdrivingdistance() async {
-  print("이번주");
-  final DateTime originnow = DateTime.now();
-  Map yoil = {
-    "Mon": 1,
-    "Tue": 2,
-    "Wed": 3,
-    "Thu": 4,
-    "Fri": 5,
-    "Sat": 6,
-    "Sun": 7
-  };
-
-  String todayyoil = DateFormat('EEE').format(originnow);
-  int numyoil = yoil[todayyoil];
-
   //현재 날짜와 지난주 날짜 가져오기
   final DateTime now =
-  new DateTime(originnow.year, originnow.month, originnow.day -numyoil);
+      new DateTime(originnow.year, originnow.month, originnow.day - numyoil);
   final DateTime lastweek = new DateTime(
-      originnow.year, originnow.month, originnow.day -6 -numyoil);
+      originnow.year, originnow.month, originnow.day - 6 - numyoil);
 
   final DateFormat formatter = DateFormat('yyyy-MM-dd'); // string으로 바꾸기 위함
 
@@ -373,54 +325,48 @@ void getdrivingdistance() async {
     Uri.parse(url),
     headers: {
       "F_TOKEN":
-      "D5CFB732E7BA8E56356AA766B61EEF32F5F1BCA6F554FB0A9432D285A7E012A3"
+          "D5CFB732E7BA8E56356AA766B61EEF32F5F1BCA6F554FB0A9432D285A7E012A3"
     },
   );
 
   if (response.statusCode == 200) {
-    var jsonResponse = convert.jsonDecode(response.body);
-    var jr = jsonResponse['response']['body']['items'];
+    if (response.body.isNotEmpty) {
+      var jsonResponse = convert.jsonDecode(response.body);
+      var jr = jsonResponse['response']['body']['items'];
 
-    // 전처리
-    List tempjr = [];
-    tempjr.add(jr);
-    jr = tempjr;
+      // 전처리
+      List tempjr = [];
+      tempjr.add(jr);
+      jr = tempjr;
 
-    jr = jr.cast<Map<String, dynamic>>();
-    jr = jr
-        .map<Getdrivingdistance>((json) => Getdrivingdistance.fromJson(json))
-        .toList();
+      jr = jr.cast<Map<String, dynamic>>();
+      jr = jr
+          .map<Getdrivingdistance>((json) => Getdrivingdistance.fromJson(json))
+          .toList();
 
-    drivingdistancelist = jr[0].RecDrvDisSum ;
-  } else {//불러오기 실패!
+      drivingdistancelist = jr[0].RecDrvDisSum;
+    } else {
+      drivingdistancelist = 0;
+    }
+  } else {
     print('Request failed with status: ${response.statusCode}.');
   }
 }
-
 
 ////위험 운전행동 발생 횟수 기능 api
 
 //급감속 api
 void getdecelerationscore() async {
-  print("급감속");
-  final DateTime originnow = DateTime.now();
-
-  Map yoil = {
-    "Mon": 1,
-    "Tue": 2,
-    "Wed": 3,
-    "Thu": 4,
-    "Fri": 5,
-    "Sat": 6,
-    "Sun": 7
-  };
-
-  String todayyoil = DateFormat('EEE').format(originnow);
-  int numyoil = yoil[todayyoil];
+  
+  // 초기화
+  countAllEventForLastWeek = 0;
+  countAllEventForThisWeek = 0;
+  countAllEventForEachDay = [];
+  countEventForLastWeek = [];
+  countEventForThisWeek = [];
 
   //현재 날짜와 지난주 날짜 가져오기
   final DateTime now =
-
       new DateTime(originnow.year, originnow.month, originnow.day - numyoil);
   final DateTime lastSunday = new DateTime(
       originnow.year, originnow.month, originnow.day - numyoil - 7);
@@ -461,10 +407,9 @@ void getdecelerationscore() async {
             (json) => GetDrivingwarningscore.fromJson(json))
         .toList();
 
-
     int index = 0;
     int countSum = 0;
-    DateTime lastday = new DateTime(now.year, now.month, now.day  + 1);
+    DateTime lastday = new DateTime(now.year, now.month, now.day + 1);
 
     jr.forEach((x) {
       countSum += x.countEvent; // 해당 날짜에 일어난 급감속 총 횟수 계산
@@ -492,8 +437,13 @@ void getdecelerationscore() async {
     });
 
 
+    if(countSum > 0) {
+      isZeroEventCountForThisWeek = false;
+    }
+
     countEventForThisWeek
         .add(new CountEventForEvent(name: "급감속", count: countSum));
+    countAllEventForThisWeek += countSum;
 
     int countday = lastday.difference(thisMonday).inDays;
 
@@ -506,7 +456,6 @@ void getdecelerationscore() async {
       countAllEventForEachDay.insert(
           i, new GetDrivingwarningscore(countEvent: 0, Date: mydateday));
     }
-
   } else {
     print('Request failed with status: ${response.statusCode}.');
   }
@@ -535,7 +484,6 @@ void getdecelerationscore() async {
     int countSum = 0;
     DateTime lastday = new DateTime(now.year, now.month, now.day - index + 1);
     jr.forEach((x) {
-
       countSum += x.countEvent; // 해당 날짜에 일어난 급감속 총 횟수 계산
       int day = int.parse(x.Date.split("-")[2]);
       while (date != day) {
@@ -548,8 +496,6 @@ void getdecelerationscore() async {
             index, new GetDrivingwarningscore(countEvent: 0, Date: mydateday));
         date = date - 1;
         index = index + 1;
-
-
       }
       lastday = DateFormat('yyyy-MM-dd').parse(x.Date);
       countAllEventForEachDay.insert(index, x);
@@ -569,32 +515,23 @@ void getdecelerationscore() async {
           i, new GetDrivingwarningscore(countEvent: 0, Date: mydateday));
     }
 
+    if(countSum > 0) {
+      isZeroEventCountForLastWeek = false;
+    }
+
     countEventForLastWeek
         .add(new CountEventForEvent(name: "급감속", count: countSum));
+
+    countAllEventForLastWeek += countSum;
 
 
   } else {
     print('Request failed with status: ${response.statusCode}.');
   }
-
 }
 
 //급가속 api
 void getaccelerationscore() async {
-  final DateTime originnow = DateTime.now();
-
-  Map yoil = {
-    "Mon": 1,
-    "Tue": 2,
-    "Wed": 3,
-    "Thu": 4,
-    "Fri": 5,
-    "Sat": 6,
-    "Sun": 7
-  };
-  String todayyoil = DateFormat('EEE').format(originnow);
-  int numyoil = yoil[todayyoil];
-
   //현재 날짜와 지난주 날짜 가져오기
   final DateTime now =
       new DateTime(originnow.year, originnow.month, originnow.day - numyoil);
@@ -649,8 +586,14 @@ void getaccelerationscore() async {
       date = date - 1;
     });
 
+    if(countSum > 0) {
+      isZeroEventCountForThisWeek = false;
+    }
+
     countEventForThisWeek
         .add(new CountEventForEvent(name: "급가속", count: countSum));
+    countAllEventForThisWeek += countSum;
+
   } else {
     print('Request failed with status: ${response.statusCode}.');
   }
@@ -662,7 +605,7 @@ void getaccelerationscore() async {
     Uri.parse(url),
     headers: {
       "F_TOKEN":
-      "D5CFB732E7BA8E56356AA766B61EEF32F5F1BCA6F554FB0A9432D285A7E012A3"
+          "D5CFB732E7BA8E56356AA766B61EEF32F5F1BCA6F554FB0A9432D285A7E012A3"
     },
   );
   if (response.statusCode == 200) {
@@ -689,10 +632,14 @@ void getaccelerationscore() async {
       date = date - 1;
     });
 
+    if(countSum > 0) {
+      isZeroEventCountForLastWeek = false;
+    }
+
     countEventForLastWeek
         .add(new CountEventForEvent(name: "급가속", count: countSum));
+    countAllEventForLastWeek += countSum;
 
-    print('급가속');
   } else {
     print('Request failed with status: ${response.statusCode}.');
   }
@@ -700,23 +647,9 @@ void getaccelerationscore() async {
 
 //급회전 api
 void getrotationscore() async {
-  final DateTime originnow = DateTime.now();
-
-  Map yoil = {
-    "Mon": 1,
-    "Tue": 2,
-    "Wed": 3,
-    "Thu": 4,
-    "Fri": 5,
-    "Sat": 6,
-    "Sun": 7
-  };
-  String todayyoil = DateFormat('EEE').format(originnow);
-  int numyoil = yoil[todayyoil];
-
   //현재 날짜와 지난주 날짜 가져오기
   final DateTime now =
-  new DateTime(originnow.year, originnow.month, originnow.day - numyoil);
+      new DateTime(originnow.year, originnow.month, originnow.day - numyoil);
   final DateTime lastSunday = new DateTime(
       originnow.year, originnow.month, originnow.day - numyoil - 7);
   final DateTime thisMonday = new DateTime(
@@ -736,12 +669,12 @@ void getrotationscore() async {
 
   // 이번주
   String url =
-      'https://server2.mureung.com/infocarAdminPageAPI/sideproject/eventCount?userKey=1147&startDate=$thisMondayDay&endDate=$today&eventCode=EventCode02';
+      'https://server2.mureung.com/infocarAdminPageAPI/sideproject/eventCount?userKey=1147&startDate=$thisMondayDay&endDate=$today&eventCode=EventCode10';
   var response = await http.get(
     Uri.parse(url),
     headers: {
       "F_TOKEN":
-      "D5CFB732E7BA8E56356AA766B61EEF32F5F1BCA6F554FB0A9432D285A7E012A3"
+          "D5CFB732E7BA8E56356AA766B61EEF32F5F1BCA6F554FB0A9432D285A7E012A3"
     },
   );
   if (response.statusCode == 200) {
@@ -768,20 +701,27 @@ void getrotationscore() async {
       date = date - 1;
     });
 
+    if(countSum > 0) {
+      isZeroEventCountForThisWeek = false;
+    }
+
     countEventForThisWeek
         .add(new CountEventForEvent(name: "급회전", count: countSum));
+    countAllEventForThisWeek += countSum;
+
   } else {
     print('Request failed with status: ${response.statusCode}.');
   }
 
   // 저번주
   url =
-  'https://server2.mureung.com/infocarAdminPageAPI/sideproject/eventCount?userKey=1147&startDate=$lastweekday&endDate=$lastSundayDay&eventCode=EventCode02';
+  'https://server2.mureung.com/infocarAdminPageAPI/sideproject/eventCount?userKey=1147&startDate=$lastweekday&endDate=$lastSundayDay&eventCode=EventCode10';
+
   response = await http.get(
     Uri.parse(url),
     headers: {
       "F_TOKEN":
-      "D5CFB732E7BA8E56356AA766B61EEF32F5F1BCA6F554FB0A9432D285A7E012A3"
+          "D5CFB732E7BA8E56356AA766B61EEF32F5F1BCA6F554FB0A9432D285A7E012A3"
     },
   );
   if (response.statusCode == 200) {
@@ -808,10 +748,14 @@ void getrotationscore() async {
       date = date - 1;
     });
 
+    if(countSum > 0) {
+      isZeroEventCountForLastWeek = false;
+    }
+
     countEventForLastWeek
         .add(new CountEventForEvent(name: "급회전", count: countSum));
-    print(countEventForLastWeek);
-    print('급회전');
+    countAllEventForLastWeek += countSum;
+
   } else {
     print('Request failed with status: ${response.statusCode}.');
   }
@@ -819,23 +763,9 @@ void getrotationscore() async {
 
 //공회전 api
 void getidlescore() async {
-  final DateTime originnow = DateTime.now();
-
-  Map yoil = {
-    "Mon": 1,
-    "Tue": 2,
-    "Wed": 3,
-    "Thu": 4,
-    "Fri": 5,
-    "Sat": 6,
-    "Sun": 7
-  };
-  String todayyoil = DateFormat('EEE').format(originnow);
-  int numyoil = yoil[todayyoil];
-
   //현재 날짜와 지난주 날짜 가져오기
   final DateTime now =
-  new DateTime(originnow.year, originnow.month, originnow.day - numyoil);
+      new DateTime(originnow.year, originnow.month, originnow.day - numyoil);
   final DateTime lastSunday = new DateTime(
       originnow.year, originnow.month, originnow.day - numyoil - 7);
   final DateTime thisMonday = new DateTime(
@@ -855,12 +785,12 @@ void getidlescore() async {
 
   // 이번주
   String url =
-      'https://server2.mureung.com/infocarAdminPageAPI/sideproject/eventCount?userKey=1147&startDate=$thisMondayDay&endDate=$today&eventCode=EventCode02';
+      'https://server2.mureung.com/infocarAdminPageAPI/sideproject/eventCount?userKey=1147&startDate=$thisMondayDay&endDate=$today&eventCode=EventCode01';
   var response = await http.get(
     Uri.parse(url),
     headers: {
       "F_TOKEN":
-      "D5CFB732E7BA8E56356AA766B61EEF32F5F1BCA6F554FB0A9432D285A7E012A3"
+          "D5CFB732E7BA8E56356AA766B61EEF32F5F1BCA6F554FB0A9432D285A7E012A3"
     },
   );
   if (response.statusCode == 200) {
@@ -887,11 +817,14 @@ void getidlescore() async {
       date = date - 1;
     });
 
+    if(countSum > 0) {
+      isZeroEventCountForThisWeek = false;
+    }
+
     countEventForThisWeek
         .add(new CountEventForEvent(name: "공회전", count: countSum));
 
-    print('공회전');
-    print(countEventForLastWeek);
+    countAllEventForThisWeek += countSum;
 
   } else {
     print('Request failed with status: ${response.statusCode}.');
@@ -899,12 +832,13 @@ void getidlescore() async {
 
   // 저번주
   url =
-  'https://server2.mureung.com/infocarAdminPageAPI/sideproject/eventCount?userKey=1147&startDate=$lastweekday&endDate=$lastSundayDay&eventCode=EventCode02';
+  'https://server2.mureung.com/infocarAdminPageAPI/sideproject/eventCount?userKey=1147&startDate=$lastweekday&endDate=$lastSundayDay&eventCode=EventCode01';
+
   response = await http.get(
     Uri.parse(url),
     headers: {
       "F_TOKEN":
-      "D5CFB732E7BA8E56356AA766B61EEF32F5F1BCA6F554FB0A9432D285A7E012A3"
+          "D5CFB732E7BA8E56356AA766B61EEF32F5F1BCA6F554FB0A9432D285A7E012A3"
     },
   );
   if (response.statusCode == 200) {
@@ -931,12 +865,15 @@ void getidlescore() async {
       date = date - 1;
     });
 
+    if(countSum > 0) {
+      isZeroEventCountForLastWeek = false;
+    }
+
     countEventForLastWeek
         .add(new CountEventForEvent(name: "공회전", count: countSum));
+    countAllEventForLastWeek += countSum;
 
     countAllEventForEachDay = new List.from(countAllEventForEachDay.reversed);
-
-
   } else {
     print('Request failed with status: ${response.statusCode}.');
   }
