@@ -80,17 +80,6 @@ List drvment = [
   "주행거리가 저번주보다 증가했네요!\n여행이라도 다녀오신건가요?⛱",
 ];
 
-//주행거리 멘트
-//지난주 > 이번주
-List drvment = [
-  "이번주에는 저번주보다 덜 운전하셨네요👏 \n환경에 큰 도움이 될 거에요🤩",
-  "지난주보다 더 적게 달리셨어요~ \n시간 날때 드라이브 한번 다녀오세요🚗",
-  "주행거리가 지난주보다 감소했네요!\n덕분에 미세먼지 감축에 도움이 되었어요!",
-  "저번주보다 이번주에 운전을 더 많이하셨어요! \n안전운전에 주의하세요😉",
-  "저번주보다 더 많이 달리셨어요~ \n세차한번 하고 오세요🌊  ",
-  "주행거리가 저번주보다 증가했네요!\n여행이라도 다녀오신건가요?⛱",
-];
-
 int lastweekcnt = 0;
 //safe
 double thisavg = 0.00;
@@ -105,9 +94,6 @@ double fuellastavg = 0;
 bool isZeroEventCountForLastWeek = true;
 bool isZeroEventCountForThisWeek = true;
 
-bool isZeroEventCountForLastWeek = true;
-bool isZeroEventCountForThisWeek = true;
-
 final int mentrandom = Random().nextInt(3);
 final int ecomentrandom = Random().nextInt(3);
 final int drvmentrandom = Random().nextInt(3);
@@ -116,7 +102,6 @@ final int drvmentrandom = Random().nextInt(3);
 abstract class containerItem {}
 
 class saftyscoreContainer implements containerItem {
-
   final Container mycon = new Container(
       margin: EdgeInsets.symmetric(vertical: 10.0),
       padding: EdgeInsets.all(15),
@@ -150,7 +135,6 @@ class saftyscoreContainer implements containerItem {
             legend: Legend(isVisible: true, position: LegendPosition.top),
             tooltipBehavior: TooltipBehavior(enable: true),
             series: <ChartSeries>[
-
               ColumnSeries<Getsaftyscore, String>(
                   name: "지난주",
                   dataSource: saftyscorelist.getRange(0, 7).toList(),
@@ -159,9 +143,7 @@ class saftyscoreContainer implements containerItem {
                           int.parse(gf.Date.split("-")[0]),
                           int.parse(gf.Date.split("-")[1]),
                           int.parse(gf.Date.split("-")[2]))),
-                  yValueMapper: (Getsaftyscore gf, _) => gf.safe_avg
-
-              ),
+                  yValueMapper: (Getsaftyscore gf, _) => gf.safe_avg),
               ColumnSeries<Getsaftyscore, String>(
                   name: "이번주",
                   dataSource: saftyscorelist.getRange(7, 14).toList(),
@@ -189,8 +171,9 @@ class saftyscoreContainer implements containerItem {
               ),
               child: Text(
                 " [ 지난주 평균 : ${lastavg.toStringAsFixed(2)} ] \n"
-                    " [ 이번주 평균 : ${thisavg.toStringAsFixed(2)} ] ",
-                style: TextStyle(fontWeight:FontWeight.w400,
+                " [ 이번주 평균 : ${thisavg.toStringAsFixed(2)} ] ",
+                style: TextStyle(
+                  fontWeight: FontWeight.w400,
                   color: Colors.white,
                 ),
               ),
@@ -295,8 +278,9 @@ class economicscoreContainer implements containerItem {
               ),
               child: Text(
                 " [ 지난주 평균 : ${ecolastavg.toStringAsFixed(2)} ] \n"
-                    " [ 이번주 평균 : ${ecothisavg.toStringAsFixed(2)} ] ",
-                style: TextStyle(fontWeight:FontWeight.w400,
+                " [ 이번주 평균 : ${ecothisavg.toStringAsFixed(2)} ] ",
+                style: TextStyle(
+                  fontWeight: FontWeight.w400,
                   color: Colors.white,
                 ),
               ),
@@ -661,8 +645,9 @@ class daliyfuelContainer implements containerItem {
               ),
               child: Text(
                 " [ 지난주 평균 : ${fuellastavg.toStringAsFixed(2)} ] \n"
-                    " [ 이번주 평균 : ${fuelthisavg.toStringAsFixed(2)} ] ",
-                style: TextStyle(fontWeight:FontWeight.w400,
+                " [ 이번주 평균 : ${fuelthisavg.toStringAsFixed(2)} ] ",
+                style: TextStyle(
+                  fontWeight: FontWeight.w400,
                   color: Colors.white,
                 ),
               ),
@@ -966,7 +951,6 @@ class spendingContainer implements containerItem {
               ]),
             ],
           ),
-
           Row(
             children: [
               sumAllspending_last == 0
@@ -1011,8 +995,9 @@ class spendingContainer implements containerItem {
                         )
                       ],
                     ),
-              SizedBox(width: 20,)
-              ,
+              SizedBox(
+                width: 20,
+              ),
               sumAllspending_this == 0
                   ? Container(
                       child: Text('이번주지출이 없네요'),
