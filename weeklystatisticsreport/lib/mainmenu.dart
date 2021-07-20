@@ -13,6 +13,7 @@ class mainmenu extends StatelessWidget {
     return new MaterialApp(
       title: 'INFOCAR',
       theme: new ThemeData(
+          fontFamily: 'bitro',
           primaryColor: const Color(0xff2980b9),
           accentColor: const Color(0x002980b9),
           canvasColor: const Color(0x002980b9)),

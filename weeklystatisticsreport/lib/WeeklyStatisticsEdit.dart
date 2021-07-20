@@ -54,6 +54,7 @@ class WeeklyStatisticsEdit extends StatelessWidget {
     return new MaterialApp(
       title: '주간 통계 화면 편집',
       theme: new ThemeData(
+          fontFamily: 'bitro',
           primaryColor: PrimaryColor,
           accentColor: PrimaryColor,
           canvasColor: PrimaryColor),

@@ -114,6 +114,7 @@ final int spdmentrandom = Random().nextInt(3);
 abstract class containerItem {}
 
 class saftyscoreContainer implements containerItem {
+
   final Container mycon = new Container(
       margin: EdgeInsets.symmetric(vertical: 10.0),
       padding: EdgeInsets.all(15),
