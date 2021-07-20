@@ -818,23 +818,37 @@ class daliyfuelContainer implements containerItem {
             tooltipBehavior: TooltipBehavior(enable: true),
             series: <ChartSeries>[
               LineSeries<Getdaliyfuel, String>(
-                  name: "지난주",
-                  dataSource: daliyfuellist.getRange(0, 7).toList(),
-                  xValueMapper: (Getdaliyfuel gf, _) => DateFormat('EEE')
-                      .format(new DateTime(
-                          int.parse(gf.Date.split("-")[0]),
-                          int.parse(gf.Date.split("-")[1]),
-                          int.parse(gf.Date.split("-")[2]))),
-                  yValueMapper: (Getdaliyfuel gf, _) => gf.DrvFuelUsement),
+                name: "지난주",
+                color: Colors.grey,
+                dataSource: daliyfuellist.getRange(0, 7).toList(),
+                xValueMapper: (Getdaliyfuel gf, _) => DateFormat('EEE').format(
+                    new DateTime(
+                        int.parse(gf.Date.split("-")[0]),
+                        int.parse(gf.Date.split("-")[1]),
+                        int.parse(gf.Date.split("-")[2]))),
+                yValueMapper: (Getdaliyfuel gf, _) => gf.DrvFuelUsement,
+                markerSettings: MarkerSettings(
+                  isVisible: true,
+                  height: 8,
+                  width: 8,
+                ),
+              ),
               LineSeries<Getdaliyfuel, String>(
-                  name: "이번주",
-                  dataSource: daliyfuellist.getRange(7, 14).toList(),
-                  xValueMapper: (Getdaliyfuel gf, _) => DateFormat('EEE')
-                      .format(new DateTime(
-                          int.parse(gf.Date.split("-")[0]),
-                          int.parse(gf.Date.split("-")[1]),
-                          int.parse(gf.Date.split("-")[2]))),
-                  yValueMapper: (Getdaliyfuel gf, _) => gf.DrvFuelUsement)
+                name: "이번주",
+                color: Color(0xfffc913a),
+                dataSource: daliyfuellist.getRange(7, 14).toList(),
+                xValueMapper: (Getdaliyfuel gf, _) => DateFormat('EEE').format(
+                    new DateTime(
+                        int.parse(gf.Date.split("-")[0]),
+                        int.parse(gf.Date.split("-")[1]),
+                        int.parse(gf.Date.split("-")[2]))),
+                yValueMapper: (Getdaliyfuel gf, _) => gf.DrvFuelUsement,
+                markerSettings: MarkerSettings(
+                  isVisible: true,
+                  height: 8,
+                  width: 8,
+                ),
+              )
             ],
             primaryXAxis: CategoryAxis(),
             // primaryYAxis: NumericAxis(
