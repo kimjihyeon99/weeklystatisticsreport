@@ -893,7 +893,7 @@ class daliyfuelContainer implements containerItem {
                         "${fuellastavg.toStringAsFixed(2)} ",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: Color(0xFFf9d423),
+                          color: Color(0xfffc913a),
                           fontSize: 18,
                         ),
                       ),
@@ -902,7 +902,7 @@ class daliyfuelContainer implements containerItem {
                         "${fuelthisavg.toStringAsFixed(2)} ",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: Color(0xFFf9d423),
+                          color: Color(0xfffc913a),
                           fontSize: 18,
                         ),
                       ),
