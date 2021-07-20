@@ -4,13 +4,13 @@ import 'mainmenu.dart';
 import 'WeeklyStatisticsEdit.dart';
 import 'containerItem.dart';
 import 'infocarapi_mgr.dart';
-import 'dart:math'; //random 수 가져오기 위한것
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 //activate 와 deactivate 구분하기 위한 list
 List activate = [
   "안전 점수",
   "경제 점수",
-  "운전스타일 경고 점수",
+  "운전스타일 경고 횟수",
   "일일 연비",
   "주행 거리",
   "지출 내역",
@@ -22,7 +22,7 @@ List deactivate = [];
 List<String> activateName = [
   "안전 점수",
   "경제 점수",
-  "운전스타일 경고 점수",
+  "운전스타일 경고 횟수",
   "일일 연비",
   "주행 거리",
   "지출 내역",
@@ -33,7 +33,7 @@ List<String> activateName = [
 Map Activateinfo = {
   "안전 점수": true,
   "경제 점수": true,
-  "운전스타일 경고 점수": true,
+  "운전스타일 경고 횟수": true,
   "일일 연비": true,
   "주행 거리": true,
   "지출 내역": true,
@@ -172,7 +172,10 @@ class statistic_viewPage extends State<statisticviewPage> {
                         end: Alignment.bottomCenter),
                   ),
                   alignment: Alignment.center,
-                  child: CircularProgressIndicator());
+                  child: SpinKitFadingCube(
+                    color: Color(0xFFD8BFD8),
+                    size: 40,
+                  ));
             } else {
               return Container(
                 decoration: BoxDecoration(

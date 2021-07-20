@@ -218,6 +218,7 @@ void getdaliyfuel() async {
       String mydateday = formatter.format(mydate);
       newjr.insert(
           i, new Getdaliyfuel(DrvFuelUsement: 0, Date: mydateday));
+    }
       //거꾸로 들어온 데이터 뒤집기
       daliyfuellist = new List.from(newjr.reversed);
 
@@ -357,7 +358,6 @@ void getdrivingdistance() async {
 
 //급감속 api
 void getdecelerationscore() async {
-  
   // 초기화
   countAllEventForLastWeek = 0;
   countAllEventForThisWeek = 0;
@@ -436,8 +436,7 @@ void getdecelerationscore() async {
       date = date - 1;
     });
 
-
-    if(countSum > 0) {
+    if (countSum > 0) {
       isZeroEventCountForThisWeek = false;
     }
 
@@ -448,6 +447,7 @@ void getdecelerationscore() async {
     int countday = lastday.difference(thisMonday).inDays;
 
     int len = countAllEventForEachDay.length;
+
 
     //만약에 들어있는 데이터가 마지막 날짜가 아니라면, 나머지 데이터 모두 0으로 채우기
     for (int i = len; i < len + countday; i++) {
@@ -515,7 +515,7 @@ void getdecelerationscore() async {
           i, new GetDrivingwarningscore(countEvent: 0, Date: mydateday));
     }
 
-    if(countSum > 0) {
+    if (countSum > 0) {
       isZeroEventCountForLastWeek = false;
     }
 
@@ -523,7 +523,6 @@ void getdecelerationscore() async {
         .add(new CountEventForEvent(name: "급감속", count: countSum));
 
     countAllEventForLastWeek += countSum;
-
 
   } else {
     print('Request failed with status: ${response.statusCode}.');
@@ -586,7 +585,7 @@ void getaccelerationscore() async {
       date = date - 1;
     });
 
-    if(countSum > 0) {
+    if (countSum > 0) {
       isZeroEventCountForThisWeek = false;
     }
 
@@ -632,14 +631,14 @@ void getaccelerationscore() async {
       date = date - 1;
     });
 
-    if(countSum > 0) {
+
+    if (countSum > 0) {
       isZeroEventCountForLastWeek = false;
     }
 
     countEventForLastWeek
         .add(new CountEventForEvent(name: "급가속", count: countSum));
     countAllEventForLastWeek += countSum;
-
   } else {
     print('Request failed with status: ${response.statusCode}.');
   }
@@ -701,21 +700,21 @@ void getrotationscore() async {
       date = date - 1;
     });
 
-    if(countSum > 0) {
+    if (countSum > 0) {
       isZeroEventCountForThisWeek = false;
     }
 
     countEventForThisWeek
         .add(new CountEventForEvent(name: "급회전", count: countSum));
     countAllEventForThisWeek += countSum;
-
+    
   } else {
     print('Request failed with status: ${response.statusCode}.');
   }
 
   // 저번주
   url =
-  'https://server2.mureung.com/infocarAdminPageAPI/sideproject/eventCount?userKey=1147&startDate=$lastweekday&endDate=$lastSundayDay&eventCode=EventCode10';
+      'https://server2.mureung.com/infocarAdminPageAPI/sideproject/eventCount?userKey=1147&startDate=$lastweekday&endDate=$lastSundayDay&eventCode=EventCode10';
 
   response = await http.get(
     Uri.parse(url),
@@ -748,14 +747,14 @@ void getrotationscore() async {
       date = date - 1;
     });
 
-    if(countSum > 0) {
+    if (countSum > 0) {
       isZeroEventCountForLastWeek = false;
     }
 
     countEventForLastWeek
         .add(new CountEventForEvent(name: "급회전", count: countSum));
     countAllEventForLastWeek += countSum;
-
+    
   } else {
     print('Request failed with status: ${response.statusCode}.');
   }
@@ -817,7 +816,7 @@ void getidlescore() async {
       date = date - 1;
     });
 
-    if(countSum > 0) {
+    if (countSum > 0) {
       isZeroEventCountForThisWeek = false;
     }
 
@@ -832,7 +831,7 @@ void getidlescore() async {
 
   // 저번주
   url =
-  'https://server2.mureung.com/infocarAdminPageAPI/sideproject/eventCount?userKey=1147&startDate=$lastweekday&endDate=$lastSundayDay&eventCode=EventCode01';
+      'https://server2.mureung.com/infocarAdminPageAPI/sideproject/eventCount?userKey=1147&startDate=$lastweekday&endDate=$lastSundayDay&eventCode=EventCode01';
 
   response = await http.get(
     Uri.parse(url),
@@ -865,7 +864,7 @@ void getidlescore() async {
       date = date - 1;
     });
 
-    if(countSum > 0) {
+    if (countSum > 0) {
       isZeroEventCountForLastWeek = false;
     }
 
@@ -881,21 +880,110 @@ void getidlescore() async {
 
 // 지출 내역 api
 void getSpending() async {
+  //초기화
+  spendinglist_last = []; //지난주 지출 내역
+  spendinglist_this = []; //이번주 지출 내역
+  sumAllspending_last = 0;
+  sumAllspending_this = 0;
+
+  //현재 날짜와 지난주 날짜 가져오기
+  final DateTime now =
+      new DateTime(originnow.year, originnow.month, originnow.day - numyoil);
+  final DateTime lastSunday = new DateTime(
+      originnow.year, originnow.month, originnow.day - numyoil - 7);
+  final DateTime thisMonday = new DateTime(
+      originnow.year, originnow.month, originnow.day - numyoil - 6);
+  final DateTime lastweek = new DateTime(
+      originnow.year, originnow.month, originnow.day - 13 - numyoil);
+
+  final DateFormat formatter = DateFormat('yyyy-MM-dd'); // string으로 바꾸기 위함
+
+  //날짜를 문자열로 변환하기, class에 넣어주기 위함
+  final String today = formatter.format(now);
+  final String lastSundayDay = formatter.format(lastSunday);
+  final String thisMondayDay = formatter.format(thisMonday);
+  final String lastweekday = formatter.format(lastweek);
+
+  //지난주
   String url =
-      'https://server2.mureung.com/infocarAdminPageAPI/sideproject/cbookCradit?userKey=1147';
-  final response = await http.get(
+      'https://server2.mureung.com/infocarAdminPageAPI/sideproject/cbookCraditLite?userKey=1147&startDate=$lastweekday&endDate=$lastSundayDay';
+  var response = await http.get(
     Uri.parse(url),
     headers: {
       "F_TOKEN":
           "D5CFB732E7BA8E56356AA766B61EEF32F5F1BCA6F554FB0A9432D285A7E012A3"
     },
   );
+
   if (response.statusCode == 200) {
     var jsonResponse = convert.jsonDecode(response.body);
     var jr = jsonResponse['response']['body']['items'];
-    jr = jr.cast<Map<String, dynamic>>();
-    jr = jr.map<GetSpending>((json) => GetSpending.fromJson(json)).toList();
-    spendinglist = jr;
+
+    spendinglist_last.add(new GetSpending(
+        name: "주유•세차비",
+        cost: jr["fuel_cost"].toDouble() + jr["car_wash_cost"].toDouble()));
+    spendinglist_last.add(new GetSpending(
+        name: "통행•주차비",
+        cost: jr["toll_fee"].toDouble() + jr["parking_fee"].toDouble()));
+    spendinglist_last.add(new GetSpending(
+        name: "차량정비", cost: jr["vehicle_maintenance"].toDouble()));
+    spendinglist_last
+        .add(new GetSpending(name: "보험료", cost: jr["car_premium"].toDouble()));
+    spendinglist_last
+        .add(new GetSpending(name: "기타", cost: jr["etc"].toDouble()));
+
+    sumAllspending_last = (jr["fuel_cost"].toDouble() +
+            jr["car_wash_cost"].toDouble() +
+            jr["toll_fee"].toDouble() +
+            jr["parking_fee"].toDouble() +
+            jr["vehicle_maintenance"].toDouble() +
+            jr["car_premium"].toDouble() +
+            jr["etc"].toDouble())
+        .toInt();
+
+    print(spendinglist_last);
+  } else {
+    print('Request failed with status: ${response.statusCode}.');
+  }
+
+  //이번주
+  url =
+      'https://server2.mureung.com/infocarAdminPageAPI/sideproject/cbookCraditLite?userKey=1147&startDate=$thisMondayDay&endDate=$today';
+  response = await http.get(
+    Uri.parse(url),
+    headers: {
+      "F_TOKEN":
+          "D5CFB732E7BA8E56356AA766B61EEF32F5F1BCA6F554FB0A9432D285A7E012A3"
+    },
+  );
+
+  if (response.statusCode == 200) {
+    var jsonResponse = convert.jsonDecode(response.body);
+    var jr = jsonResponse['response']['body']['items'];
+    print(jr["car_premium"]);
+    //mapping
+    spendinglist_this.add(new GetSpending(
+        name: "주유•세차비",
+        cost: jr["fuel_cost"].toDouble() + jr["car_wash_cost"].toDouble()));
+    spendinglist_this.add(new GetSpending(
+        name: "통행•주차비",
+        cost: jr["toll_fee"].toDouble() + jr["parking_fee"].toDouble()));
+    spendinglist_this.add(new GetSpending(
+        name: "차량정비", cost: jr["vehicle_maintenance"].toDouble()));
+    spendinglist_this
+        .add(new GetSpending(name: "보험료", cost: jr["car_premium"].toDouble()));
+    spendinglist_this
+        .add(new GetSpending(name: "기타", cost: jr["etc"].toDouble()));
+
+    sumAllspending_this = (jr["fuel_cost"].toDouble() +
+            jr["car_wash_cost"].toDouble() +
+            jr["toll_fee"].toDouble() +
+            jr["parking_fee"].toDouble() +
+            jr["vehicle_maintenance"].toDouble() +
+            jr["car_premium"].toDouble() +
+            jr["etc"].toDouble())
+        .toInt();
+    print(spendinglist_this);
   } else {
     print('Request failed with status: ${response.statusCode}.');
   }

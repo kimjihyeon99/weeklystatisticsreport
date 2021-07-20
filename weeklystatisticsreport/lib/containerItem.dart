@@ -80,6 +80,17 @@ List drvment = [
   "주행거리가 저번주보다 증가했네요!\n여행이라도 다녀오신건가요?⛱",
 ];
 
+//지출 내역 멘트
+//지난주,이번주 비교
+List spdment = [
+  "저번주보다 지출이 줄었어요👍👍\n이번주도 줄일 수 있도록 노력해봐요😁",
+  "지난주 보다 지출 내역이 감소했어요 \n 좋은 운전 습관을 가지고 계시네요👍",
+  "지출이 지난주보다 적어지셨네요!\n절약하는 습관 아주좋아요👍",
+  "지난주 보다 더 지출 내역이 많네요! \n 경제운전으로 절약해보시면 어떨까요?😂",
+  "저번주보다 지출이 많았어요!\n혹시 불필요한 지출은없었는지 생각해보세요😃",
+  "지출이 지난주보다 많아지셨네요!\n다음세차는 손세차 어떠세요?🧼"
+];
+
 int lastweekcnt = 0;
 //safe
 double thisavg = 0.00;
@@ -97,12 +108,12 @@ bool isZeroEventCountForThisWeek = true;
 final int mentrandom = Random().nextInt(3);
 final int ecomentrandom = Random().nextInt(3);
 final int drvmentrandom = Random().nextInt(3);
+final int spdmentrandom = Random().nextInt(3);
 
 //각자의 container 생성을 위한것
 abstract class containerItem {}
 
 class saftyscoreContainer implements containerItem {
-
   final Container mycon = new Container(
       margin: EdgeInsets.symmetric(vertical: 10.0),
       padding: EdgeInsets.all(15),
@@ -136,20 +147,27 @@ class saftyscoreContainer implements containerItem {
             legend: Legend(isVisible: true, position: LegendPosition.top),
             tooltipBehavior: TooltipBehavior(enable: true),
             series: <ChartSeries>[
-
               ColumnSeries<Getsaftyscore, String>(
                   name: "지난주",
+                  borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(5),
+                    topLeft: Radius.circular(5)
+                  ),
+                  color: Color(0xFFcff09e),
                   dataSource: saftyscorelist.getRange(0, 7).toList(),
                   xValueMapper: (Getsaftyscore gf, _) => DateFormat('EEE')
                       .format(new DateTime(
                           int.parse(gf.Date.split("-")[0]),
                           int.parse(gf.Date.split("-")[1]),
                           int.parse(gf.Date.split("-")[2]))),
-                  yValueMapper: (Getsaftyscore gf, _) => gf.safe_avg
-
-              ),
+                  yValueMapper: (Getsaftyscore gf, _) => gf.safe_avg),
               ColumnSeries<Getsaftyscore, String>(
                   name: "이번주",
+                  borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(5),
+                      topLeft: Radius.circular(5)
+                  ),
+                  color: Color(0xFF79bd9a),
                   dataSource: saftyscorelist.getRange(7, 14).toList(),
                   xValueMapper: (Getsaftyscore gf, _) => DateFormat('EEE')
                       .format(new DateTime(
@@ -163,25 +181,70 @@ class saftyscoreContainer implements containerItem {
               maximum: 100,
             ),
           ),
+          SizedBox(height: 15,),
+          new Container(
+              height: 1.0,
+              width: double.infinity,
+              color: Colors.grey.withOpacity(0.3)),
+          SizedBox(height: 15,),
           Align(
-            alignment: Alignment.bottomRight,
-            child: Container(
-              height: 42,
-              width: 135,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                color: Colors.indigo[200],
-                borderRadius: BorderRadius.circular(5),
-              ),
-              child: Text(
-                " [ 지난주 평균 : ${lastavg.toStringAsFixed(2)} ] \n"
-                    " [ 이번주 평균 : ${thisavg.toStringAsFixed(2)} ] ",
-                style: TextStyle(fontWeight:FontWeight.w400,
-                  color: Colors.white,
+            alignment: Alignment.center,
+            child:
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+
+                Column(
+                  children: [
+                    Text(
+                      "지난주 평균 점수",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
+                      textAlign: TextAlign.left,
+                    ),
+                    SizedBox(height: 5,),
+                    Text(
+                      "이번주 평균 점수",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
+                      textAlign: TextAlign.left,
+                    ),
+                  ],
                 ),
-              ),
-            ),
+                Column(
+                  children: [
+                    Text(
+                      "${lastavg.toStringAsFixed(2)} ",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF55967e),
+                        fontSize: 18,
+                      ),
+                    ),
+                    SizedBox(height: 5,),
+                    Text(
+                      "${thisavg.toStringAsFixed(2)} ",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF55967e),
+                        fontSize: 18,
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            )
           ),
+          SizedBox(height: 15,),
+          new Container(
+              height: 1.0,
+              width: double.infinity,
+              color: Colors.grey.withOpacity(0.3)),
+          SizedBox(height: 5,),
           Align(
               alignment: Alignment.center,
               child: (lastweekcnt > 3)
@@ -205,8 +268,12 @@ class saftyscoreContainer implements containerItem {
                       : Text(ment.getRange(3, 6).toList()[mentrandom],
                           style: TextStyle(fontSize: 18.0, color: Colors.black),
                           textAlign: TextAlign.center)),
+          SizedBox(height: 10,),
         ],
-      ));
+
+      ),
+
+  );
 
   saftyscoreContainer();
 }
@@ -247,6 +314,11 @@ class economicscoreContainer implements containerItem {
             series: <ChartSeries>[
               ColumnSeries<Getsaftyscore, String>(
                   name: "지난주",
+                  borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(5),
+                      topLeft: Radius.circular(5)
+                  ),
+                  color: Color(0xFFCADBE9),
                   dataSource: economicscorelist.getRange(0, 7).toList(),
                   xValueMapper: (Getsaftyscore gf, _) => DateFormat('EEE')
                       .format(new DateTime(
@@ -256,6 +328,11 @@ class economicscoreContainer implements containerItem {
                   yValueMapper: (Getsaftyscore gf, _) => gf.eco_avg),
               ColumnSeries<Getsaftyscore, String>(
                   name: "이번주",
+                  borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(5),
+                      topLeft: Radius.circular(5)
+                  ),
+                  color: Color(0xFF6AAFE6),
                   dataSource: economicscorelist.getRange(7, 14).toList(),
                   xValueMapper: (Getsaftyscore gf, _) => DateFormat('EEE')
                       .format(new DateTime(
@@ -269,25 +346,69 @@ class economicscoreContainer implements containerItem {
               maximum: 100,
             ),
           ),
+          SizedBox(height: 15,),
+          new Container(
+              height: 1.0,
+              width: double.infinity,
+              color: Colors.grey.withOpacity(0.3)),
+          SizedBox(height: 15,),
           Align(
-            alignment: Alignment.bottomRight,
-            child: Container(
-              height: 42,
-              width: 135,
               alignment: Alignment.center,
-              decoration: BoxDecoration(
-                color: Colors.indigo[200],
-                borderRadius: BorderRadius.circular(5),
-              ),
-              child: Text(
-                " [ 지난주 평균 : ${ecolastavg.toStringAsFixed(2)} ] \n"
-                    " [ 이번주 평균 : ${ecothisavg.toStringAsFixed(2)} ] ",
-                style: TextStyle(fontWeight:FontWeight.w400,
-                  color: Colors.white,
-                ),
-              ),
-            ),
+              child:
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Column(
+                    children: [
+                      Text(
+                        "지난주 평균 점수",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                        ),
+                        textAlign: TextAlign.left,
+                      ),
+                      SizedBox(height: 5,),
+                      Text(
+                        "이번주 평균 점수",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                        ),
+                        textAlign: TextAlign.left,
+                      ),
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      Text(
+                        "${ecolastavg.toStringAsFixed(2)} ",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF8EC0E4),
+                          fontSize: 18,
+                        ),
+                      ),
+                      SizedBox(height: 5,),
+                      Text(
+                        "${ecothisavg.toStringAsFixed(2)} ",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF8EC0E4),
+                          fontSize: 18,
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              )
           ),
+          SizedBox(height: 15,),
+          new Container(
+              height: 1.0,
+              width: double.infinity,
+              color: Colors.grey.withOpacity(0.3)),
+          SizedBox(height: 5,),
           Align(
               alignment: Alignment.center,
               child: (lastweekcnt > 3)
@@ -313,6 +434,7 @@ class economicscoreContainer implements containerItem {
                       : Text(ecoment.getRange(3, 6).toList()[ecomentrandom],
                           style: TextStyle(fontSize: 18.0, color: Colors.black),
                           textAlign: TextAlign.center)),
+          SizedBox(height: 10,),
         ],
       ));
 
@@ -356,6 +478,11 @@ class drivingwarningscoreContainer implements containerItem {
             series: <ChartSeries>[
               ColumnSeries<GetDrivingwarningscore, String>(
                   name: "지난주",
+                  borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(5),
+                      topLeft: Radius.circular(5)
+                  ),
+                  color:Color(0xFFF7AA97),
                   dataSource: countAllEventForEachDay.getRange(0, 7).toList(),
                   xValueMapper: (GetDrivingwarningscore gf, _) =>
                       DateFormat('EEE').format(new DateTime(
@@ -366,6 +493,11 @@ class drivingwarningscoreContainer implements containerItem {
                       gf.countEvent),
               ColumnSeries<GetDrivingwarningscore, String>(
                   name: "이번주",
+                  borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(5),
+                      topLeft: Radius.circular(5)
+                  ),
+                  color:Color(0xFFDE7E73),
                   dataSource: countAllEventForEachDay.getRange(7, 14).toList(),
                   xValueMapper: (GetDrivingwarningscore gf, _) =>
                       DateFormat('EEE').format(new DateTime(
@@ -376,29 +508,6 @@ class drivingwarningscoreContainer implements containerItem {
             ],
             primaryXAxis: CategoryAxis(),
           ),
-          // Align(
-          //     alignment: Alignment.center,
-          //     child: (lastweekcnt > 3)
-          //         ? (thisavg > 90)
-          //         ? Text(ment2.getRange(0, 3).toList()[mentrandom],
-          //         style: TextStyle(fontSize: 18.0, color: Colors.black),
-          //         textAlign: TextAlign.center)
-          //         : (thisavg > 80)
-          //         ? Text(ment2.getRange(3, 6).toList()[mentrandom],
-          //         style: TextStyle(
-          //             fontSize: 18.0, color: Colors.black),
-          //         textAlign: TextAlign.center)
-          //         : Text(ment2.getRange(6, 9).toList()[mentrandom],
-          //         style: TextStyle(
-          //             fontSize: 18.0, color: Colors.black),
-          //         textAlign: TextAlign.center)
-          //         : (thisavg > lastavg)
-          //         ? Text(ment.getRange(0, 3).toList()[mentrandom],
-          //         style: TextStyle(fontSize: 18.0, color: Colors.black),
-          //         textAlign: TextAlign.center)
-          //         : Text(ment.getRange(3, 6).toList()[mentrandom],
-          //         style: TextStyle(fontSize: 18.0, color: Colors.black),
-          //         textAlign: TextAlign.center)),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
@@ -571,7 +680,6 @@ class drivingwarningscoreContainer implements containerItem {
                         Container(
                           width: 170,
                           height: 170,
-
                           child: Stack(children: <Widget>[
                             Center(
                               child: Container(
@@ -656,8 +764,7 @@ class drivingwarningscoreContainer implements containerItem {
                                     fontWeight: FontWeight.bold),
                               ),
                             )
-                          ]
-                          ),
+                          ]),
                         ),
                         Text(
                           '이번주',
@@ -733,25 +840,69 @@ class daliyfuelContainer implements containerItem {
             // primaryYAxis: NumericAxis(
             // ),
           ),
+          SizedBox(height: 15,),
+          new Container(
+              height: 1.0,
+              width: double.infinity,
+              color: Colors.grey.withOpacity(0.3)),
+          SizedBox(height: 15,),
           Align(
-            alignment: Alignment.bottomRight,
-            child: Container(
-              height: 42,
-              width: 135,
               alignment: Alignment.center,
-              decoration: BoxDecoration(
-                color: Colors.indigo[200],
-                borderRadius: BorderRadius.circular(5),
-              ),
-              child: Text(
-                " [ 지난주 평균 : ${fuellastavg.toStringAsFixed(2)} ] \n"
-                    " [ 이번주 평균 : ${fuelthisavg.toStringAsFixed(2)} ] ",
-                style: TextStyle(fontWeight:FontWeight.w400,
-                  color: Colors.white,
-                ),
-              ),
-            ),
+              child:
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Column(
+                    children: [
+                      Text(
+                        "지난주 평균 점수",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                        ),
+                        textAlign: TextAlign.left,
+                      ),
+                      SizedBox(height: 5,),
+                      Text(
+                        "이번주 평균 점수",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                        ),
+                        textAlign: TextAlign.left,
+                      ),
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      Text(
+                        "${fuellastavg.toStringAsFixed(2)} ",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFFf9d423),
+                          fontSize: 18,
+                        ),
+                      ),
+                      SizedBox(height: 5,),
+                      Text(
+                        "${fuelthisavg.toStringAsFixed(2)} ",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFFf9d423),
+                          fontSize: 18,
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              )
           ),
+          SizedBox(height: 15,),
+          new Container(
+              height: 1.0,
+              width: double.infinity,
+              color: Colors.grey.withOpacity(0.3)),
+          SizedBox(height: 5,),
         ],
       ));
 
@@ -834,94 +985,88 @@ class drivingdistanceContainer implements containerItem {
             ],
           ),
           SizedBox(
-            width: 300,
-            child: ClipRRect(
-                // The border radius (`borderRadius`) property, the border radius of the rounded corners.
-                borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                child: Column(
-                  children: [
-                    Align(
-                        alignment: Alignment.lerp(
-                            Alignment.topLeft,
-                            Alignment.topRight,
-                            drivingdistancelist_last == null
-                                ? 0
-                                : drivingdistancelist_last * 0.0035),
-                        child: Column(
-                          children: [
-
-                            Text(
-                              "${drivingdistancelist_last == null ? 0 : drivingdistancelist_last.toInt()} km",
-                              style: TextStyle(
-                                fontSize: 15,
-                              ),
-                              textAlign: TextAlign.center,
+              width: 300,
+              child: Column(
+                children: [
+                  Align(
+                      alignment: Alignment.lerp(
+                          Alignment.topLeft,
+                          Alignment.topRight,
+                          drivingdistancelist_last == null
+                              ? 0
+                              : drivingdistancelist_last * 0.005),
+                      child: Column(
+                        children: [
+                          Text(
+                            "${drivingdistancelist_last == null ? 0 : drivingdistancelist_last.toInt()} km",
+                            style: TextStyle(
+                              fontSize: 15,
                             ),
-                            Image(
-                              //위치는 나중에 설정
-                              height: 40,
-                              width: 40,
-                              image: AssetImage('assets/car_img.png'),
-                            ),
-                          ],
-                        )),
-                    LinearProgressIndicator(
-                      minHeight: 20,
-                      value: drivingdistancelist_last == null
-                          ? 0
-                          : drivingdistancelist_last * 0.0035,
-                      backgroundColor: Colors.black,
-                      valueColor: AlwaysStoppedAnimation<Color>(Colors.grey),
-                    ),
-                  ],
-                )),
-          ),
+                            textAlign: TextAlign.center,
+                          ),
+                          Image(
+                            //위치는 나중에 설정
+                            height: 40,
+                            width: 40,
+                            image: AssetImage('assets/car_img.png'),
+                          ),
+                        ],
+                      )),
+                  ClipRRect(
+                      // The border radius (`borderRadius`) property, the border radius of the rounded corners.
+                      borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                      child: LinearProgressIndicator(
+                        minHeight: 20,
+                        value: drivingdistancelist_last == null
+                            ? 0
+                            : drivingdistancelist_last * 0.005,
+                        backgroundColor: Colors.white,
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.grey),
+                      )),
+                ],
+              )),
           SizedBox(
-            width: 300,
-
-            child: ClipRRect(
-                // The border radius (`borderRadius`) property, the border radius of the rounded corners.
-                borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                child: Column(
-                  children: [
-
-                    Align(
-                        alignment: Alignment.lerp(
-                            Alignment.topLeft,
-                            Alignment.topRight,
-                            drivingdistancelist == null
-                                ? 0
-                                : drivingdistancelist * 0.0035),
-                        child: Column(
-                          children: [
-                            Text(
-                              "${drivingdistancelist == null ? 0 : drivingdistancelist.toInt()} km",
-                              style: TextStyle(
-                                fontSize: 15,
-                              ),
-                              textAlign: TextAlign.center,
+              width: 300,
+              child: Column(
+                children: [
+                  Align(
+                      alignment: Alignment.lerp(
+                          Alignment.topLeft,
+                          Alignment.topRight,
+                          drivingdistancelist == null
+                              ? 0
+                              : drivingdistancelist * 0.005),
+                      child: Column(
+                        children: [
+                          Text(
+                            "${drivingdistancelist == null ? 0 : drivingdistancelist.toInt()} km",
+                            style: TextStyle(
+                              fontSize: 15,
                             ),
-                            Image(
-                              //위치는 나중에 설정
-                              height: 40,
-
-                              width: 40,
-                              image: AssetImage('assets/car_img.png'),
-                            ),
-                          ],
-                        )),
-
-                    LinearProgressIndicator(
-                      minHeight: 20,
-                      value: drivingdistancelist == null
-                          ? 0
-                          : drivingdistancelist * 0.0035,
-                      backgroundColor: Colors.black,
-                      valueColor: AlwaysStoppedAnimation<Color>(Colors.yellow),
-                    ),
-                  ],
-                )),
-          ),
+                            textAlign: TextAlign.center,
+                          ),
+                          Image(
+                            //위치는 나중에 설정
+                            height: 40,
+                            width: 40,
+                            image: AssetImage('assets/car_img.png'),
+                          ),
+                        ],
+                      )),
+                  ClipRRect(
+                      // The border radius (`borderRadius`) property, the border radius of the rounded corners.
+                      borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                      child: LinearProgressIndicator(
+                        minHeight: 20,
+                        value: drivingdistancelist == null
+                            ? 0
+                            : drivingdistancelist * 0.005,
+                        backgroundColor: Colors.white,
+                        valueColor:
+                            AlwaysStoppedAnimation<Color>(Colors.yellow),
+                      )),
+                ],
+              )),
           SizedBox(
             height: 20,
           ),
@@ -948,7 +1093,6 @@ class spendingContainer implements containerItem {
   final Container mycon = new Container(
       margin: EdgeInsets.symmetric(vertical: 10.0),
       padding: EdgeInsets.all(15),
-      height: 130,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.only(
@@ -1249,6 +1393,19 @@ class spendingContainer implements containerItem {
                       ],
                     )
             ],
+          ),
+
+          SizedBox(height: 15),
+          //ment
+          Align(
+            alignment: Alignment.center,
+            child: (sumAllspending_last > sumAllspending_this)
+                //지난주가 지출이 많은 경우
+                ? Text(spdment.getRange(0, 3).toList()[spdmentrandom],
+                    style: TextStyle(fontSize: 18.0, color: Colors.black),textAlign: TextAlign.center)
+                //이번주가 지출이 많은 경우
+                : Text(spdment.getRange(3, 6).toList()[spdmentrandom],
+                    style: TextStyle(fontSize: 18.0, color: Colors.black),textAlign: TextAlign.center),
           ),
         ],
       ));
