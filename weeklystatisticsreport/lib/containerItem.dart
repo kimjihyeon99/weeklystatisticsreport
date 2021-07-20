@@ -629,29 +629,6 @@ class drivingwarningscoreContainer implements containerItem {
                               ],
                             ),
                             Center(
-                              child: Container(
-                                width: 60,
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                    color: Color.fromRGBO(255, 255, 255, 1),
-                                    shape: BoxShape.circle,
-                                    boxShadow: [
-                                      BoxShadow(
-                                          blurRadius: 1,
-                                          offset: Offset(-1,-1),
-                                          color: Colors.white
-                                      ),
-                                      BoxShadow(
-                                          spreadRadius: -2,
-                                          blurRadius: 10,
-                                          offset: Offset(5,5),
-                                          color: Colors.black.withOpacity(0.5)
-                                      )
-                                    ]
-                                ),
-                              ),
-                            ),
-                            Center(
                               child: Text(
                                 countAllEventForLastWeek.toString() + '회',
                                 style: TextStyle(
@@ -732,29 +709,7 @@ class drivingwarningscoreContainer implements containerItem {
                                         ce.count),
                               ],
                           ),
-                            Center(
-                              child: Container(
-                                width: 60,
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                    color: Color.fromRGBO(255, 255, 255, 1),
-                                    shape: BoxShape.circle,
-                                    boxShadow: [
-                                      BoxShadow(
-                                          blurRadius: 1,
-                                          offset: Offset(-1,-1),
-                                          color: Colors.white
-                                      ),
-                                      BoxShadow(
-                                          spreadRadius: -2,
-                                          blurRadius: 10,
-                                          offset: Offset(5,5),
-                                          color: Colors.black.withOpacity(0.5)
-                                      )
-                                    ]
-                                ),
-                              ),
-                            ),
+
                             Center(
                               child: Text(
                                 countAllEventForThisWeek.toString() + '회',
@@ -1262,29 +1217,7 @@ class spendingContainer implements containerItem {
                                         ce.cost),
                               ],
                             ),
-                            Center(
-                              child: Container(
-                                width: 60,
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                    color: Color.fromRGBO(255, 255, 255, 1),
-                                    shape: BoxShape.circle,
-                                    boxShadow: [
-                                      BoxShadow(
-                                          blurRadius: 1,
-                                          offset: Offset(-1,-1),
-                                          color: Colors.white
-                                      ),
-                                      BoxShadow(
-                                          spreadRadius: -2,
-                                          blurRadius: 10,
-                                          offset: Offset(5,5),
-                                          color: Colors.black.withOpacity(0.5)
-                                      )
-                                    ]
-                                ),
-                              ),
-                            ),
+
                             Center(
                               child: Text(
                                 sumAllspending_last.toString() + '원',
@@ -1363,29 +1296,7 @@ class spendingContainer implements containerItem {
                                         ce.cost),
                               ],
                             ),
-                            Center(
-                              child: Container(
-                                width: 60,
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                    color: Color.fromRGBO(255, 255, 255, 1),
-                                    shape: BoxShape.circle,
-                                    boxShadow: [
-                                      BoxShadow(
-                                          blurRadius: 1,
-                                          offset: Offset(-1,-1),
-                                          color: Colors.white
-                                      ),
-                                      BoxShadow(
-                                          spreadRadius: -2,
-                                          blurRadius: 10,
-                                          offset: Offset(5,5),
-                                          color: Colors.black.withOpacity(0.5)
-                                      )
-                                    ]
-                                ),
-                              ),
-                            ),
+
                             Center(
                               child: Text(
                                 sumAllspending_this.toString() + '원',
