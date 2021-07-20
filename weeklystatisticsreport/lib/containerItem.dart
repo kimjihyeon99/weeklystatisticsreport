@@ -153,7 +153,7 @@ class saftyscoreContainer implements containerItem {
                     topRight: Radius.circular(5),
                     topLeft: Radius.circular(5)
                   ),
-                  color: Color(0xFFcff09e),
+                  color: Color(0xFFdedcee),
                   dataSource: saftyscorelist.getRange(0, 7).toList(),
                   xValueMapper: (Getsaftyscore gf, _) => DateFormat('EEE')
                       .format(new DateTime(
@@ -167,7 +167,7 @@ class saftyscoreContainer implements containerItem {
                       topRight: Radius.circular(5),
                       topLeft: Radius.circular(5)
                   ),
-                  color: Color(0xFF79bd9a),
+                  color: Color(0xFF6a60a9),
                   dataSource: saftyscorelist.getRange(7, 14).toList(),
                   xValueMapper: (Getsaftyscore gf, _) => DateFormat('EEE')
                       .format(new DateTime(
@@ -221,7 +221,7 @@ class saftyscoreContainer implements containerItem {
                       "${lastavg.toStringAsFixed(2)} ",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        color: Color(0xFF55967e),
+                        color: Color(0xFF9055A2),
                         fontSize: 18,
                       ),
                     ),
@@ -230,7 +230,7 @@ class saftyscoreContainer implements containerItem {
                       "${thisavg.toStringAsFixed(2)} ",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        color: Color(0xFF55967e),
+                        color: Color(0xFF9055A2),
                         fontSize: 18,
                       ),
                     ),
@@ -774,7 +774,7 @@ class daliyfuelContainer implements containerItem {
             series: <ChartSeries>[
               LineSeries<Getdaliyfuel, String>(
                 name: "지난주",
-                color: Colors.grey,
+                color: Color(0xFFaacfd0),
                 dataSource: daliyfuellist.getRange(0, 7).toList(),
                 xValueMapper: (Getdaliyfuel gf, _) => DateFormat('EEE').format(
                     new DateTime(
@@ -790,7 +790,7 @@ class daliyfuelContainer implements containerItem {
               ),
               LineSeries<Getdaliyfuel, String>(
                 name: "이번주",
-                color: Color(0xfffc913a),
+                color: Color(0xff1f4e5f),
                 dataSource: daliyfuellist.getRange(7, 14).toList(),
                 xValueMapper: (Getdaliyfuel gf, _) => DateFormat('EEE').format(
                     new DateTime(
@@ -848,7 +848,7 @@ class daliyfuelContainer implements containerItem {
                         "${fuellastavg.toStringAsFixed(2)} ",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: Color(0xfffc913a),
+                          color: Color(0xff79a8a9),
                           fontSize: 18,
                         ),
                       ),
@@ -857,7 +857,7 @@ class daliyfuelContainer implements containerItem {
                         "${fuelthisavg.toStringAsFixed(2)} ",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: Color(0xfffc913a),
+                          color: Color(0xff79a8a9),
                           fontSize: 18,
                         ),
                       ),
@@ -918,7 +918,7 @@ class drivingdistanceContainer implements containerItem {
                     width: 10,
                     height: 5,
                     decoration: BoxDecoration(
-                      color: Colors.grey,
+                      color: Color(0xFFcff09e),
                       borderRadius: BorderRadius.all(Radius.circular(5.0)),
                     ),
                   ),
@@ -940,7 +940,7 @@ class drivingdistanceContainer implements containerItem {
                     width: 10,
                     height: 5,
                     decoration: BoxDecoration(
-                      color: Colors.yellow,
+                      color: Color(0xFF79bd9a),
                       borderRadius: BorderRadius.all(Radius.circular(5.0)),
                     ),
                   ),
@@ -990,7 +990,7 @@ class drivingdistanceContainer implements containerItem {
                             ? 0
                             : drivingdistancelist_last * 0.005,
                         backgroundColor: Colors.white,
-                        valueColor: AlwaysStoppedAnimation<Color>(Colors.grey),
+                        valueColor: AlwaysStoppedAnimation<Color>(Color(0xFFcff09e)),
                       )),
                 ],
               )),
@@ -1032,7 +1032,7 @@ class drivingdistanceContainer implements containerItem {
                             : drivingdistancelist * 0.005,
                         backgroundColor: Colors.white,
                         valueColor:
-                            AlwaysStoppedAnimation<Color>(Colors.yellow),
+                            AlwaysStoppedAnimation<Color>(Color(0xFF79bd9a)),
                       )),
                 ],
               )),
