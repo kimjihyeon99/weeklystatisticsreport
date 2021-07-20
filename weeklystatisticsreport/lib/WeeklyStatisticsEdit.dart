@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'statisticview.dart';
 
-const PrimaryColor = const Color(0xff2980b9);
-const SecondColor = const Color(0xff2B5490);
+const PrimaryColor = const Color(0xff84B1ED);
+const SecondColor = const Color(0xff4F86C6);
 
 //list를 head와 isActivate으로 나누기 위한 구조
 abstract class ListItem {}
@@ -90,13 +90,11 @@ class _WeeklyStatisticsEditPage extends State<WeeklyStatisticsEditPage> {
           elevation: 0.0,
           title: new Text(
             '주간 통계 화면 편집',
-            style: new TextStyle(
-              fontSize: 25.0,
-            ),
+            style: new TextStyle(fontSize: 25.0, color: Colors.white),
           ),
           centerTitle: true,
           leading: IconButton(
-            icon: Icon(Icons.arrow_back),
+            icon: Icon(Icons.arrow_back, color: Colors.white,),
             onPressed: () {
               // 주간 통계 화면으로 넘어가도록 구현
               Navigator.push(context,
@@ -200,7 +198,7 @@ class _WeeklyStatisticsEditPage extends State<WeeklyStatisticsEditPage> {
             // for Alignment
             child: new IconButton(
               icon: Icon(Icons.remove_circle),
-              color: Colors.red,
+              color: Color(0xFFff7473),
               onPressed: () {
                 final item = items[index];
                 if (item is isActivateItem) {
@@ -262,7 +260,7 @@ class _WeeklyStatisticsEditPage extends State<WeeklyStatisticsEditPage> {
           // for Alignment
           child: new IconButton(
             icon: Icon(Icons.add_circle),
-            color: Colors.green,
+            color: Color(0xFF8FBC94),
             onPressed: () {
               final item = items[index];
               if (item is isActivateItem) {
@@ -303,7 +301,7 @@ class _WeeklyStatisticsEditPage extends State<WeeklyStatisticsEditPage> {
         Expanded(
           child: new Icon(
             Icons.menu,
-            color: Colors.white,
+            color: Colors.white.withOpacity(0.5),
           ),
         )
       ]),

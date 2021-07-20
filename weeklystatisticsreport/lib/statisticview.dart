@@ -76,9 +76,9 @@ class statisticview extends StatelessWidget {
       title: 'Generated App',
       theme: new ThemeData(
           fontFamily: 'bitro',
-          primaryColor: const Color(0xff2980b9),
-          accentColor: const Color(0xff2980b9),
-          canvasColor: const Color(0xff2980b9)),
+          primaryColor: const Color(0xff84B1ED),
+          accentColor: const Color(0xff84B1ED),
+          canvasColor: const Color(0xff84B1ED)),
       home: new statisticviewPage(),
     );
   }
@@ -103,11 +103,12 @@ class statistic_viewPage extends State<statisticviewPage> {
               textAlign: TextAlign.center,
               style: new TextStyle(
                 fontSize: 25.0,
+                color: Colors.white
               ),
             ),
           ),
           leading: IconButton(
-            icon: Icon(Icons.arrow_back),
+            icon: Icon(Icons.arrow_back,color: Colors.white,),
             onPressed: () {
               Navigator.push(
                   context, MaterialPageRoute(builder: (context) => mainmenu()));
@@ -115,7 +116,7 @@ class statistic_viewPage extends State<statisticviewPage> {
           ),
           actions: <Widget>[
             new IconButton(
-                icon: Icon(Icons.info_outline),
+                icon: Icon(Icons.info_outline,color: Colors.white,),
                 onPressed: () {
                   //팝업창
                   showCupertinoDialog(
@@ -150,7 +151,7 @@ class statistic_viewPage extends State<statisticviewPage> {
                       });
                 }),
             new IconButton(
-                icon: Icon(Icons.settings),
+                icon: Icon(Icons.settings,color: Colors.white,),
                 onPressed: () {
                   Navigator.push(
                       context,
@@ -168,7 +169,7 @@ class statistic_viewPage extends State<statisticviewPage> {
               return Container(
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
-                        colors: [Color(0xff2980b9), Color(0xFFD8BFD8)],
+                        colors: [Color(0xff84B1ED), Color(0xFFD8BFD8)],
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter),
                   ),
@@ -181,7 +182,7 @@ class statistic_viewPage extends State<statisticviewPage> {
               return Container(
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
-                      colors: [Color(0xff2980b9), Color(0xFFD8BFD8)],
+                      colors: [Color(0xff84B1ED), Color(0xFFD8BFD8)],
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter),
                 ),

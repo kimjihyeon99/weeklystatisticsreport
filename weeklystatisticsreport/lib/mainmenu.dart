@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'statisticview.dart';
 import 'localnotifyMgr.dart';
 
-const PrimaryColor = const Color(0xff2980b9);
+const PrimaryColor = const Color(0xff84B1ED);
 
 void main() {
   runApp(mainmenu());
@@ -14,9 +14,9 @@ class mainmenu extends StatelessWidget {
       title: 'INFOCAR',
       theme: new ThemeData(
           fontFamily: 'bitro',
-          primaryColor: const Color(0xff2980b9),
-          accentColor: const Color(0x002980b9),
-          canvasColor: const Color(0x002980b9)),
+          primaryColor: const Color(0xff84B1ED),
+          accentColor: const Color(0xff84B1ED),
+          canvasColor: const Color(0xff84B1ED)),
       home: new mainmenuPage(),
     );
   }
@@ -131,7 +131,7 @@ class _mainmenuPage extends State<mainmenuPage> {
             style: ButtonStyle(
               backgroundColor: MaterialStateProperty.resolveWith<Color>(
                 (Set<MaterialState> states) {
-                  if (states.contains(MaterialState.pressed)) return null;
+                  if (states.contains(MaterialState.pressed)) return Color(0xff84B1ED);
                   return PrimaryColor.withOpacity(
                       0); // Use the component's default.
                 },
@@ -175,7 +175,7 @@ class _mainmenuPage extends State<mainmenuPage> {
             style: ButtonStyle(
               backgroundColor: MaterialStateProperty.resolveWith<Color>(
                 (Set<MaterialState> states) {
-                  if (states.contains(MaterialState.pressed)) return null;
+                  if (states.contains(MaterialState.pressed)) return Color(0xff84B1ED);
                   return PrimaryColor.withOpacity(
                       0); // Use the component's default.
                 },
