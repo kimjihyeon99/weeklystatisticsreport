@@ -473,6 +473,7 @@ class drivingwarningscoreContainer implements containerItem {
           ),
           SfCartesianChart(
             legend: Legend(isVisible: true, position: LegendPosition.top),
+
             tooltipBehavior: TooltipBehavior(enable: true),
             series: <ChartSeries>[
               ColumnSeries<GetDrivingwarningscore, String>(
@@ -584,10 +585,35 @@ class drivingwarningscoreContainer implements containerItem {
                           width: 170,
                           height: 170,
                           child: Stack(children: <Widget>[
+                            Center(
+                              child: Container(
+                                width: 130,
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                    color: Color.fromRGBO(255, 255, 255, 1),
+                                    shape: BoxShape.circle,
+                                    boxShadow: [
+                                      BoxShadow(
+                                          spreadRadius: -8,
+                                          blurRadius: 5,
+                                          offset: Offset(-5,-5),
+                                          color: Colors.grey
+                                      ),
+                                      BoxShadow(
+                                          spreadRadius: -2,
+                                          blurRadius: 10,
+                                          offset: Offset(7,7),
+                                          color: Colors.black.withOpacity(0.5)
+                                      )
+                                    ]
+                                ),
+                              ),
+                            ),
                             SfCircularChart(
                               tooltipBehavior: TooltipBehavior(enable: true),
                               series: <CircularSeries>[
                                 DoughnutSeries<CountEventForEvent, String>(
+
                                     dataLabelSettings: DataLabelSettings(
                                         isVisible: true,
                                         labelPosition:
@@ -601,6 +627,29 @@ class drivingwarningscoreContainer implements containerItem {
                                     yValueMapper: (CountEventForEvent ce, _) =>
                                         ce.count),
                               ],
+                            ),
+                            Center(
+                              child: Container(
+                                width: 60,
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                    color: Color.fromRGBO(255, 255, 255, 1),
+                                    shape: BoxShape.circle,
+                                    boxShadow: [
+                                      BoxShadow(
+                                          blurRadius: 1,
+                                          offset: Offset(-1,-1),
+                                          color: Colors.white
+                                      ),
+                                      BoxShadow(
+                                          spreadRadius: -2,
+                                          blurRadius: 10,
+                                          offset: Offset(5,5),
+                                          color: Colors.black.withOpacity(0.5)
+                                      )
+                                    ]
+                                ),
+                              ),
                             ),
                             Center(
                               child: Text(
@@ -632,6 +681,30 @@ class drivingwarningscoreContainer implements containerItem {
                           width: 170,
                           height: 170,
                           child: Stack(children: <Widget>[
+                            Center(
+                              child: Container(
+                                width: 130,
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                    color: Color.fromRGBO(255, 255, 255, 1),
+                                    shape: BoxShape.circle,
+                                    boxShadow: [
+                                      BoxShadow(
+                                          spreadRadius: -8,
+                                          blurRadius: 5,
+                                          offset: Offset(-5,-5),
+                                          color: Colors.grey
+                                      ),
+                                      BoxShadow(
+                                          spreadRadius: -2,
+                                          blurRadius: 10,
+                                          offset: Offset(7,7),
+                                          color: Colors.black.withOpacity(0.5)
+                                      )
+                                    ]
+                                ),
+                              ),
+                            ),
                             SfCircularChart(
                               legend: Legend(
                                 isVisible: false,
@@ -658,6 +731,29 @@ class drivingwarningscoreContainer implements containerItem {
                                     yValueMapper: (CountEventForEvent ce, _) =>
                                         ce.count),
                               ],
+                          ),
+                            Center(
+                              child: Container(
+                                width: 60,
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                    color: Color.fromRGBO(255, 255, 255, 1),
+                                    shape: BoxShape.circle,
+                                    boxShadow: [
+                                      BoxShadow(
+                                          blurRadius: 1,
+                                          offset: Offset(-1,-1),
+                                          color: Colors.white
+                                      ),
+                                      BoxShadow(
+                                          spreadRadius: -2,
+                                          blurRadius: 10,
+                                          offset: Offset(5,5),
+                                          color: Colors.black.withOpacity(0.5)
+                                      )
+                                    ]
+                                ),
+                              ),
                             ),
                             Center(
                               child: Text(
@@ -1116,6 +1212,30 @@ class spendingContainer implements containerItem {
                           width: 170,
                           height: 170,
                           child: Stack(children: <Widget>[
+                            Center(
+                              child: Container(
+                                width: 130,
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                    color: Color.fromRGBO(255, 255, 255, 1),
+                                    shape: BoxShape.circle,
+                                    boxShadow: [
+                                      BoxShadow(
+                                          spreadRadius: -8,
+                                          blurRadius: 5,
+                                          offset: Offset(-5,-5),
+                                          color: Colors.grey
+                                      ),
+                                      BoxShadow(
+                                          spreadRadius: -2,
+                                          blurRadius: 10,
+                                          offset: Offset(7,7),
+                                          color: Colors.black.withOpacity(0.5)
+                                      )
+                                    ]
+                                ),
+                              ),
+                            ),
                             SfCircularChart(
                               tooltipBehavior: TooltipBehavior(enable: true),
                               series: <CircularSeries>[
@@ -1127,6 +1247,29 @@ class spendingContainer implements containerItem {
                                     yValueMapper: (GetSpending ce, _) =>
                                         ce.cost),
                               ],
+                            ),
+                            Center(
+                              child: Container(
+                                width: 60,
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                    color: Color.fromRGBO(255, 255, 255, 1),
+                                    shape: BoxShape.circle,
+                                    boxShadow: [
+                                      BoxShadow(
+                                          blurRadius: 1,
+                                          offset: Offset(-1,-1),
+                                          color: Colors.white
+                                      ),
+                                      BoxShadow(
+                                          spreadRadius: -2,
+                                          blurRadius: 10,
+                                          offset: Offset(5,5),
+                                          color: Colors.black.withOpacity(0.5)
+                                      )
+                                    ]
+                                ),
+                              ),
                             ),
                             Center(
                               child: Text(
@@ -1161,6 +1304,30 @@ class spendingContainer implements containerItem {
                           width: 170,
                           height: 170,
                           child: Stack(children: <Widget>[
+                            Center(
+                              child: Container(
+                                width: 130,
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                    color: Color.fromRGBO(255, 255, 255, 1),
+                                    shape: BoxShape.circle,
+                                    boxShadow: [
+                                      BoxShadow(
+                                          spreadRadius: -8,
+                                          blurRadius: 5,
+                                          offset: Offset(-5,-5),
+                                          color: Colors.grey
+                                      ),
+                                      BoxShadow(
+                                          spreadRadius: -2,
+                                          blurRadius: 10,
+                                          offset: Offset(7,7),
+                                          color: Colors.black.withOpacity(0.5)
+                                      )
+                                    ]
+                                ),
+                              ),
+                            ),
                             SfCircularChart(
                               legend: Legend(
                                 isVisible: false,
@@ -1181,6 +1348,29 @@ class spendingContainer implements containerItem {
                                     yValueMapper: (GetSpending ce, _) =>
                                         ce.cost),
                               ],
+                            ),
+                            Center(
+                              child: Container(
+                                width: 60,
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                    color: Color.fromRGBO(255, 255, 255, 1),
+                                    shape: BoxShape.circle,
+                                    boxShadow: [
+                                      BoxShadow(
+                                          blurRadius: 1,
+                                          offset: Offset(-1,-1),
+                                          color: Colors.white
+                                      ),
+                                      BoxShadow(
+                                          spreadRadius: -2,
+                                          blurRadius: 10,
+                                          offset: Offset(5,5),
+                                          color: Colors.black.withOpacity(0.5)
+                                      )
+                                    ]
+                                ),
+                              ),
                             ),
                             Center(
                               child: Text(
@@ -1204,6 +1394,7 @@ class spendingContainer implements containerItem {
                     )
             ],
           ),
+
           SizedBox(height: 15),
           //ment
           Align(
