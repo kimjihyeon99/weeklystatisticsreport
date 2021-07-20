@@ -18,7 +18,10 @@ List<CountEventForEvent> countEventForLastWeek = [];
 List<CountEventForEvent> countEventForThisWeek = [];
 int countAllEventForLastWeek = 0;
 int countAllEventForThisWeek = 0;
-List spendinglist = []; //지출 내역 리스트
+List<GetSpending> spendinglist_last = []; //지난주 지출 내역
+List<GetSpending> spendinglist_this = []; //이번주 지출 내역
+int sumAllspending_last = 0;
+int sumAllspending_this = 0;
 
 //안전 점수 : 지난주와  비교하는 코멘트
 List ment = [
@@ -348,6 +351,7 @@ class drivingwarningscoreContainer implements containerItem {
           ),
           SfCartesianChart(
             legend: Legend(isVisible: true, position: LegendPosition.top),
+
             tooltipBehavior: TooltipBehavior(enable: true),
             series: <ChartSeries>[
               ColumnSeries<GetDrivingwarningscore, String>(
@@ -472,10 +476,35 @@ class drivingwarningscoreContainer implements containerItem {
                           width: 170,
                           height: 170,
                           child: Stack(children: <Widget>[
+                            Center(
+                              child: Container(
+                                width: 130,
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                    color: Color.fromRGBO(255, 255, 255, 1),
+                                    shape: BoxShape.circle,
+                                    boxShadow: [
+                                      BoxShadow(
+                                          spreadRadius: -8,
+                                          blurRadius: 5,
+                                          offset: Offset(-5,-5),
+                                          color: Colors.grey
+                                      ),
+                                      BoxShadow(
+                                          spreadRadius: -2,
+                                          blurRadius: 10,
+                                          offset: Offset(7,7),
+                                          color: Colors.black.withOpacity(0.5)
+                                      )
+                                    ]
+                                ),
+                              ),
+                            ),
                             SfCircularChart(
                               tooltipBehavior: TooltipBehavior(enable: true),
                               series: <CircularSeries>[
                                 DoughnutSeries<CountEventForEvent, String>(
+
                                     dataLabelSettings: DataLabelSettings(
                                         isVisible: true,
                                         labelPosition:
@@ -489,6 +518,29 @@ class drivingwarningscoreContainer implements containerItem {
                                     yValueMapper: (CountEventForEvent ce, _) =>
                                         ce.count),
                               ],
+                            ),
+                            Center(
+                              child: Container(
+                                width: 60,
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                    color: Color.fromRGBO(255, 255, 255, 1),
+                                    shape: BoxShape.circle,
+                                    boxShadow: [
+                                      BoxShadow(
+                                          blurRadius: 1,
+                                          offset: Offset(-1,-1),
+                                          color: Colors.white
+                                      ),
+                                      BoxShadow(
+                                          spreadRadius: -2,
+                                          blurRadius: 10,
+                                          offset: Offset(5,5),
+                                          color: Colors.black.withOpacity(0.5)
+                                      )
+                                    ]
+                                ),
+                              ),
                             ),
                             Center(
                               child: Text(
@@ -519,33 +571,82 @@ class drivingwarningscoreContainer implements containerItem {
                         Container(
                           width: 170,
                           height: 170,
-                          child: Stack(children: <Widget>[SfCircularChart(
-                            legend: Legend(
-                              isVisible: false,
-                              position: LegendPosition.bottom,
-                              title: LegendTitle(
-                                  text: '이번주',
-                                  textStyle: TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w900)),
+
+                          child: Stack(children: <Widget>[
+                            Center(
+                              child: Container(
+                                width: 130,
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                    color: Color.fromRGBO(255, 255, 255, 1),
+                                    shape: BoxShape.circle,
+                                    boxShadow: [
+                                      BoxShadow(
+                                          spreadRadius: -8,
+                                          blurRadius: 5,
+                                          offset: Offset(-5,-5),
+                                          color: Colors.grey
+                                      ),
+                                      BoxShadow(
+                                          spreadRadius: -2,
+                                          blurRadius: 10,
+                                          offset: Offset(7,7),
+                                          color: Colors.black.withOpacity(0.5)
+                                      )
+                                    ]
+                                ),
+                              ),
                             ),
-                            tooltipBehavior: TooltipBehavior(enable: true),
-                            series: <CircularSeries>[
-                              DoughnutSeries<CountEventForEvent, String>(
-                                  dataLabelSettings: DataLabelSettings(
-                                      isVisible: true,
-                                      labelPosition:
-                                          ChartDataLabelPosition.outside,
-                                      labelIntersectAction:
-                                          LabelIntersectAction.none),
-                                  name: "이번주",
-                                  dataSource: countEventForThisWeek,
-                                  xValueMapper: (CountEventForEvent ce, _) =>
-                                      ce.name,
-                                  yValueMapper: (CountEventForEvent ce, _) =>
-                                      ce.count),
-                            ],
+                            SfCircularChart(
+                              legend: Legend(
+                                isVisible: false,
+                                position: LegendPosition.bottom,
+                                title: LegendTitle(
+                                    text: '이번주',
+                                    textStyle: TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w900)),
+                              ),
+                              tooltipBehavior: TooltipBehavior(enable: true),
+                              series: <CircularSeries>[
+                                DoughnutSeries<CountEventForEvent, String>(
+                                    dataLabelSettings: DataLabelSettings(
+                                        isVisible: true,
+                                        labelPosition:
+                                            ChartDataLabelPosition.outside,
+                                        labelIntersectAction:
+                                            LabelIntersectAction.none),
+                                    name: "이번주",
+                                    dataSource: countEventForThisWeek,
+                                    xValueMapper: (CountEventForEvent ce, _) =>
+                                        ce.name,
+                                    yValueMapper: (CountEventForEvent ce, _) =>
+                                        ce.count),
+                              ],
                           ),
+                            Center(
+                              child: Container(
+                                width: 60,
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                    color: Color.fromRGBO(255, 255, 255, 1),
+                                    shape: BoxShape.circle,
+                                    boxShadow: [
+                                      BoxShadow(
+                                          blurRadius: 1,
+                                          offset: Offset(-1,-1),
+                                          color: Colors.white
+                                      ),
+                                      BoxShadow(
+                                          spreadRadius: -2,
+                                          blurRadius: 10,
+                                          offset: Offset(5,5),
+                                          color: Colors.black.withOpacity(0.5)
+                                      )
+                                    ]
+                                ),
+                              ),
+                            ),
                             Center(
                               child: Text(
                                 countAllEventForThisWeek.toString() + '회',
@@ -745,9 +846,10 @@ class drivingdistanceContainer implements containerItem {
                             Alignment.topRight,
                             drivingdistancelist_last == null
                                 ? 0
-                                : drivingdistancelist_last * 0.005),
+                                : drivingdistancelist_last * 0.0035),
                         child: Column(
                           children: [
+
                             Text(
                               "${drivingdistancelist_last == null ? 0 : drivingdistancelist_last.toInt()} km",
                               style: TextStyle(
@@ -767,8 +869,8 @@ class drivingdistanceContainer implements containerItem {
                       minHeight: 20,
                       value: drivingdistancelist_last == null
                           ? 0
-                          : drivingdistancelist_last * 0.005,
-                      backgroundColor: Colors.white,
+                          : drivingdistancelist_last * 0.0035,
+                      backgroundColor: Colors.black,
                       valueColor: AlwaysStoppedAnimation<Color>(Colors.grey),
                     ),
                   ],
@@ -776,18 +878,20 @@ class drivingdistanceContainer implements containerItem {
           ),
           SizedBox(
             width: 300,
+
             child: ClipRRect(
                 // The border radius (`borderRadius`) property, the border radius of the rounded corners.
                 borderRadius: BorderRadius.all(Radius.circular(10.0)),
                 child: Column(
                   children: [
+
                     Align(
                         alignment: Alignment.lerp(
                             Alignment.topLeft,
                             Alignment.topRight,
                             drivingdistancelist == null
                                 ? 0
-                                : drivingdistancelist * 0.005),
+                                : drivingdistancelist * 0.0035),
                         child: Column(
                           children: [
                             Text(
@@ -800,17 +904,19 @@ class drivingdistanceContainer implements containerItem {
                             Image(
                               //위치는 나중에 설정
                               height: 40,
+
                               width: 40,
                               image: AssetImage('assets/car_img.png'),
                             ),
                           ],
                         )),
+
                     LinearProgressIndicator(
                       minHeight: 20,
                       value: drivingdistancelist == null
                           ? 0
-                          : drivingdistancelist * 0.005,
-                      backgroundColor: Colors.white,
+                          : drivingdistancelist * 0.0035,
+                      backgroundColor: Colors.black,
                       valueColor: AlwaysStoppedAnimation<Color>(Colors.yellow),
                     ),
                   ],
@@ -861,14 +967,289 @@ class spendingContainer implements containerItem {
       ),
       child: Column(
         children: [
-          Text(activateName[5],
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 23.0,
-                  color: Colors.black)),
-
-          //Text('차계부 구매 코드: ' + spendinglist[0].CBOOK_CODE),
-          //Text('총 지출 금액: ' + spendinglist[0].PRICE.toString() + '원'),
+          Align(
+            alignment: Alignment.topLeft,
+            child: Text(activateName[5],
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 23.0,
+                    color: Colors.black)),
+          ),
+          SizedBox(height: 15),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Row(children: [
+                Container(
+                  width: 10,
+                  height: 5,
+                  decoration: BoxDecoration(
+                    color: Color(0xff4A86B8),
+                    borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                  ),
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                //text
+                Text("주유•세차비"),
+              ]),
+              Row(children: [
+                Container(
+                  width: 10,
+                  height: 5,
+                  decoration: BoxDecoration(
+                    color: Color(0xffC06C84),
+                    borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                  ),
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                //text
+                Text("통행•주차비")
+              ]),
+              Row(children: [
+                Container(
+                  width: 10,
+                  height: 5,
+                  decoration: BoxDecoration(
+                    color: Color(0xffF67280),
+                    borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                  ),
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                //text
+                Text("차량정비"),
+              ]),
+              Row(children: [
+                Container(
+                  width: 10,
+                  height: 5,
+                  decoration: BoxDecoration(
+                    color: Color(0xffF8B094),
+                    borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                  ),
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                //text
+                Text("보험료"),
+              ]),
+              Row(children: [
+                Container(
+                  width: 10,
+                  height: 5,
+                  decoration: BoxDecoration(
+                    color: Color(0xff74B49A),
+                    borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                  ),
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                //text
+                Text("기타"),
+              ]),
+            ],
+          ),
+          Row(
+            children: [
+              sumAllspending_last == 0
+                  ? Container(
+                      child: Text('지난주 지출이 없네요.'),
+                    )
+                  : Column(
+                      children: [
+                        Container(
+                          width: 170,
+                          height: 170,
+                          child: Stack(children: <Widget>[
+                            Center(
+                              child: Container(
+                                width: 130,
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                    color: Color.fromRGBO(255, 255, 255, 1),
+                                    shape: BoxShape.circle,
+                                    boxShadow: [
+                                      BoxShadow(
+                                          spreadRadius: -8,
+                                          blurRadius: 5,
+                                          offset: Offset(-5,-5),
+                                          color: Colors.grey
+                                      ),
+                                      BoxShadow(
+                                          spreadRadius: -2,
+                                          blurRadius: 10,
+                                          offset: Offset(7,7),
+                                          color: Colors.black.withOpacity(0.5)
+                                      )
+                                    ]
+                                ),
+                              ),
+                            ),
+                            SfCircularChart(
+                              tooltipBehavior: TooltipBehavior(enable: true),
+                              series: <CircularSeries>[
+                                DoughnutSeries<GetSpending, String>(
+                                    name: "지난주",
+                                    dataSource: spendinglist_last,
+                                    xValueMapper: (GetSpending ce, _) =>
+                                        ce.name,
+                                    yValueMapper: (GetSpending ce, _) =>
+                                        ce.cost),
+                              ],
+                            ),
+                            Center(
+                              child: Container(
+                                width: 60,
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                    color: Color.fromRGBO(255, 255, 255, 1),
+                                    shape: BoxShape.circle,
+                                    boxShadow: [
+                                      BoxShadow(
+                                          blurRadius: 1,
+                                          offset: Offset(-1,-1),
+                                          color: Colors.white
+                                      ),
+                                      BoxShadow(
+                                          spreadRadius: -2,
+                                          blurRadius: 10,
+                                          offset: Offset(5,5),
+                                          color: Colors.black.withOpacity(0.5)
+                                      )
+                                    ]
+                                ),
+                              ),
+                            ),
+                            Center(
+                              child: Text(
+                                sumAllspending_last.toString() + '원',
+                                style: TextStyle(
+                                    fontSize: 15.0,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            )
+                          ]),
+                        ),
+                        Text(
+                          '지난주',
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        )
+                      ],
+                    ),
+              SizedBox(
+                width: 20,
+              ),
+              sumAllspending_this == 0
+                  ? Container(
+                      child: Text('이번주지출이 없네요'),
+                    )
+                  : Column(
+                      children: [
+                        Container(
+                          width: 170,
+                          height: 170,
+                          child: Stack(children: <Widget>[
+                            Center(
+                              child: Container(
+                                width: 130,
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                    color: Color.fromRGBO(255, 255, 255, 1),
+                                    shape: BoxShape.circle,
+                                    boxShadow: [
+                                      BoxShadow(
+                                          spreadRadius: -8,
+                                          blurRadius: 5,
+                                          offset: Offset(-5,-5),
+                                          color: Colors.grey
+                                      ),
+                                      BoxShadow(
+                                          spreadRadius: -2,
+                                          blurRadius: 10,
+                                          offset: Offset(7,7),
+                                          color: Colors.black.withOpacity(0.5)
+                                      )
+                                    ]
+                                ),
+                              ),
+                            ),
+                            SfCircularChart(
+                              legend: Legend(
+                                isVisible: false,
+                                position: LegendPosition.bottom,
+                                title: LegendTitle(
+                                    text: '이번주',
+                                    textStyle: TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w900)),
+                              ),
+                              tooltipBehavior: TooltipBehavior(enable: true),
+                              series: <CircularSeries>[
+                                DoughnutSeries<GetSpending, String>(
+                                    name: "이번주",
+                                    dataSource: spendinglist_this,
+                                    xValueMapper: (GetSpending ce, _) =>
+                                        ce.name,
+                                    yValueMapper: (GetSpending ce, _) =>
+                                        ce.cost),
+                              ],
+                            ),
+                            Center(
+                              child: Container(
+                                width: 60,
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                    color: Color.fromRGBO(255, 255, 255, 1),
+                                    shape: BoxShape.circle,
+                                    boxShadow: [
+                                      BoxShadow(
+                                          blurRadius: 1,
+                                          offset: Offset(-1,-1),
+                                          color: Colors.white
+                                      ),
+                                      BoxShadow(
+                                          spreadRadius: -2,
+                                          blurRadius: 10,
+                                          offset: Offset(5,5),
+                                          color: Colors.black.withOpacity(0.5)
+                                      )
+                                    ]
+                                ),
+                              ),
+                            ),
+                            Center(
+                              child: Text(
+                                sumAllspending_this.toString() + '원',
+                                style: TextStyle(
+                                    fontSize: 15.0,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            )
+                          ]),
+                        ),
+                        Text(
+                          '이번주',
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        )
+                      ],
+                    )
+            ],
+          ),
         ],
       ));
 
