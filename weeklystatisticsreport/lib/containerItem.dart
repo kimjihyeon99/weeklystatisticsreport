@@ -14,8 +14,7 @@ List<Getsaftyscore> economicscorelist = []; // 경제운전 점수 리스트
 List<Getdaliyfuel> daliyfuellist = []; //연비 리스트
 int drivingdistancelist = 0; //주행 거리 리스트
 int drivingdistancelist_last = 0; //이전주 주행 거리 리스트
-int drivingdistancelist_last_per = 0;
-int maxdistance =0;
+int maxdistance = 0; // 이번주와 이전주 중 더 긴 주행 거리 저장
 
 List<GetDrivingwarningscore> countAllEventForEachDay = [];
 List<CountEventForEvent> countEventForLastWeek = [];
@@ -26,6 +25,7 @@ List<GetSpending> spendinglist_last = []; //지난주 지출 내역
 List<GetSpending> spendinglist_this = []; //이번주 지출 내역
 int sumAllspending_last = 0;
 int sumAllspending_this = 0;
+List<String> replace_item = [];
 
 //안전 점수 : 지난주와  비교하는 코멘트
 List ment = [
@@ -118,87 +118,84 @@ final int spdmentrandom = Random().nextInt(3);
 abstract class containerItem {}
 
 class saftyscoreContainer implements containerItem {
-
   final Container mycon = new Container(
-      margin: EdgeInsets.symmetric(vertical: 10.0),
-      padding: EdgeInsets.all(15),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(10),
-            topRight: Radius.circular(10),
-            bottomLeft: Radius.circular(10),
-            bottomRight: Radius.circular(10)),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.4),
-            spreadRadius: 5,
-            blurRadius: 7,
-            offset: Offset(5, 5), // changes position of shadow
+    margin: EdgeInsets.symmetric(vertical: 10.0),
+    padding: EdgeInsets.all(15),
+    decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(10),
+          topRight: Radius.circular(10),
+          bottomLeft: Radius.circular(10),
+          bottomRight: Radius.circular(10)),
+      boxShadow: [
+        BoxShadow(
+          color: Colors.black.withOpacity(0.4),
+          spreadRadius: 5,
+          blurRadius: 7,
+          offset: Offset(5, 5), // changes position of shadow
+        ),
+      ],
+    ),
+    child: Column(
+      children: [
+        Align(
+          alignment: Alignment.topLeft,
+          child: Text(activateName[0],
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 27.0,
+                  color: Colors.black)),
+        ),
+        SfCartesianChart(
+          legend: Legend(isVisible: true, position: LegendPosition.top),
+          tooltipBehavior: TooltipBehavior(enable: true),
+          series: <ChartSeries>[
+            ColumnSeries<Getsaftyscore, String>(
+                name: "지난주",
+                borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(5), topLeft: Radius.circular(5)),
+                color: Color(0xFFdedcee),
+                dataSource: saftyscorelist.getRange(0, 7).toList(),
+                xValueMapper: (Getsaftyscore gf, _) => DateFormat('EEE').format(
+                    new DateTime(
+                        int.parse(gf.Date.split("-")[0]),
+                        int.parse(gf.Date.split("-")[1]),
+                        int.parse(gf.Date.split("-")[2]))),
+                yValueMapper: (Getsaftyscore gf, _) => gf.safe_avg),
+            ColumnSeries<Getsaftyscore, String>(
+                name: "이번주",
+                borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(5), topLeft: Radius.circular(5)),
+                color: Color(0xFF6a60a9),
+                dataSource: saftyscorelist.getRange(7, 14).toList(),
+                xValueMapper: (Getsaftyscore gf, _) => DateFormat('EEE').format(
+                    new DateTime(
+                        int.parse(gf.Date.split("-")[0]),
+                        int.parse(gf.Date.split("-")[1]),
+                        int.parse(gf.Date.split("-")[2]))),
+                yValueMapper: (Getsaftyscore gf, _) => gf.safe_avg)
+          ],
+          primaryXAxis: CategoryAxis(),
+          primaryYAxis: NumericAxis(
+            maximum: 100,
           ),
-        ],
-      ),
-      child: Column(
-        children: [
-          Align(
-            alignment: Alignment.topLeft,
-            child: Text(activateName[0],
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 27.0,
-                    color: Colors.black)),
-          ),
-          SfCartesianChart(
-            legend: Legend(isVisible: true, position: LegendPosition.top),
-            tooltipBehavior: TooltipBehavior(enable: true),
-            series: <ChartSeries>[
-              ColumnSeries<Getsaftyscore, String>(
-                  name: "지난주",
-                  borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(5),
-                    topLeft: Radius.circular(5)
-                  ),
-                  color: Color(0xFFdedcee),
-                  dataSource: saftyscorelist.getRange(0, 7).toList(),
-                  xValueMapper: (Getsaftyscore gf, _) => DateFormat('EEE')
-                      .format(new DateTime(
-                          int.parse(gf.Date.split("-")[0]),
-                          int.parse(gf.Date.split("-")[1]),
-                          int.parse(gf.Date.split("-")[2]))),
-                  yValueMapper: (Getsaftyscore gf, _) => gf.safe_avg),
-              ColumnSeries<Getsaftyscore, String>(
-                  name: "이번주",
-                  borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(5),
-                      topLeft: Radius.circular(5)
-                  ),
-                  color: Color(0xFF6a60a9),
-                  dataSource: saftyscorelist.getRange(7, 14).toList(),
-                  xValueMapper: (Getsaftyscore gf, _) => DateFormat('EEE')
-                      .format(new DateTime(
-                          int.parse(gf.Date.split("-")[0]),
-                          int.parse(gf.Date.split("-")[1]),
-                          int.parse(gf.Date.split("-")[2]))),
-                  yValueMapper: (Getsaftyscore gf, _) => gf.safe_avg)
-            ],
-            primaryXAxis: CategoryAxis(),
-            primaryYAxis: NumericAxis(
-              maximum: 100,
-            ),
-          ),
-          SizedBox(height: 15,),
-          new Container(
-              height: 1.0,
-              width: double.infinity,
-              color: Colors.grey.withOpacity(0.3)),
-          SizedBox(height: 15,),
-          Align(
+        ),
+        SizedBox(
+          height: 15,
+        ),
+        new Container(
+            height: 1.0,
+            width: double.infinity,
+            color: Colors.grey.withOpacity(0.3)),
+        SizedBox(
+          height: 15,
+        ),
+        Align(
             alignment: Alignment.center,
-            child:
-            Row(
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-
                 Column(
                   children: [
                     Text(
@@ -209,7 +206,9 @@ class saftyscoreContainer implements containerItem {
                       ),
                       textAlign: TextAlign.left,
                     ),
-                    SizedBox(height: 5,),
+                    SizedBox(
+                      height: 5,
+                    ),
                     Text(
                       "이번주 평균 점수",
                       style: TextStyle(
@@ -230,7 +229,9 @@ class saftyscoreContainer implements containerItem {
                         fontSize: 18,
                       ),
                     ),
-                    SizedBox(height: 5,),
+                    SizedBox(
+                      height: 5,
+                    ),
                     Text(
                       "${thisavg.toStringAsFixed(2)} ",
                       style: TextStyle(
@@ -242,42 +243,45 @@ class saftyscoreContainer implements containerItem {
                   ],
                 )
               ],
-            )
-          ),
-          SizedBox(height: 15,),
-          new Container(
-              height: 1.0,
-              width: double.infinity,
-              color: Colors.grey.withOpacity(0.3)),
-          SizedBox(height: 5,),
-          Align(
-              alignment: Alignment.center,
-              child: (lastweekcnt > 3)
-                  ? (thisavg > 90)
-                      ? Text(ment2.getRange(0, 3).toList()[mentrandom],
-                          style: TextStyle(fontSize: 18.0, color: Colors.black),
-                          textAlign: TextAlign.center)
-                      : (thisavg > 80)
-                          ? Text(ment2.getRange(3, 6).toList()[mentrandom],
-                              style: TextStyle(
-                                  fontSize: 18.0, color: Colors.black),
-                              textAlign: TextAlign.center)
-                          : Text(ment2.getRange(6, 9).toList()[mentrandom],
-                              style: TextStyle(
-                                  fontSize: 18.0, color: Colors.black),
-                              textAlign: TextAlign.center)
-                  : (thisavg > lastavg)
-                      ? Text(ment.getRange(0, 3).toList()[mentrandom],
-                          style: TextStyle(fontSize: 18.0, color: Colors.black),
-                          textAlign: TextAlign.center)
-                      : Text(ment.getRange(3, 6).toList()[mentrandom],
-                          style: TextStyle(fontSize: 18.0, color: Colors.black),
-                          textAlign: TextAlign.center)),
-          SizedBox(height: 10,),
-        ],
-
-      ),
-
+            )),
+        SizedBox(
+          height: 15,
+        ),
+        new Container(
+            height: 1.0,
+            width: double.infinity,
+            color: Colors.grey.withOpacity(0.3)),
+        SizedBox(
+          height: 5,
+        ),
+        Align(
+            alignment: Alignment.center,
+            child: (lastweekcnt > 3)
+                ? (thisavg > 90)
+                    ? Text(ment2.getRange(0, 3).toList()[mentrandom],
+                        style: TextStyle(fontSize: 18.0, color: Colors.black),
+                        textAlign: TextAlign.center)
+                    : (thisavg > 80)
+                        ? Text(ment2.getRange(3, 6).toList()[mentrandom],
+                            style:
+                                TextStyle(fontSize: 18.0, color: Colors.black),
+                            textAlign: TextAlign.center)
+                        : Text(ment2.getRange(6, 9).toList()[mentrandom],
+                            style:
+                                TextStyle(fontSize: 18.0, color: Colors.black),
+                            textAlign: TextAlign.center)
+                : (thisavg > lastavg)
+                    ? Text(ment.getRange(0, 3).toList()[mentrandom],
+                        style: TextStyle(fontSize: 18.0, color: Colors.black),
+                        textAlign: TextAlign.center)
+                    : Text(ment.getRange(3, 6).toList()[mentrandom],
+                        style: TextStyle(fontSize: 18.0, color: Colors.black),
+                        textAlign: TextAlign.center)),
+        SizedBox(
+          height: 10,
+        ),
+      ],
+    ),
   );
 
   saftyscoreContainer();
@@ -321,8 +325,7 @@ class economicscoreContainer implements containerItem {
                   name: "지난주",
                   borderRadius: BorderRadius.only(
                       topRight: Radius.circular(5),
-                      topLeft: Radius.circular(5)
-                  ),
+                      topLeft: Radius.circular(5)),
                   color: Color(0xFFCADBE9),
                   dataSource: economicscorelist.getRange(0, 7).toList(),
                   xValueMapper: (Getsaftyscore gf, _) => DateFormat('EEE')
@@ -335,8 +338,7 @@ class economicscoreContainer implements containerItem {
                   name: "이번주",
                   borderRadius: BorderRadius.only(
                       topRight: Radius.circular(5),
-                      topLeft: Radius.circular(5)
-                  ),
+                      topLeft: Radius.circular(5)),
                   color: Color(0xFF6AAFE6),
                   dataSource: economicscorelist.getRange(7, 14).toList(),
                   xValueMapper: (Getsaftyscore gf, _) => DateFormat('EEE')
@@ -351,16 +353,19 @@ class economicscoreContainer implements containerItem {
               maximum: 100,
             ),
           ),
-          SizedBox(height: 15,),
+          SizedBox(
+            height: 15,
+          ),
           new Container(
               height: 1.0,
               width: double.infinity,
               color: Colors.grey.withOpacity(0.3)),
-          SizedBox(height: 15,),
+          SizedBox(
+            height: 15,
+          ),
           Align(
               alignment: Alignment.center,
-              child:
-              Row(
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Column(
@@ -373,7 +378,9 @@ class economicscoreContainer implements containerItem {
                         ),
                         textAlign: TextAlign.left,
                       ),
-                      SizedBox(height: 5,),
+                      SizedBox(
+                        height: 5,
+                      ),
                       Text(
                         "이번주 평균 점수",
                         style: TextStyle(
@@ -394,7 +401,9 @@ class economicscoreContainer implements containerItem {
                           fontSize: 18,
                         ),
                       ),
-                      SizedBox(height: 5,),
+                      SizedBox(
+                        height: 5,
+                      ),
                       Text(
                         "${ecothisavg.toStringAsFixed(2)} ",
                         style: TextStyle(
@@ -406,14 +415,17 @@ class economicscoreContainer implements containerItem {
                     ],
                   )
                 ],
-              )
+              )),
+          SizedBox(
+            height: 15,
           ),
-          SizedBox(height: 15,),
           new Container(
               height: 1.0,
               width: double.infinity,
               color: Colors.grey.withOpacity(0.3)),
-          SizedBox(height: 5,),
+          SizedBox(
+            height: 5,
+          ),
           Align(
               alignment: Alignment.center,
               child: (lastweekcnt > 3)
@@ -439,7 +451,9 @@ class economicscoreContainer implements containerItem {
                       : Text(ecoment.getRange(3, 6).toList()[ecomentrandom],
                           style: TextStyle(fontSize: 18.0, color: Colors.black),
                           textAlign: TextAlign.center)),
-          SizedBox(height: 10,),
+          SizedBox(
+            height: 10,
+          ),
         ],
       ));
 
@@ -478,16 +492,14 @@ class drivingwarningscoreContainer implements containerItem {
           ),
           SfCartesianChart(
             legend: Legend(isVisible: true, position: LegendPosition.top),
-
             tooltipBehavior: TooltipBehavior(enable: true),
             series: <ChartSeries>[
               ColumnSeries<GetDrivingwarningscore, String>(
                   name: "지난주",
                   borderRadius: BorderRadius.only(
                       topRight: Radius.circular(5),
-                      topLeft: Radius.circular(5)
-                  ),
-                  color:Color(0xFFF7AA97),
+                      topLeft: Radius.circular(5)),
+                  color: Color(0xFFF7AA97),
                   dataSource: countAllEventForEachDay.getRange(0, 7).toList(),
                   xValueMapper: (GetDrivingwarningscore gf, _) =>
                       DateFormat('EEE').format(new DateTime(
@@ -500,9 +512,8 @@ class drivingwarningscoreContainer implements containerItem {
                   name: "이번주",
                   borderRadius: BorderRadius.only(
                       topRight: Radius.circular(5),
-                      topLeft: Radius.circular(5)
-                  ),
-                  color:Color(0xFFDE7E73),
+                      topLeft: Radius.circular(5)),
+                  color: Color(0xFFDE7E73),
                   dataSource: countAllEventForEachDay.getRange(7, 14).toList(),
                   xValueMapper: (GetDrivingwarningscore gf, _) =>
                       DateFormat('EEE').format(new DateTime(
@@ -601,24 +612,20 @@ class drivingwarningscoreContainer implements containerItem {
                                       BoxShadow(
                                           spreadRadius: -8,
                                           blurRadius: 5,
-                                          offset: Offset(-5,-5),
-                                          color: Colors.grey
-                                      ),
+                                          offset: Offset(-5, -5),
+                                          color: Colors.grey),
                                       BoxShadow(
                                           spreadRadius: -2,
                                           blurRadius: 10,
-                                          offset: Offset(7,7),
-                                          color: Colors.black.withOpacity(0.5)
-                                      )
-                                    ]
-                                ),
+                                          offset: Offset(7, 7),
+                                          color: Colors.black.withOpacity(0.5))
+                                    ]),
                               ),
                             ),
                             SfCircularChart(
                               tooltipBehavior: TooltipBehavior(enable: true),
                               series: <CircularSeries>[
                                 DoughnutSeries<CountEventForEvent, String>(
-
                                     dataLabelSettings: DataLabelSettings(
                                         isVisible: true,
                                         labelPosition:
@@ -674,17 +681,14 @@ class drivingwarningscoreContainer implements containerItem {
                                       BoxShadow(
                                           spreadRadius: -8,
                                           blurRadius: 5,
-                                          offset: Offset(-5,-5),
-                                          color: Colors.grey
-                                      ),
+                                          offset: Offset(-5, -5),
+                                          color: Colors.grey),
                                       BoxShadow(
                                           spreadRadius: -2,
                                           blurRadius: 10,
-                                          offset: Offset(7,7),
-                                          color: Colors.black.withOpacity(0.5)
-                                      )
-                                    ]
-                                ),
+                                          offset: Offset(7, 7),
+                                          color: Colors.black.withOpacity(0.5))
+                                    ]),
                               ),
                             ),
                             SfCircularChart(
@@ -713,8 +717,7 @@ class drivingwarningscoreContainer implements containerItem {
                                     yValueMapper: (CountEventForEvent ce, _) =>
                                         ce.count),
                               ],
-                          ),
-
+                            ),
                             Center(
                               child: Text(
                                 countAllEventForThisWeek.toString() + '회',
@@ -814,16 +817,19 @@ class daliyfuelContainer implements containerItem {
             // primaryYAxis: NumericAxis(
             // ),
           ),
-          SizedBox(height: 15,),
+          SizedBox(
+            height: 15,
+          ),
           new Container(
               height: 1.0,
               width: double.infinity,
               color: Colors.grey.withOpacity(0.3)),
-          SizedBox(height: 15,),
+          SizedBox(
+            height: 15,
+          ),
           Align(
               alignment: Alignment.center,
-              child:
-              Row(
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Column(
@@ -836,7 +842,9 @@ class daliyfuelContainer implements containerItem {
                         ),
                         textAlign: TextAlign.left,
                       ),
-                      SizedBox(height: 5,),
+                      SizedBox(
+                        height: 5,
+                      ),
                       Text(
                         "이번주 평균 점수",
                         style: TextStyle(
@@ -857,7 +865,9 @@ class daliyfuelContainer implements containerItem {
                           fontSize: 18,
                         ),
                       ),
-                      SizedBox(height: 5,),
+                      SizedBox(
+                        height: 5,
+                      ),
                       Text(
                         "${fuelthisavg.toStringAsFixed(2)} ",
                         style: TextStyle(
@@ -869,14 +879,17 @@ class daliyfuelContainer implements containerItem {
                     ],
                   )
                 ],
-              )
+              )),
+          SizedBox(
+            height: 15,
           ),
-          SizedBox(height: 15,),
           new Container(
               height: 1.0,
               width: double.infinity,
               color: Colors.grey.withOpacity(0.3)),
-          SizedBox(height: 5,),
+          SizedBox(
+            height: 5,
+          ),
         ],
       ));
 
@@ -966,7 +979,6 @@ class drivingdistanceContainer implements containerItem {
                       alignment: Alignment.lerp(
                           Alignment.topLeft,
                           Alignment.topRight,
-
                           drivingdistancelist_last == null
                               ? 0
                               : drivingdistancelist_last / maxdistance),
@@ -990,10 +1002,9 @@ class drivingdistanceContainer implements containerItem {
                   ClipRRect(
                       // The border radius (`borderRadius`) property, the border radius of the rounded corners.
                       borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                      child: FAProgressBar (
+                      child: FAProgressBar(
                         size: 20,
-                        currentValue:
-                        drivingdistancelist_last == null
+                        currentValue: drivingdistancelist_last == null
                             ? 0
                             : drivingdistancelist_last,
                         backgroundColor: Colors.white,
@@ -1035,10 +1046,9 @@ class drivingdistanceContainer implements containerItem {
                   ClipRRect(
                       // The border radius (`borderRadius`) property, the border radius of the rounded corners.
                       borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                      child:  FAProgressBar (
+                      child: FAProgressBar(
                         size: 20,
-                        currentValue:
-                        drivingdistancelist_last == null
+                        currentValue: drivingdistancelist_last == null
                             ? 0
                             : drivingdistancelist,
                         backgroundColor: Colors.white,
@@ -1205,17 +1215,14 @@ class spendingContainer implements containerItem {
                                       BoxShadow(
                                           spreadRadius: -8,
                                           blurRadius: 5,
-                                          offset: Offset(-5,-5),
-                                          color: Colors.grey
-                                      ),
+                                          offset: Offset(-5, -5),
+                                          color: Colors.grey),
                                       BoxShadow(
                                           spreadRadius: -2,
                                           blurRadius: 10,
-                                          offset: Offset(7,7),
-                                          color: Colors.black.withOpacity(0.5)
-                                      )
-                                    ]
-                                ),
+                                          offset: Offset(7, 7),
+                                          color: Colors.black.withOpacity(0.5))
+                                    ]),
                               ),
                             ),
                             SfCircularChart(
@@ -1230,7 +1237,6 @@ class spendingContainer implements containerItem {
                                         ce.cost),
                               ],
                             ),
-
                             Center(
                               child: Text(
                                 sumAllspending_last.toString() + '원',
@@ -1275,17 +1281,14 @@ class spendingContainer implements containerItem {
                                       BoxShadow(
                                           spreadRadius: -8,
                                           blurRadius: 5,
-                                          offset: Offset(-5,-5),
-                                          color: Colors.grey
-                                      ),
+                                          offset: Offset(-5, -5),
+                                          color: Colors.grey),
                                       BoxShadow(
                                           spreadRadius: -2,
                                           blurRadius: 10,
-                                          offset: Offset(7,7),
-                                          color: Colors.black.withOpacity(0.5)
-                                      )
-                                    ]
-                                ),
+                                          offset: Offset(7, 7),
+                                          color: Colors.black.withOpacity(0.5))
+                                    ]),
                               ),
                             ),
                             SfCircularChart(
@@ -1309,7 +1312,6 @@ class spendingContainer implements containerItem {
                                         ce.cost),
                               ],
                             ),
-
                             Center(
                               child: Text(
                                 sumAllspending_this.toString() + '원',
@@ -1340,10 +1342,12 @@ class spendingContainer implements containerItem {
             child: (sumAllspending_last > sumAllspending_this)
                 //지난주가 지출이 많은 경우
                 ? Text(spdment.getRange(0, 3).toList()[spdmentrandom],
-                    style: TextStyle(fontSize: 18.0, color: Colors.black),textAlign: TextAlign.center)
+                    style: TextStyle(fontSize: 18.0, color: Colors.black),
+                    textAlign: TextAlign.center)
                 //이번주가 지출이 많은 경우
                 : Text(spdment.getRange(3, 6).toList()[spdmentrandom],
-                    style: TextStyle(fontSize: 18.0, color: Colors.black),textAlign: TextAlign.center),
+                    style: TextStyle(fontSize: 18.0, color: Colors.black),
+                    textAlign: TextAlign.center),
           ),
         ],
       ));
@@ -1353,29 +1357,75 @@ class spendingContainer implements containerItem {
 
 class inspectionContainer implements containerItem {
   final Container mycon = new Container(
-    margin: EdgeInsets.symmetric(vertical: 10.0),
-    padding: EdgeInsets.all(15),
-    height: 100,
-    decoration: BoxDecoration(
-      color: Colors.white,
-      borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(10),
-          topRight: Radius.circular(10),
-          bottomLeft: Radius.circular(10),
-          bottomRight: Radius.circular(10)),
-      boxShadow: [
-        BoxShadow(
-          color: Colors.black.withOpacity(0.4),
-          spreadRadius: 5,
-          blurRadius: 7,
-          offset: Offset(5, 5), // changes position of shadow
-        ),
-      ],
-    ),
-    child: Text(activateName[6],
-        style: TextStyle(
-            fontWeight: FontWeight.bold, fontSize: 23.0, color: Colors.black)),
-  );
+      margin: EdgeInsets.symmetric(vertical: 10.0),
+      padding: EdgeInsets.all(15),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(10),
+            topRight: Radius.circular(10),
+            bottomLeft: Radius.circular(10),
+            bottomRight: Radius.circular(10)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.4),
+            spreadRadius: 5,
+            blurRadius: 7,
+            offset: Offset(5, 5), // changes position of shadow
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          Align(
+            alignment: Alignment.topLeft,
+            child: Text(activateName[6],
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 23.0,
+                    color: Colors.black)),
+          ),
+          ListView.builder(
+              shrinkWrap: true,
+              physics: ClampingScrollPhysics(),
+              padding: const EdgeInsets.all(20.0),
+              itemCount: replace_item.length,
+              itemBuilder: (context, index) {
+                String itemname = replace_item[index];
+
+                return Column(
+                  children: [
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.error_outline,
+                          color: Colors.red,
+                          size: 21.0,
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          itemname,
+                          style: TextStyle(fontSize: 18),
+                        )
+                      ],
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Container(
+                        height: 1.0,
+                        width: double.infinity,
+                        color: Colors.grey.withOpacity(0.5)),
+                  ],
+                );
+              }),
+        ],
+      ));
 
   inspectionContainer();
 }

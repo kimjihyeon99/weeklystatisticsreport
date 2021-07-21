@@ -48,8 +48,7 @@ class Getdrivingdistance {
   factory Getdrivingdistance.fromJson(Map<String, dynamic> json) {
     return Getdrivingdistance(
       RecDrvDisSum:
-      json['RecDrvDisSum'].isNaN ? 0.0 : json['RecDrvDisSum'] as double,
-
+          json['RecDrvDisSum'].isNaN ? 0.0 : json['RecDrvDisSum'] as double,
     );
   }
 }
@@ -85,10 +84,23 @@ class GetSpending {
   String name;
   double cost;
 
-  GetSpending({
-    this.name,
-    this.cost
+  GetSpending({this.name, this.cost});
+}
 
-  });
+class GetInspection {
+  String name;
+  int replacement_cycle_distance;
+  int usage_distance;
+  int replacement_cycle_due;
 
+  GetInspection(
+      {this.name, this.replacement_cycle_distance, this.usage_distance, this.replacement_cycle_due});
+
+  factory GetInspection.fromJson(Map<String, dynamic> json) {
+    return GetInspection(
+        name: json['name'] as String,
+        replacement_cycle_distance: json['replacement_cycle_distance'] as int,
+        usage_distance: json['usage_distance'] as int,
+        replacement_cycle_due: json['replacement_cycle_due'] as int);
+  }
 }
