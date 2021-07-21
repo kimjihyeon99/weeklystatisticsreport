@@ -593,7 +593,39 @@ class drivingwarningscoreContainer implements containerItem {
             children: [
               isZeroEventCountForLastWeek
                   ? Container(
-                      child: Text('지난주에 이벤트가\n아예 일어나지 않았네요.'),
+                      width: 170,
+                      height: 170,
+                      child: Stack(
+                        children: <Widget>[
+                          Center(
+                            child: Container(
+                              child: Text(
+                                '지난주에 이벤트가\n아예 일어나지 않았네요.',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
+                              width: 130,
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                  color: Colors.grey,
+                                  shape: BoxShape.circle,
+                                  boxShadow: [
+                                    BoxShadow(
+                                        spreadRadius: -8,
+                                        blurRadius: 5,
+                                        offset: Offset(-5, -5),
+                                        color: Colors.grey),
+                                    BoxShadow(
+                                        spreadRadius: -2,
+                                        blurRadius: 10,
+                                        offset: Offset(7, 7),
+                                        color: Colors.black.withOpacity(0.5))
+                                  ]),
+                            ),
+                          ),
+                        ],
+                      ),
                     )
                   : Column(
                       children: [
@@ -662,7 +694,39 @@ class drivingwarningscoreContainer implements containerItem {
                     ),
               isZeroEventCountForThisWeek
                   ? Container(
-                      child: Text('이번주에 이벤트가\n아예 일어나지 않았네요.'),
+                      width: 170,
+                      height: 170,
+                      child: Stack(
+                        children: <Widget>[
+                          Center(
+                            child: Container(
+                              child: Text(
+                                '이번주에 이벤트가\n아예 일어나지 않았네요.',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
+                              width: 130,
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                  color: Colors.grey,
+                                  shape: BoxShape.circle,
+                                  boxShadow: [
+                                    BoxShadow(
+                                        spreadRadius: -8,
+                                        blurRadius: 5,
+                                        offset: Offset(-5, -5),
+                                        color: Colors.grey),
+                                    BoxShadow(
+                                        spreadRadius: -2,
+                                        blurRadius: 10,
+                                        offset: Offset(7, 7),
+                                        color: Colors.black.withOpacity(0.5))
+                                  ]),
+                            ),
+                          ),
+                        ],
+                      ),
                     )
                   : Column(
                       children: [
@@ -814,8 +878,6 @@ class daliyfuelContainer implements containerItem {
               )
             ],
             primaryXAxis: CategoryAxis(),
-            // primaryYAxis: NumericAxis(
-            // ),
           ),
           SizedBox(
             height: 15,
@@ -992,7 +1054,6 @@ class drivingdistanceContainer implements containerItem {
                             textAlign: TextAlign.center,
                           ),
                           Image(
-                            //위치는 나중에 설정
                             height: 40,
                             width: 40,
                             image: AssetImage('assets/car_img.png'),
@@ -1000,7 +1061,6 @@ class drivingdistanceContainer implements containerItem {
                         ],
                       )),
                   ClipRRect(
-                      // The border radius (`borderRadius`) property, the border radius of the rounded corners.
                       borderRadius: BorderRadius.all(Radius.circular(10.0)),
                       child: FAProgressBar(
                         size: 20,
@@ -1011,7 +1071,6 @@ class drivingdistanceContainer implements containerItem {
                         progressColor: Color(0xFFcff09e),
                         animatedDuration: Duration(milliseconds: 1000),
                         maxValue: maxdistance,
-                        // AlwaysStoppedAnimation<Color>(Color(0xFFcff09e)),
                       )),
                 ],
               )),
@@ -1036,7 +1095,6 @@ class drivingdistanceContainer implements containerItem {
                             textAlign: TextAlign.center,
                           ),
                           Image(
-                            //위치는 나중에 설정
                             height: 40,
                             width: 40,
                             image: AssetImage('assets/car_img.png'),
@@ -1044,7 +1102,6 @@ class drivingdistanceContainer implements containerItem {
                         ],
                       )),
                   ClipRRect(
-                      // The border radius (`borderRadius`) property, the border radius of the rounded corners.
                       borderRadius: BorderRadius.all(Radius.circular(10.0)),
                       child: FAProgressBar(
                         size: 20,
@@ -1055,7 +1112,6 @@ class drivingdistanceContainer implements containerItem {
                         progressColor: Color(0xFF79bd9a),
                         animatedDuration: Duration(milliseconds: 1000),
                         maxValue: maxdistance,
-                        // AlwaysStoppedAnimation<Color>(Color(0xFFcff09e)),
                       )),
                 ],
               )),
@@ -1196,7 +1252,39 @@ class spendingContainer implements containerItem {
             children: [
               sumAllspending_last == 0
                   ? Container(
-                      child: Text('지난주 지출이 없네요.'),
+                      width: 170,
+                      height: 170,
+                      child: Stack(
+                        children: <Widget>[
+                          Center(
+                            child: Container(
+                              child: Text(
+                                '지난주 지출이 없네요.',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
+                              width: 130,
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                  color: Colors.grey,
+                                  shape: BoxShape.circle,
+                                  boxShadow: [
+                                    BoxShadow(
+                                        spreadRadius: -8,
+                                        blurRadius: 5,
+                                        offset: Offset(-5, -5),
+                                        color: Colors.grey),
+                                    BoxShadow(
+                                        spreadRadius: -2,
+                                        blurRadius: 10,
+                                        offset: Offset(7, 7),
+                                        color: Colors.black.withOpacity(0.5))
+                                  ]),
+                            ),
+                          ),
+                        ],
+                      ),
                     )
                   : Column(
                       children: [
@@ -1262,7 +1350,39 @@ class spendingContainer implements containerItem {
               ),
               sumAllspending_this == 0
                   ? Container(
-                      child: Text('이번주지출이 없네요'),
+                      width: 170,
+                      height: 170,
+                      child: Stack(
+                        children: <Widget>[
+                          Center(
+                            child: Container(
+                              child: Text(
+                                '이번주 지출이 없네요',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
+                              width: 130,
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                  color: Colors.grey,
+                                  shape: BoxShape.circle,
+                                  boxShadow: [
+                                    BoxShadow(
+                                        spreadRadius: -8,
+                                        blurRadius: 5,
+                                        offset: Offset(-5, -5),
+                                        color: Colors.grey),
+                                    BoxShadow(
+                                        spreadRadius: -2,
+                                        blurRadius: 10,
+                                        offset: Offset(7, 7),
+                                        color: Colors.black.withOpacity(0.5))
+                                  ]),
+                            ),
+                          ),
+                        ],
+                      ),
                     )
                   : Column(
                       children: [
