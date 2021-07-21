@@ -295,7 +295,9 @@ void getdrivingdistance_last() async {
           .map<Getdrivingdistance>((json) => Getdrivingdistance.fromJson(json))
           .toList();
 
-      drivingdistancelist_last = jr[0].RecDrvDisSum;
+      drivingdistancelist_last = (jr[0].RecDrvDisSum).toInt();
+      // drivingdistancelist_last_per =  (jr[0].RecDrvDisSum).toInt();
+
     } else {
       //데이터가 없는 경우
       drivingdistancelist_last = 0;
@@ -345,7 +347,12 @@ void getdrivingdistance() async {
           .map<Getdrivingdistance>((json) => Getdrivingdistance.fromJson(json))
           .toList();
 
-      drivingdistancelist = jr[0].RecDrvDisSum;
+      drivingdistancelist = (jr[0].RecDrvDisSum).toInt();
+
+
+      maxdistance  = (drivingdistancelist> drivingdistancelist_last)?drivingdistancelist:drivingdistancelist_last;
+
+
     } else {
       drivingdistancelist = 0;
     }

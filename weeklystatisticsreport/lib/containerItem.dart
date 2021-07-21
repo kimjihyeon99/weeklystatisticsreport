@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:intl/intl.dart';
 import 'save_getapi.dart';
+import 'package:flutter_animation_progress_bar/flutter_animation_progress_bar.dart';
 
 import 'dart:math'; //random 수 가져오기 위한것
 
@@ -11,8 +12,11 @@ import 'dart:math'; //random 수 가져오기 위한것
 List<Getsaftyscore> saftyscorelist = []; //안전운전 점수리스트
 List<Getsaftyscore> economicscorelist = []; // 경제운전 점수 리스트
 List<Getdaliyfuel> daliyfuellist = []; //연비 리스트
-double drivingdistancelist = 0; //주행 거리 리스트
-double drivingdistancelist_last = 0; //이전주 주행 거리 리스트
+int drivingdistancelist = 0; //주행 거리 리스트
+int drivingdistancelist_last = 0; //이전주 주행 거리 리스트
+int drivingdistancelist_last_per = 0;
+int maxdistance =0;
+
 List<GetDrivingwarningscore> countAllEventForEachDay = [];
 List<CountEventForEvent> countEventForLastWeek = [];
 List<CountEventForEvent> countEventForThisWeek = [];
@@ -962,13 +966,14 @@ class drivingdistanceContainer implements containerItem {
                       alignment: Alignment.lerp(
                           Alignment.topLeft,
                           Alignment.topRight,
+
                           drivingdistancelist_last == null
                               ? 0
-                              : drivingdistancelist_last * 0.005),
+                              : drivingdistancelist_last / maxdistance),
                       child: Column(
                         children: [
                           Text(
-                            "${drivingdistancelist_last == null ? 0 : drivingdistancelist_last.toInt()} km",
+                            "${drivingdistancelist_last == null ? 0 : drivingdistancelist_last} km",
                             style: TextStyle(
                               fontSize: 15,
                             ),
@@ -985,13 +990,17 @@ class drivingdistanceContainer implements containerItem {
                   ClipRRect(
                       // The border radius (`borderRadius`) property, the border radius of the rounded corners.
                       borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                      child: LinearProgressIndicator(
-                        minHeight: 20,
-                        value: drivingdistancelist_last == null
+                      child: FAProgressBar (
+                        size: 20,
+                        currentValue:
+                        drivingdistancelist_last == null
                             ? 0
-                            : drivingdistancelist_last * 0.005,
+                            : drivingdistancelist_last,
                         backgroundColor: Colors.white,
-                        valueColor: AlwaysStoppedAnimation<Color>(Color(0xFFcff09e)),
+                        progressColor: Color(0xFFcff09e),
+                        animatedDuration: Duration(milliseconds: 1000),
+                        maxValue: maxdistance,
+                        // AlwaysStoppedAnimation<Color>(Color(0xFFcff09e)),
                       )),
                 ],
               )),
@@ -1005,11 +1014,11 @@ class drivingdistanceContainer implements containerItem {
                           Alignment.topRight,
                           drivingdistancelist == null
                               ? 0
-                              : drivingdistancelist * 0.005),
+                              : drivingdistancelist / maxdistance),
                       child: Column(
                         children: [
                           Text(
-                            "${drivingdistancelist == null ? 0 : drivingdistancelist.toInt()} km",
+                            "${drivingdistancelist == null ? 0 : drivingdistancelist} km",
                             style: TextStyle(
                               fontSize: 15,
                             ),
@@ -1026,14 +1035,17 @@ class drivingdistanceContainer implements containerItem {
                   ClipRRect(
                       // The border radius (`borderRadius`) property, the border radius of the rounded corners.
                       borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                      child: LinearProgressIndicator(
-                        minHeight: 20,
-                        value: drivingdistancelist == null
+                      child:  FAProgressBar (
+                        size: 20,
+                        currentValue:
+                        drivingdistancelist_last == null
                             ? 0
-                            : drivingdistancelist * 0.005,
+                            : drivingdistancelist,
                         backgroundColor: Colors.white,
-                        valueColor:
-                            AlwaysStoppedAnimation<Color>(Color(0xFF79bd9a)),
+                        progressColor: Color(0xFF79bd9a),
+                        animatedDuration: Duration(milliseconds: 1000),
+                        maxValue: maxdistance,
+                        // AlwaysStoppedAnimation<Color>(Color(0xFFcff09e)),
                       )),
                 ],
               )),
