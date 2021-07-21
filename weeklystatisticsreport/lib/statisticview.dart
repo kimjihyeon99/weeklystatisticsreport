@@ -101,14 +101,14 @@ class statistic_viewPage extends State<statisticviewPage> {
             child: new Text(
               '주간 통계',
               textAlign: TextAlign.center,
-              style: new TextStyle(
-                fontSize: 25.0,
-                color: Colors.white
-              ),
+              style: new TextStyle(fontSize: 25.0, color: Colors.white),
             ),
           ),
           leading: IconButton(
-            icon: Icon(Icons.arrow_back,color: Colors.white,),
+            icon: Icon(
+              Icons.arrow_back,
+              color: Colors.white,
+            ),
             onPressed: () {
               Navigator.push(
                   context, MaterialPageRoute(builder: (context) => mainmenu()));
@@ -116,7 +116,10 @@ class statistic_viewPage extends State<statisticviewPage> {
           ),
           actions: <Widget>[
             new IconButton(
-                icon: Icon(Icons.info_outline,color: Colors.white,),
+                icon: Icon(
+                  Icons.info_outline,
+                  color: Colors.white,
+                ),
                 onPressed: () {
                   //팝업창
                   showCupertinoDialog(
@@ -151,7 +154,10 @@ class statistic_viewPage extends State<statisticviewPage> {
                       });
                 }),
             new IconButton(
-                icon: Icon(Icons.settings,color: Colors.white,),
+                icon: Icon(
+                  Icons.settings,
+                  color: Colors.white,
+                ),
                 onPressed: () {
                   Navigator.push(
                       context,

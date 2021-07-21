@@ -1,9 +1,9 @@
 import 'dart:convert' as convert;
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'containerItem.dart';
 import 'save_getapi.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter/services.dart';
 
 //날짜 선언
 final DateTime originnow = DateTime.now();
@@ -30,6 +30,7 @@ Future<String> getallapi() async {
   await getrotationscore();
   await getidlescore();
   await getSpending();
+  getInspection();
 
   return 'Data Loaded';
 }
@@ -206,19 +207,17 @@ void getdaliyfuel() async {
 
         date = date - 1;
         index = index + 1;
-
       });
       //마지막 날짜와 원하는 날짜까지의 차이
       int countday = lastday.difference(lastweek).inDays - 1;
 
-    int len = newjr.length;
-    //만약에 들어있는 데이터가 마지막 날짜가 아니라면, 나머지 데이터 모두 0으로 채우기
-    for (int i = len; i < len + countday; i++) {
-      DateTime mydate = new DateTime(now.year, now.month, now.day - i);
-      String mydateday = formatter.format(mydate);
-      newjr.insert(
-          i, new Getdaliyfuel(DrvFuelUsement: 0, Date: mydateday));
-    }
+      int len = newjr.length;
+      //만약에 들어있는 데이터가 마지막 날짜가 아니라면, 나머지 데이터 모두 0으로 채우기
+      for (int i = len; i < len + countday; i++) {
+        DateTime mydate = new DateTime(now.year, now.month, now.day - i);
+        String mydateday = formatter.format(mydate);
+        newjr.insert(i, new Getdaliyfuel(DrvFuelUsement: 0, Date: mydateday));
+      }
       //거꾸로 들어온 데이터 뒤집기
       daliyfuellist = new List.from(newjr.reversed);
 
@@ -246,7 +245,6 @@ void getdaliyfuel() async {
         }
       });
       fuelthisavg = feulsum / lastonecount;
-
     } else {
       //빈 파일 처리
     }
@@ -349,10 +347,9 @@ void getdrivingdistance() async {
 
       drivingdistancelist = (jr[0].RecDrvDisSum).toInt();
 
-
-      maxdistance  = (drivingdistancelist> drivingdistancelist_last)?drivingdistancelist:drivingdistancelist_last;
-
-
+      maxdistance = (drivingdistancelist > drivingdistancelist_last)
+          ? drivingdistancelist
+          : drivingdistancelist_last;
     } else {
       drivingdistancelist = 0;
     }
@@ -455,7 +452,6 @@ void getdecelerationscore() async {
 
     int len = countAllEventForEachDay.length;
 
-
     //만약에 들어있는 데이터가 마지막 날짜가 아니라면, 나머지 데이터 모두 0으로 채우기
     for (int i = len; i < len + countday; i++) {
       DateTime mydate = new DateTime(now.year, now.month, now.day - i);
@@ -530,7 +526,6 @@ void getdecelerationscore() async {
         .add(new CountEventForEvent(name: "급감속", count: countSum));
 
     countAllEventForLastWeek += countSum;
-
   } else {
     print('Request failed with status: ${response.statusCode}.');
   }
@@ -599,7 +594,6 @@ void getaccelerationscore() async {
     countEventForThisWeek
         .add(new CountEventForEvent(name: "급가속", count: countSum));
     countAllEventForThisWeek += countSum;
-
   } else {
     print('Request failed with status: ${response.statusCode}.');
   }
@@ -637,7 +631,6 @@ void getaccelerationscore() async {
       index = index + 1;
       date = date - 1;
     });
-
 
     if (countSum > 0) {
       isZeroEventCountForLastWeek = false;
@@ -714,7 +707,6 @@ void getrotationscore() async {
     countEventForThisWeek
         .add(new CountEventForEvent(name: "급회전", count: countSum));
     countAllEventForThisWeek += countSum;
-    
   } else {
     print('Request failed with status: ${response.statusCode}.');
   }
@@ -761,7 +753,6 @@ void getrotationscore() async {
     countEventForLastWeek
         .add(new CountEventForEvent(name: "급회전", count: countSum));
     countAllEventForLastWeek += countSum;
-    
   } else {
     print('Request failed with status: ${response.statusCode}.');
   }
@@ -831,7 +822,6 @@ void getidlescore() async {
         .add(new CountEventForEvent(name: "공회전", count: countSum));
 
     countAllEventForThisWeek += countSum;
-
   } else {
     print('Request failed with status: ${response.statusCode}.');
   }
@@ -948,7 +938,6 @@ void getSpending() async {
             jr["etc"].toDouble())
         .toInt();
 
-    print(spendinglist_last);
   } else {
     print('Request failed with status: ${response.statusCode}.');
   }
@@ -967,7 +956,7 @@ void getSpending() async {
   if (response.statusCode == 200) {
     var jsonResponse = convert.jsonDecode(response.body);
     var jr = jsonResponse['response']['body']['items'];
-    print(jr["car_premium"]);
+
     //mapping
     spendinglist_this.add(new GetSpending(
         name: "주유•세차비",
@@ -990,8 +979,29 @@ void getSpending() async {
             jr["car_premium"].toDouble() +
             jr["etc"].toDouble())
         .toInt();
-    print(spendinglist_this);
+  
   } else {
     print('Request failed with status: ${response.statusCode}.');
   }
+}
+
+void getInspection() async {
+  replace_item = [];
+
+  var result = await rootBundle.loadString('json/inspection.json');
+
+  var response = convert.json.decode(result);
+
+  var jr = response["items"];
+  jr = jr.cast<Map<String, dynamic>>();
+  List<GetInspection> inspections =
+      jr.map<GetInspection>((json) => GetInspection.fromJson(json)).toList();
+
+  inspections.forEach((element) {
+    var remain_distance = element.replacement_cycle_distance - element.usage_distance;
+    var weekuse = (element.replacement_cycle_distance / (element.replacement_cycle_due * 30)) * 10;
+    if(remain_distance <= weekuse) {
+      replace_item.add(element.name);
+    }
+  });
 }

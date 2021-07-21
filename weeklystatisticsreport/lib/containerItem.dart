@@ -14,8 +14,7 @@ List<Getsaftyscore> economicscorelist = []; // 경제운전 점수 리스트
 List<Getdaliyfuel> daliyfuellist = []; //연비 리스트
 int drivingdistancelist = 0; //주행 거리 리스트
 int drivingdistancelist_last = 0; //이전주 주행 거리 리스트
-int drivingdistancelist_last_per = 0;
-int maxdistance = 0;
+int maxdistance = 0; // 이번주와 이전주 중 더 긴 주행 거리 저장
 
 List<GetDrivingwarningscore> countAllEventForEachDay = [];
 List<CountEventForEvent> countEventForLastWeek = [];
@@ -26,6 +25,7 @@ List<GetSpending> spendinglist_last = []; //지난주 지출 내역
 List<GetSpending> spendinglist_this = []; //이번주 지출 내역
 int sumAllspending_last = 0;
 int sumAllspending_this = 0;
+List<String> replace_item = [];
 
 //안전 점수 : 지난주와  비교하는 코멘트
 List ment = [
@@ -878,8 +878,6 @@ class daliyfuelContainer implements containerItem {
               )
             ],
             primaryXAxis: CategoryAxis(),
-            // primaryYAxis: NumericAxis(
-            // ),
           ),
           SizedBox(
             height: 15,
@@ -1056,7 +1054,6 @@ class drivingdistanceContainer implements containerItem {
                             textAlign: TextAlign.center,
                           ),
                           Image(
-                            //위치는 나중에 설정
                             height: 40,
                             width: 40,
                             image: AssetImage('assets/car_img.png'),
@@ -1064,7 +1061,6 @@ class drivingdistanceContainer implements containerItem {
                         ],
                       )),
                   ClipRRect(
-                      // The border radius (`borderRadius`) property, the border radius of the rounded corners.
                       borderRadius: BorderRadius.all(Radius.circular(10.0)),
                       child: FAProgressBar(
                         size: 20,
@@ -1075,7 +1071,6 @@ class drivingdistanceContainer implements containerItem {
                         progressColor: Color(0xFFcff09e),
                         animatedDuration: Duration(milliseconds: 1000),
                         maxValue: maxdistance,
-                        // AlwaysStoppedAnimation<Color>(Color(0xFFcff09e)),
                       )),
                 ],
               )),
@@ -1100,7 +1095,6 @@ class drivingdistanceContainer implements containerItem {
                             textAlign: TextAlign.center,
                           ),
                           Image(
-                            //위치는 나중에 설정
                             height: 40,
                             width: 40,
                             image: AssetImage('assets/car_img.png'),
@@ -1108,7 +1102,6 @@ class drivingdistanceContainer implements containerItem {
                         ],
                       )),
                   ClipRRect(
-                      // The border radius (`borderRadius`) property, the border radius of the rounded corners.
                       borderRadius: BorderRadius.all(Radius.circular(10.0)),
                       child: FAProgressBar(
                         size: 20,
@@ -1119,7 +1112,6 @@ class drivingdistanceContainer implements containerItem {
                         progressColor: Color(0xFF79bd9a),
                         animatedDuration: Duration(milliseconds: 1000),
                         maxValue: maxdistance,
-                        // AlwaysStoppedAnimation<Color>(Color(0xFFcff09e)),
                       )),
                 ],
               )),
@@ -1485,29 +1477,75 @@ class spendingContainer implements containerItem {
 
 class inspectionContainer implements containerItem {
   final Container mycon = new Container(
-    margin: EdgeInsets.symmetric(vertical: 10.0),
-    padding: EdgeInsets.all(15),
-    height: 100,
-    decoration: BoxDecoration(
-      color: Colors.white,
-      borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(10),
-          topRight: Radius.circular(10),
-          bottomLeft: Radius.circular(10),
-          bottomRight: Radius.circular(10)),
-      boxShadow: [
-        BoxShadow(
-          color: Colors.black.withOpacity(0.4),
-          spreadRadius: 5,
-          blurRadius: 7,
-          offset: Offset(5, 5), // changes position of shadow
-        ),
-      ],
-    ),
-    child: Text(activateName[6],
-        style: TextStyle(
-            fontWeight: FontWeight.bold, fontSize: 23.0, color: Colors.black)),
-  );
+      margin: EdgeInsets.symmetric(vertical: 10.0),
+      padding: EdgeInsets.all(15),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(10),
+            topRight: Radius.circular(10),
+            bottomLeft: Radius.circular(10),
+            bottomRight: Radius.circular(10)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.4),
+            spreadRadius: 5,
+            blurRadius: 7,
+            offset: Offset(5, 5), // changes position of shadow
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          Align(
+            alignment: Alignment.topLeft,
+            child: Text(activateName[6],
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 23.0,
+                    color: Colors.black)),
+          ),
+          ListView.builder(
+              shrinkWrap: true,
+              physics: ClampingScrollPhysics(),
+              padding: const EdgeInsets.all(20.0),
+              itemCount: replace_item.length,
+              itemBuilder: (context, index) {
+                String itemname = replace_item[index];
+
+                return Column(
+                  children: [
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.error_outline,
+                          color: Colors.red,
+                          size: 21.0,
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          itemname,
+                          style: TextStyle(fontSize: 18),
+                        )
+                      ],
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Container(
+                        height: 1.0,
+                        width: double.infinity,
+                        color: Colors.grey.withOpacity(0.5)),
+                  ],
+                );
+              }),
+        ],
+      ));
 
   inspectionContainer();
 }

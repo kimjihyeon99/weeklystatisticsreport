@@ -131,7 +131,8 @@ class _mainmenuPage extends State<mainmenuPage> {
             style: ButtonStyle(
               backgroundColor: MaterialStateProperty.resolveWith<Color>(
                 (Set<MaterialState> states) {
-                  if (states.contains(MaterialState.pressed)) return Color(0xff84B1ED);
+                  if (states.contains(MaterialState.pressed))
+                    return Color(0xff84B1ED);
                   return PrimaryColor.withOpacity(
                       0); // Use the component's default.
                 },
@@ -175,7 +176,8 @@ class _mainmenuPage extends State<mainmenuPage> {
             style: ButtonStyle(
               backgroundColor: MaterialStateProperty.resolveWith<Color>(
                 (Set<MaterialState> states) {
-                  if (states.contains(MaterialState.pressed)) return Color(0xff84B1ED);
+                  if (states.contains(MaterialState.pressed))
+                    return Color(0xff84B1ED);
                   return PrimaryColor.withOpacity(
                       0); // Use the component's default.
                 },

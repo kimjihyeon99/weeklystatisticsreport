@@ -94,7 +94,10 @@ class _WeeklyStatisticsEditPage extends State<WeeklyStatisticsEditPage> {
           ),
           centerTitle: true,
           leading: IconButton(
-            icon: Icon(Icons.arrow_back, color: Colors.white,),
+            icon: Icon(
+              Icons.arrow_back,
+              color: Colors.white,
+            ),
             onPressed: () {
               // 주간 통계 화면으로 넘어가도록 구현
               Navigator.push(context,
