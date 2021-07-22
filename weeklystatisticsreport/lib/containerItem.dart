@@ -524,14 +524,23 @@ class drivingwarningscoreContainer implements containerItem {
             ],
             primaryXAxis: CategoryAxis(),
           ),
-          SizedBox(height: 10,),
+          SizedBox(
+            height: 10,
+          ),
           Container(
               height: 1.0,
               width: double.infinity,
               color: Colors.grey.withOpacity(0.5)),
-          SizedBox(height: 15,),
-          Text("이벤트 별 주간 경고 횟수 총합", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
-          SizedBox(height: 15,),
+          SizedBox(
+            height: 15,
+          ),
+          Text(
+            "이벤트 별 주간 경고 횟수 총합",
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+          SizedBox(
+            height: 15,
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
@@ -597,56 +606,57 @@ class drivingwarningscoreContainer implements containerItem {
               ]),
             ],
           ),
-          SizedBox(height: 10,),
+          SizedBox(
+            height: 10,
+          ),
           Row(
             //가운데 정렬
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               isZeroEventCountForLastWeek
                   ? Column(
-                children: [
-                  Container(
-                    width: 170,
-                    height: 170,
-                    child: Center(
-                      child: Container(
-                        child: Text(
-                          '이벤트가 일어나지 않았네요.',
-                          style: TextStyle(
-                            color: Colors.white,
+                      children: [
+                        Container(
+                          width: 170,
+                          height: 170,
+                          child: Center(
+                            child: Container(
+                              child: Text(
+                                '이벤트가 일어나지 않았네요.',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
+                              width: 130,
+                              height: 130,
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                  color: Colors.grey,
+                                  shape: BoxShape.circle,
+                                  boxShadow: [
+                                    BoxShadow(
+                                        spreadRadius: -8,
+                                        blurRadius: 5,
+                                        offset: Offset(-5, -5),
+                                        color: Colors.grey),
+                                    BoxShadow(
+                                        spreadRadius: -2,
+                                        blurRadius: 10,
+                                        offset: Offset(7, 7),
+                                        color: Colors.black.withOpacity(0.5))
+                                  ]),
+                            ),
                           ),
                         ),
-                        width: 130,
-                        height: 130,
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                            color: Colors.grey,
-                            shape: BoxShape.circle,
-                            boxShadow: [
-                              BoxShadow(
-                                  spreadRadius: -8,
-                                  blurRadius: 5,
-                                  offset: Offset(-5, -5),
-                                  color: Colors.grey),
-                              BoxShadow(
-                                  spreadRadius: -2,
-                                  blurRadius: 10,
-                                  offset: Offset(7, 7),
-                                  color: Colors.black.withOpacity(0.5))
-                            ]),
-                      ),
-                    ),
-                  )
-                  ,
-                  Text(
-                    '지난주',
-                    style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  )
-                ],
-              )
+                        Text(
+                          '지난주',
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        )
+                      ],
+                    )
                   : Column(
                       children: [
                         Container(
@@ -682,15 +692,15 @@ class drivingwarningscoreContainer implements containerItem {
                                     dataLabelSettings: DataLabelSettings(
                                         isVisible: true,
                                         labelPosition:
-                                        ChartDataLabelPosition.outside,
+                                            ChartDataLabelPosition.outside,
                                         labelIntersectAction:
-                                        LabelIntersectAction.none),
+                                            LabelIntersectAction.none),
                                     name: "지난주",
                                     dataSource: countEventForLastWeek,
                                     xValueMapper: (CountEventForEvent ce, _) =>
-                                    ce.name,
+                                        ce.name,
                                     yValueMapper: (CountEventForEvent ce, _) =>
-                                    ce.count),
+                                        ce.count),
                               ],
                             ),
                             Center(
@@ -713,52 +723,53 @@ class drivingwarningscoreContainer implements containerItem {
                         )
                       ],
                     ),
-              SizedBox(width: 5,),
+              SizedBox(
+                width: 5,
+              ),
               isZeroEventCountForThisWeek
                   ? Column(
-                children: [
-                  Container(
-                    width: 170,
-                    height: 170,
-                    child: Center(
-                      child: Container(
-                        child: Text(
-                          '이벤트가 일어나지 않았네요.',
-                          style: TextStyle(
-                            color: Colors.white,
+                      children: [
+                        Container(
+                          width: 170,
+                          height: 170,
+                          child: Center(
+                            child: Container(
+                              child: Text(
+                                '이벤트가 일어나지 않았네요.',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
+                              width: 130,
+                              height: 130,
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                  color: Colors.grey,
+                                  shape: BoxShape.circle,
+                                  boxShadow: [
+                                    BoxShadow(
+                                        spreadRadius: -8,
+                                        blurRadius: 5,
+                                        offset: Offset(-5, -5),
+                                        color: Colors.grey),
+                                    BoxShadow(
+                                        spreadRadius: -2,
+                                        blurRadius: 10,
+                                        offset: Offset(7, 7),
+                                        color: Colors.black.withOpacity(0.5))
+                                  ]),
+                            ),
                           ),
                         ),
-                        width: 130,
-                        height: 130,
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                            color: Colors.grey,
-                            shape: BoxShape.circle,
-                            boxShadow: [
-                              BoxShadow(
-                                  spreadRadius: -8,
-                                  blurRadius: 5,
-                                  offset: Offset(-5, -5),
-                                  color: Colors.grey),
-                              BoxShadow(
-                                  spreadRadius: -2,
-                                  blurRadius: 10,
-                                  offset: Offset(7, 7),
-                                  color: Colors.black.withOpacity(0.5))
-                            ]),
-                      ),
-                    ),
-                  )
-                  ,
-                  Text(
-                    '이번주',
-                    style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  )
-                ],
-              )
+                        Text(
+                          '이번주',
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        )
+                      ],
+                    )
                   : Column(
                       children: [
                         Container(
@@ -803,15 +814,15 @@ class drivingwarningscoreContainer implements containerItem {
                                     dataLabelSettings: DataLabelSettings(
                                         isVisible: true,
                                         labelPosition:
-                                        ChartDataLabelPosition.outside,
+                                            ChartDataLabelPosition.outside,
                                         labelIntersectAction:
-                                        LabelIntersectAction.none),
+                                            LabelIntersectAction.none),
                                     name: "이번주",
                                     dataSource: countEventForThisWeek,
                                     xValueMapper: (CountEventForEvent ce, _) =>
-                                    ce.name,
+                                        ce.name,
                                     yValueMapper: (CountEventForEvent ce, _) =>
-                                    ce.count),
+                                        ce.count),
                               ],
                             ),
                             Center(
@@ -836,7 +847,9 @@ class drivingwarningscoreContainer implements containerItem {
                     )
             ],
           ),
-          SizedBox(height: 10,),
+          SizedBox(
+            height: 10,
+          ),
         ],
       ));
 
@@ -1291,7 +1304,9 @@ class spendingContainer implements containerItem {
               ]),
             ],
           ),
-          SizedBox(height: 5,),
+          SizedBox(
+            height: 5,
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -1299,8 +1314,8 @@ class spendingContainer implements containerItem {
                   ? Column(
                       children: [
                         Container(
-                          width: 170,
-                          height: 170,
+                          width: 155,
+                          height: 155,
                           child: Center(
                             child: Container(
                               child: Text(
@@ -1309,8 +1324,8 @@ class spendingContainer implements containerItem {
                                   color: Colors.white,
                                 ),
                               ),
-                              width: 130,
-                              height: 130,
+                              width: 115,
+                              height: 115,
                               alignment: Alignment.center,
                               decoration: BoxDecoration(
                                   color: Colors.grey,
@@ -1329,8 +1344,7 @@ class spendingContainer implements containerItem {
                                   ]),
                             ),
                           ),
-                        )
-                        ,
+                        ),
                         Text(
                           '지난주',
                           style: TextStyle(
@@ -1343,13 +1357,13 @@ class spendingContainer implements containerItem {
                   : Column(
                       children: [
                         Container(
-                          width: 170,
-                          height: 170,
+                          width: 155,
+                          height: 155,
                           child: Stack(children: <Widget>[
                             Center(
                               child: Container(
-                                width: 130,
-                                height: 130,
+                                width: 115,
+                                height: 115,
                                 alignment: Alignment.center,
                                 decoration: BoxDecoration(
                                     color: Color.fromRGBO(255, 255, 255, 1),
@@ -1404,8 +1418,8 @@ class spendingContainer implements containerItem {
                   ? Column(
                       children: [
                         Container(
-                          width: 170,
-                          height: 170,
+                          width: 155,
+                          height: 155,
                           child: Center(
                             child: Container(
                               child: Text(
@@ -1414,8 +1428,8 @@ class spendingContainer implements containerItem {
                                   color: Colors.white,
                                 ),
                               ),
-                              width: 130,
-                              height: 130,
+                              width: 115,
+                              height: 115,
                               alignment: Alignment.center,
                               decoration: BoxDecoration(
                                   color: Colors.grey,
@@ -1435,7 +1449,6 @@ class spendingContainer implements containerItem {
                             ),
                           ),
                         ),
-
                         SizedBox(
                           height: 20,
                         ),
@@ -1451,14 +1464,14 @@ class spendingContainer implements containerItem {
                   : Column(
                       children: [
                         Container(
-                          width: 170,
-                          height: 170,
+                          width: 155,
+                          height: 155,
                           child: Stack(children: <Widget>[
                             Center(
                               child: Container(
                                 //흰색 부분
-                                width: 130,
-                                height: 130,
+                                width: 115,
+                                height: 115,
                                 alignment: Alignment.center,
                                 decoration: BoxDecoration(
                                     color: Color.fromRGBO(255, 255, 255, 1),

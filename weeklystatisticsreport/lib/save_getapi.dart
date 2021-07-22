@@ -94,7 +94,10 @@ class GetInspection {
   int replacement_cycle_due;
 
   GetInspection(
-      {this.name, this.replacement_cycle_distance, this.usage_distance, this.replacement_cycle_due});
+      {this.name,
+      this.replacement_cycle_distance,
+      this.usage_distance,
+      this.replacement_cycle_due});
 
   factory GetInspection.fromJson(Map<String, dynamic> json) {
     return GetInspection(

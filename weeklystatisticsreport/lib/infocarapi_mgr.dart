@@ -937,7 +937,6 @@ void getSpending() async {
             jr["car_premium"].toDouble() +
             jr["etc"].toDouble())
         .toInt();
-
   } else {
     print('Request failed with status: ${response.statusCode}.');
   }
@@ -979,7 +978,6 @@ void getSpending() async {
             jr["car_premium"].toDouble() +
             jr["etc"].toDouble())
         .toInt();
-  
   } else {
     print('Request failed with status: ${response.statusCode}.');
   }
@@ -998,9 +996,12 @@ void getInspection() async {
       jr.map<GetInspection>((json) => GetInspection.fromJson(json)).toList();
 
   inspections.forEach((element) {
-    var remain_distance = element.replacement_cycle_distance - element.usage_distance;
-    var weekuse = (element.replacement_cycle_distance / (element.replacement_cycle_due * 30)) * 10;
-    if(remain_distance <= weekuse) {
+    var remain_distance =
+        element.replacement_cycle_distance - element.usage_distance;
+    var weekuse = (element.replacement_cycle_distance /
+            (element.replacement_cycle_due * 30)) *
+        10;
+    if (remain_distance <= weekuse) {
       replace_item.add(element.name);
     }
   });
