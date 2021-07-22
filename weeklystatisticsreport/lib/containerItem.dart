@@ -1240,7 +1240,10 @@ class spendingContainer implements containerItem {
                   width: 5,
                 ),
                 //text
-                Text("주유•세차비"),
+                Text(
+                  "주유•세차비",
+                  style: TextStyle(fontSize: 12.5),
+                ),
               ]),
               Row(children: [
                 Container(
@@ -1255,7 +1258,10 @@ class spendingContainer implements containerItem {
                   width: 5,
                 ),
                 //text
-                Text("통행•주차비")
+                Text(
+                  "통행•주차비",
+                  style: TextStyle(fontSize: 12.5),
+                )
               ]),
               Row(children: [
                 Container(
@@ -1270,7 +1276,10 @@ class spendingContainer implements containerItem {
                   width: 5,
                 ),
                 //text
-                Text("차량정비"),
+                Text(
+                  "차량정비",
+                  style: TextStyle(fontSize: 12.5),
+                ),
               ]),
               Row(children: [
                 Container(
@@ -1285,7 +1294,10 @@ class spendingContainer implements containerItem {
                   width: 5,
                 ),
                 //text
-                Text("보험료"),
+                Text(
+                  "보험료",
+                  style: TextStyle(fontSize: 12.5),
+                ),
               ]),
               Row(children: [
                 Container(
@@ -1300,7 +1312,10 @@ class spendingContainer implements containerItem {
                   width: 5,
                 ),
                 //text
-                Text("기타"),
+                Text(
+                  "기타",
+                  style: TextStyle(fontSize: 12.5),
+                ),
               ]),
             ],
           ),
@@ -1398,7 +1413,7 @@ class spendingContainer implements containerItem {
                               child: Text(
                                 sumAllspending_last.toString() + '원',
                                 style: TextStyle(
-                                    fontSize: 15.0,
+                                    fontSize: 12.0,
                                     color: Colors.black,
                                     fontWeight: FontWeight.bold),
                               ),
@@ -1515,7 +1530,7 @@ class spendingContainer implements containerItem {
                               child: Text(
                                 sumAllspending_this.toString() + '원',
                                 style: TextStyle(
-                                    fontSize: 13.0,
+                                    fontSize: 12.0,
                                     color: Colors.black,
                                     fontWeight: FontWeight.bold),
                               ),
