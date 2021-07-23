@@ -69,9 +69,15 @@ int firstcountactivate() {
   return count;
 }
 
+GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
+
 class statisticview extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
+    navigatorKey = GlobalKey<NavigatorState>();
+
     return new MaterialApp(
       title: 'Generated App',
       theme: new ThemeData(
@@ -80,6 +86,7 @@ class statisticview extends StatelessWidget {
           accentColor: const Color(0xff84B1ED),
           canvasColor: const Color(0xff84B1ED)),
       home: new statisticviewPage(),
+      navigatorKey: navigatorKey,
     );
   }
 }

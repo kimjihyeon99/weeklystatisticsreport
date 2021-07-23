@@ -100,6 +100,7 @@ class _WeeklyStatisticsEditPage extends State<WeeklyStatisticsEditPage> {
             ),
             onPressed: () {
               // 주간 통계 화면으로 넘어가도록 구현
+
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => statisticview()));
             },

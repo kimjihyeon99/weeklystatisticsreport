@@ -139,13 +139,58 @@ class saftyscoreContainer implements containerItem {
     ),
     child: Column(
       children: [
-        Align(
-          alignment: Alignment.topLeft,
-          child: Text(activateName[0],
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 27.0,
-                  color: Colors.black)),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Align(
+              alignment: Alignment.topLeft,
+              child: Text(activateName[0],
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 27.0,
+                      color: Colors.black)),
+            ),
+            IconButton(
+                icon: Icon(
+                  Icons.info_outline,
+                  color: Colors.black,
+                ),
+                onPressed: () {
+                  //팝업창
+                  showCupertinoDialog(
+                      context: navigatorKey.currentContext,
+                      //barrierDismissible - Dialog를 제외한 다른 화면 터치 x
+                      barrierDismissible: false,
+                      builder: (BuildContext context) {
+                        return new Container(
+                            height: 800.0,
+                            child: CupertinoAlertDialog(
+                              //Dialog Main Title
+                              title: Column(
+                                children: <Widget>[
+                                  new Text("안전 점수"),
+                                  SizedBox(height: 5,),
+                                  new Container(
+                                      height: 1.0,
+                                      width: 400.0,
+                                      color: Colors.grey),
+                                  SizedBox(height: 5,),
+                                ],
+                              ),
+                              content: new Text(
+                                  "✔안전운점 점수는 주행 중 발생하는 급가속, 급감속, 과속, 급회전과 다양한 주행 정보를 기반으로 산정됩니다.\n ✔그래프를 클릭하여 각 날의 안전 점수를 확인할 수 있습니다.\n✔이번주와 지난주의 일일평균을 비교할 수 있습니다.\n✔지난주에 4일 이상 운전을 하지 않았다면 이번주의 데이터만을 이용하여 아래 멘트가 정해집니다."),
+                              actions: <Widget>[
+                                new TextButton(
+                                  child: Text("확인"),
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                ),
+                              ],
+                            ));
+                      });
+                }),
+          ],
         ),
         SfCartesianChart(
           legend: Legend(isVisible: true, position: LegendPosition.top),
@@ -288,7 +333,7 @@ class saftyscoreContainer implements containerItem {
 }
 
 class economicscoreContainer implements containerItem {
-  final Container mycon = new Container(
+   final Container mycon = new Container(
       margin: EdgeInsets.symmetric(vertical: 10.0),
       padding: EdgeInsets.all(15),
       decoration: BoxDecoration(
@@ -309,13 +354,58 @@ class economicscoreContainer implements containerItem {
       ),
       child: Column(
         children: [
-          Align(
-            alignment: Alignment.topLeft,
-            child: Text(activateName[1],
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 27.0,
-                    color: Colors.black)),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Align(
+                alignment: Alignment.topLeft,
+                child: Text(activateName[1],
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 27.0,
+                        color: Colors.black)),
+              ),
+              IconButton(
+                  icon: Icon(
+                    Icons.info_outline,
+                    color: Colors.black,
+                  ),
+                  onPressed: () {
+                    //팝업창
+                    showCupertinoDialog(
+                        context: navigatorKey.currentContext,
+                        //barrierDismissible - Dialog를 제외한 다른 화면 터치 x
+                        barrierDismissible: false,
+                        builder: (BuildContext context) {
+                          return new Container(
+                              height: 800.0,
+                              child: CupertinoAlertDialog(
+                                //Dialog Main Title
+                                title: Column(
+                                  children: <Widget>[
+                                    new Text("경제 점수"),
+                                    SizedBox(height: 5,),
+                                    new Container(
+                                        height: 1.0,
+                                        width: 400.0,
+                                        color: Colors.grey),
+                                    SizedBox(height: 5,),
+                                  ],
+                                ),
+                                content: new Text(
+                                    "✔경제운전 점수는 주행 중 계산된 연비를 점수화하여, 경제점수가 산정됩니다.\n✔이번주와 저번주의 일일평균을 비교할 수 있습니다."),
+                                actions: <Widget>[
+                                  new TextButton(
+                                    child: Text("확인"),
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                ],
+                              ));
+                        });
+                  }),
+            ],
           ),
           SfCartesianChart(
             legend: Legend(isVisible: true, position: LegendPosition.top),
@@ -457,7 +547,7 @@ class economicscoreContainer implements containerItem {
         ],
       ));
 
-  economicscoreContainer();
+    economicscoreContainer();
 }
 
 class drivingwarningscoreContainer implements containerItem {
@@ -482,13 +572,58 @@ class drivingwarningscoreContainer implements containerItem {
       ),
       child: Column(
         children: [
-          Align(
-            alignment: Alignment.topLeft,
-            child: Text(activateName[2],
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 27.0,
-                    color: Colors.black)),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Align(
+                alignment: Alignment.topLeft,
+                child: Text(activateName[2],
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 27.0,
+                        color: Colors.black)),
+              ),
+              IconButton(
+                  icon: Icon(
+                    Icons.info_outline,
+                    color: Colors.black,
+                  ),
+                  onPressed: () {
+                    //팝업창
+                    showCupertinoDialog(
+                        context: navigatorKey.currentContext,
+                        //barrierDismissible - Dialog를 제외한 다른 화면 터치 x
+                        barrierDismissible: false,
+                        builder: (BuildContext context) {
+                          return new Container(
+                              height: 800.0,
+                              child: CupertinoAlertDialog(
+                                //Dialog Main Title
+                                title: Column(
+                                  children: <Widget>[
+                                    new Text("운전스타일 경고 횟수"),
+                                    SizedBox(height: 5,),
+                                    new Container(
+                                        height: 1.0,
+                                        width: 400.0,
+                                        color: Colors.grey),
+                                    SizedBox(height: 5,),
+                                  ],
+                                ),
+                                content: new Text(
+                                    "✔일별로 위험운전행동 발생 횟수를 확인할 수 있습니다.\n✔한 주동안 일어난 급가속, 급감속, 과속, 급회전 횟수를 각각 확인할 수 있고 가운데 횟수는 해당 주에 일어난 위험운전행동 총 횟수를 나타냅니다.\n✔그래프를 클릭하여 자세한 횟수를 확인할 수 있습니다.\n✔이번주와 지난주에 발생한 위험운전행동 횟수를 비교할 수 있습니다."),
+                                actions: <Widget>[
+                                  new TextButton(
+                                    child: Text("확인"),
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                ],
+                              ));
+                        });
+                  }),
+            ],
           ),
           SfCartesianChart(
             legend: Legend(isVisible: true, position: LegendPosition.top),
@@ -878,13 +1013,58 @@ class daliyfuelContainer implements containerItem {
       ),
       child: Column(
         children: [
-          Align(
-            alignment: Alignment.topLeft,
-            child: Text(activateName[3],
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 27.0,
-                    color: Colors.black)),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Align(
+                alignment: Alignment.topLeft,
+                child: Text(activateName[3],
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 27.0,
+                        color: Colors.black)),
+              ),
+              IconButton(
+                  icon: Icon(
+                    Icons.info_outline,
+                    color: Colors.black,
+                  ),
+                  onPressed: () {
+                    //팝업창
+                    showCupertinoDialog(
+                        context: navigatorKey.currentContext,
+                        //barrierDismissible - Dialog를 제외한 다른 화면 터치 x
+                        barrierDismissible: false,
+                        builder: (BuildContext context) {
+                          return new Container(
+                              height: 800.0,
+                              child: CupertinoAlertDialog(
+                                //Dialog Main Title
+                                title: Column(
+                                  children: <Widget>[
+                                    new Text("일일 연비"),
+                                    SizedBox(height: 5,),
+                                    new Container(
+                                        height: 1.0,
+                                        width: 400.0,
+                                        color: Colors.grey),
+                                    SizedBox(height: 5,),
+                                  ],
+                                ),
+                                content: new Text(
+                                    "✔ 일일 평균 연비 정보을 요일마다 확인할 수 있습니다.\n✔ 지난주와 이번주의 평균 연비 정보를 비교할 수 있습니다."),
+                                actions: <Widget>[
+                                  new TextButton(
+                                    child: Text("확인"),
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                ],
+                              ));
+                        });
+                  }),
+            ],
           ),
           SfCartesianChart(
             legend: Legend(isVisible: true, position: LegendPosition.top),
@@ -1026,14 +1206,61 @@ class drivingdistanceContainer implements containerItem {
       ),
       child: Column(
         children: [
-          Align(
-            alignment: Alignment.topLeft,
-            child: Text(activateName[4],
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 27.0,
-                    color: Colors.black)),
+
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Align(
+                alignment: Alignment.topLeft,
+                child: Text(activateName[4],
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 27.0,
+                        color: Colors.black)),
+              ),
+              IconButton(
+                  icon: Icon(
+                    Icons.info_outline,
+                    color: Colors.black,
+                  ),
+                  onPressed: () {
+                    //팝업창
+                    showCupertinoDialog(
+                        context: navigatorKey.currentContext,
+                        //barrierDismissible - Dialog를 제외한 다른 화면 터치 x
+                        barrierDismissible: false,
+                        builder: (BuildContext context) {
+                          return new Container(
+                              height: 800.0,
+                              child: CupertinoAlertDialog(
+                                //Dialog Main Title
+                                title: Column(
+                                  children: <Widget>[
+                                    new Text("주행 거리"),
+                                    SizedBox(height: 5,),
+                                    new Container(
+                                        height: 1.0,
+                                        width: 400.0,
+                                        color: Colors.grey),
+                                    SizedBox(height: 5,),
+                                  ],
+                                ),
+                                content: new Text(
+                                    "✔일주일 동안 주행한 거리의 합을 보여줍니다.\n✔지난주와 이번주 총 주행거리를 확인할 수 있습니다."),
+                                actions: <Widget>[
+                                  new TextButton(
+                                    child: Text("확인"),
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                ],
+                              ));
+                        });
+                  }),
+            ],
           ),
+
           Column(
             children: <Widget>[
               Row(
@@ -1215,13 +1442,58 @@ class spendingContainer implements containerItem {
       ),
       child: Column(
         children: [
-          Align(
-            alignment: Alignment.topLeft,
-            child: Text(activateName[5],
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 23.0,
-                    color: Colors.black)),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Align(
+                alignment: Alignment.topLeft,
+                child: Text(activateName[5],
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 23.0,
+                        color: Colors.black)),
+              ),
+              IconButton(
+                  icon: Icon(
+                    Icons.info_outline,
+                    color: Colors.black,
+                  ),
+                  onPressed: () {
+                    //팝업창
+                    showCupertinoDialog(
+                        context: navigatorKey.currentContext,
+                        //barrierDismissible - Dialog를 제외한 다른 화면 터치 x
+                        barrierDismissible: false,
+                        builder: (BuildContext context) {
+                          return new Container(
+                              height: 800.0,
+                              child: CupertinoAlertDialog(
+                                //Dialog Main Title
+                                title: Column(
+                                  children: <Widget>[
+                                    new Text("지출 내역"),
+                                    SizedBox(height: 5,),
+                                    new Container(
+                                        height: 1.0,
+                                        width: 400.0,
+                                        color: Colors.grey),
+                                    SizedBox(height: 5,),
+                                  ],
+                                ),
+                                content: new Text(
+                                    "✔ 차계부에 기록한 내용을 바탕으로 주간 차트가 띄워집니다.\n✔ 이번주와 저번주의 지출 내역'을 비교할 수 있습니다."),
+                                actions: <Widget>[
+                                  new TextButton(
+                                    child: Text("확인"),
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                ],
+                              ));
+                        });
+                  }),
+            ],
           ),
           SizedBox(height: 20),
           Row(
@@ -1597,14 +1869,60 @@ class inspectionContainer implements containerItem {
       ),
       child: Column(
         children: [
-          Align(
-            alignment: Alignment.topLeft,
-            child: Text(activateName[6],
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 23.0,
-                    color: Colors.black)),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Align(
+                alignment: Alignment.topLeft,
+                child: Text(activateName[6],
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 23.0,
+                        color: Colors.black)),
+              ),
+              IconButton(
+                  icon: Icon(
+                    Icons.info_outline,
+                    color: Colors.black,
+                  ),
+                  onPressed: () {
+                    //팝업창
+                    showCupertinoDialog(
+                        context: navigatorKey.currentContext,
+                        //barrierDismissible - Dialog를 제외한 다른 화면 터치 x
+                        barrierDismissible: false,
+                        builder: (BuildContext context) {
+                          return new Container(
+                              height: 800.0,
+                              child: CupertinoAlertDialog(
+                                //Dialog Main Title
+                                title: Column(
+                                  children: <Widget>[
+                                    new Text("점검 필요 항목"),
+                                    SizedBox(height: 5,),
+                                    new Container(
+                                        height: 1.0,
+                                        width: 400.0,
+                                        color: Colors.grey),
+                                    SizedBox(height: 5,),
+                                  ],
+                                ),
+                                content: new Text(
+                                    "✔교체주기(km)/교체날짜(일) * 10 의 수식을 적용하여 앞으로 일주일내에 점검해야 할 차량 소모품 정보를 띄워줍니다.\n✔클릭시 해당 정보를 자세히 볼 수 있습니다."),
+                                actions: <Widget>[
+                                  new TextButton(
+                                    child: Text("확인"),
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                ],
+                              ));
+                        });
+                  }),
+            ],
           ),
+
           ListView.builder(
               shrinkWrap: true,
               physics: ClampingScrollPhysics(),
