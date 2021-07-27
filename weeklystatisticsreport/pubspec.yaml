@@ -21,6 +21,7 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
+  shared_preferences: ^2.0.6
   flutter_animation_progress_bar: ^2.0.0
   flutter_spinkit: ^5.0.0
   syncfusion_flutter_charts: ^19.2.47

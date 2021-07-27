@@ -5,6 +5,7 @@ import 'WeeklyStatisticsEdit.dart';
 import 'containerItem.dart';
 import 'infocarapi_mgr.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 //activate 와 deactivate 구분하기 위한 list
 List activate = [
@@ -55,15 +56,15 @@ List<ListItem> mylist = List<ListItem>.generate(
 //처음 activate 개수를 세기 위한것
 int firstcountactivate() {
   int count = 0;
-  activate = [];
-  deactivate = [];
+  // activate = [];
+  // deactivate = [];
 
   for (int i = 0; i < Activateinfo.length; i++) {
     if (Activateinfo[activateName[i]] == true) {
-      activate.add(activateName[i]);
+      // activate.add(activateName[i]);
       count = count + 1;
     } else {
-      deactivate.add(activateName[i]);
+      // deactivate.add(activateName[i]);
     }
   }
   return count;
@@ -71,9 +72,7 @@ int firstcountactivate() {
 
 GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
-
 class statisticview extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     navigatorKey = GlobalKey<NavigatorState>();
@@ -99,6 +98,40 @@ class statisticviewPage extends StatefulWidget {
 }
 
 class statistic_viewPage extends State<statisticviewPage> {
+  Future<String> myapi;
+
+  void initState() {
+    super.initState();
+    myapi = getallapi();
+    _loadInfo();
+  }
+
+  _loadInfo() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    setState(() {
+      activate = prefs.getStringList('activate') ??
+          [
+            "안전 점수",
+            "경제 점수",
+            "운전스타일 경고 횟수",
+            "일일 연비",
+            "주행 거리",
+            "지출 내역",
+            "점검 필요 항목"
+          ];
+      deactivate = prefs.getStringList('deactivate') ?? [];
+
+      Activateinfo['안전 점수'] = prefs.getBool('isactivate1') ?? true;
+      Activateinfo['경제 점수'] = prefs.getBool('isactivate2') ?? true;
+      Activateinfo['운전스타일 경고 횟수'] = prefs.getBool('isactivate3') ?? true;
+      Activateinfo['일일 연비'] = prefs.getBool('isactivate4') ?? true;
+      Activateinfo['주행 거리'] = prefs.getBool('isactivate5') ?? true;
+      Activateinfo['지출 내역'] = prefs.getBool('isactivate6') ?? true;
+      Activateinfo['점검 필요 항목'] = prefs.getBool('isactivate7') ?? true;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -176,7 +209,7 @@ class statistic_viewPage extends State<statisticviewPage> {
           ],
         ),
         body: FutureBuilder(
-          future: getallapi(),
+          future: myapi,
           builder: (context, snapshot) {
             if (snapshot.hasData == false) {
               return Container(

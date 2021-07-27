@@ -23,14 +23,16 @@ int numyoil = yoil[todayyoil];
 Future<String> getallapi() async {
   await getsafyscore();
   await getdaliyfuel();
-  await getdrivingdistance(); //이번주
   await getdrivingdistance_last(); //지난주
+  await getdrivingdistance(); //이번주
   await getdecelerationscore();
   await getaccelerationscore();
   await getrotationscore();
   await getidlescore();
   await getSpending();
-  getInspection();
+  await getInspection();
+
+  print('Data Loaded');
 
   return 'Data Loaded';
 }
@@ -78,7 +80,6 @@ void getsafyscore() async {
       int day = int.parse(x.Date.split("-")[2]);
       while (date != day) {
         DateTime mydate = new DateTime(now.year, now.month, now.day - index);
-        lastday = mydate;
         String mydateday = formatter.format(mydate);
         //비어있는 데이터 넣기
         newjr.insert(
@@ -194,7 +195,6 @@ void getdaliyfuel() async {
         int day = int.parse(x.Date.split("-")[2]);
         while (date != day) {
           DateTime mydate = new DateTime(now.year, now.month, now.day - index);
-          lastday = mydate;
           String mydateday = formatter.format(mydate);
           //비어있는 데이터 넣기
           newjr.insert(
@@ -202,6 +202,8 @@ void getdaliyfuel() async {
           date = date - 1;
           index = index + 1;
         }
+
+        lastday = DateFormat('yyyy-MM-dd').parse(x.Date);
         //기존 데이터 넣기
         newjr.insert(index, x);
 
@@ -209,9 +211,10 @@ void getdaliyfuel() async {
         index = index + 1;
       });
       //마지막 날짜와 원하는 날짜까지의 차이
-      int countday = lastday.difference(lastweek).inDays - 1;
+      int countday = lastday.difference(lastweek).inDays;
 
       int len = newjr.length;
+
       //만약에 들어있는 데이터가 마지막 날짜가 아니라면, 나머지 데이터 모두 0으로 채우기
       for (int i = len; i < len + countday; i++) {
         DateTime mydate = new DateTime(now.year, now.month, now.day - i);
@@ -233,7 +236,11 @@ void getdaliyfuel() async {
         }
       });
 
-      fuellastavg = feulsum / lastonecount;
+      if (lastonecount == 0) {
+        fuellastavg = 0;
+      } else {
+        fuellastavg = feulsum / lastonecount;
+      }
 
       //이번주 평균 계산
       feulsum = 0;
@@ -244,7 +251,17 @@ void getdaliyfuel() async {
           onecount = onecount + 1;
         }
       });
-      fuelthisavg = feulsum / lastonecount;
+
+      if (onecount == 0) {
+        fuelthisavg = 0;
+      } else {
+        fuelthisavg = feulsum / onecount;
+      }
+
+      // daliyfuellist.forEach((element) {
+      //   print(element.Date);
+      // });
+
     } else {
       //빈 파일 처리
     }

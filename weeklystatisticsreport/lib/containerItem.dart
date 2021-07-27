@@ -169,12 +169,16 @@ class saftyscoreContainer implements containerItem {
                               title: Column(
                                 children: <Widget>[
                                   new Text("안전 점수"),
-                                  SizedBox(height: 5,),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
                                   new Container(
                                       height: 1.0,
                                       width: 400.0,
                                       color: Colors.grey),
-                                  SizedBox(height: 5,),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
                                 ],
                               ),
                               content: new Text(
@@ -333,7 +337,7 @@ class saftyscoreContainer implements containerItem {
 }
 
 class economicscoreContainer implements containerItem {
-   final Container mycon = new Container(
+  final Container mycon = new Container(
       margin: EdgeInsets.symmetric(vertical: 10.0),
       padding: EdgeInsets.all(15),
       decoration: BoxDecoration(
@@ -384,12 +388,16 @@ class economicscoreContainer implements containerItem {
                                 title: Column(
                                   children: <Widget>[
                                     new Text("경제 점수"),
-                                    SizedBox(height: 5,),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
                                     new Container(
                                         height: 1.0,
                                         width: 400.0,
                                         color: Colors.grey),
-                                    SizedBox(height: 5,),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
                                   ],
                                 ),
                                 content: new Text(
@@ -547,7 +555,7 @@ class economicscoreContainer implements containerItem {
         ],
       ));
 
-    economicscoreContainer();
+  economicscoreContainer();
 }
 
 class drivingwarningscoreContainer implements containerItem {
@@ -602,12 +610,16 @@ class drivingwarningscoreContainer implements containerItem {
                                 title: Column(
                                   children: <Widget>[
                                     new Text("운전스타일 경고 횟수"),
-                                    SizedBox(height: 5,),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
                                     new Container(
                                         height: 1.0,
                                         width: 400.0,
                                         color: Colors.grey),
-                                    SizedBox(height: 5,),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
                                   ],
                                 ),
                                 content: new Text(
@@ -1043,12 +1055,16 @@ class daliyfuelContainer implements containerItem {
                                 title: Column(
                                   children: <Widget>[
                                     new Text("일일 연비"),
-                                    SizedBox(height: 5,),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
                                     new Container(
                                         height: 1.0,
                                         width: 400.0,
                                         color: Colors.grey),
-                                    SizedBox(height: 5,),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
                                   ],
                                 ),
                                 content: new Text(
@@ -1206,7 +1222,6 @@ class drivingdistanceContainer implements containerItem {
       ),
       child: Column(
         children: [
-
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -1237,12 +1252,16 @@ class drivingdistanceContainer implements containerItem {
                                 title: Column(
                                   children: <Widget>[
                                     new Text("주행 거리"),
-                                    SizedBox(height: 5,),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
                                     new Container(
                                         height: 1.0,
                                         width: 400.0,
                                         color: Colors.grey),
-                                    SizedBox(height: 5,),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
                                   ],
                                 ),
                                 content: new Text(
@@ -1260,8 +1279,11 @@ class drivingdistanceContainer implements containerItem {
                   }),
             ],
           ),
-
-          Column(
+          SizedBox(
+            height: 10,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -1283,7 +1305,7 @@ class drivingdistanceContainer implements containerItem {
                 ],
               ),
               SizedBox(
-                height: 5,
+                width: 10,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -1305,6 +1327,9 @@ class drivingdistanceContainer implements containerItem {
                 ],
               )
             ],
+          ),
+          SizedBox(
+            height: 15,
           ),
           SizedBox(
               width: 300,
@@ -1347,6 +1372,9 @@ class drivingdistanceContainer implements containerItem {
                       )),
                 ],
               )),
+          SizedBox(
+            height: 15,
+          ),
           SizedBox(
               width: 300,
               child: Column(
@@ -1472,16 +1500,20 @@ class spendingContainer implements containerItem {
                                 title: Column(
                                   children: <Widget>[
                                     new Text("지출 내역"),
-                                    SizedBox(height: 5,),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
                                     new Container(
                                         height: 1.0,
                                         width: 400.0,
                                         color: Colors.grey),
-                                    SizedBox(height: 5,),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
                                   ],
                                 ),
                                 content: new Text(
-                                    "✔ 차계부에 기록한 내용을 바탕으로 주간 차트가 띄워집니다.\n✔ 이번주와 저번주의 지출 내역'을 비교할 수 있습니다."),
+                                    "✔ 차계부에 기록한 내용을 바탕으로 주간 차트가 띄워집니다.\n✔ 이번주와 저번주의 지출 내역을 비교할 수 있습니다."),
                                 actions: <Widget>[
                                   new TextButton(
                                     child: Text("확인"),
@@ -1736,9 +1768,6 @@ class spendingContainer implements containerItem {
                             ),
                           ),
                         ),
-                        SizedBox(
-                          height: 20,
-                        ),
                         Text(
                           '이번주',
                           style: TextStyle(
@@ -1899,12 +1928,16 @@ class inspectionContainer implements containerItem {
                                 title: Column(
                                   children: <Widget>[
                                     new Text("점검 필요 항목"),
-                                    SizedBox(height: 5,),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
                                     new Container(
                                         height: 1.0,
                                         width: 400.0,
                                         color: Colors.grey),
-                                    SizedBox(height: 5,),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
                                   ],
                                 ),
                                 content: new Text(
@@ -1922,7 +1955,6 @@ class inspectionContainer implements containerItem {
                   }),
             ],
           ),
-
           ListView.builder(
               shrinkWrap: true,
               physics: ClampingScrollPhysics(),
@@ -1939,7 +1971,7 @@ class inspectionContainer implements containerItem {
                     Row(
                       children: [
                         Icon(
-                          Icons.error_outline,
+                          Icons.priority_high_outlined,
                           color: Colors.red,
                           size: 21.0,
                         ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'statisticview.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 const PrimaryColor = const Color(0xff84B1ED);
 const SecondColor = const Color(0xff4F86C6);
@@ -85,6 +86,23 @@ class _WeeklyStatisticsEditPage extends State<WeeklyStatisticsEditPage> {
     int ct = countactivate();
     print(ct);
 
+    _saveInfo() async {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.clear();
+      setState(() {
+        prefs.setStringList('activate', activate?.cast<String>());
+        prefs.setStringList('deactivate', deactivate?.cast<String>());
+
+        prefs.setBool('isactivate1', Activateinfo['안전 점수']);
+        prefs.setBool('isactivate2', Activateinfo['경제 점수']);
+        prefs.setBool('isactivate3', Activateinfo['운전스타일 경고 횟수']);
+        prefs.setBool('isactivate4', Activateinfo['일일 연비']);
+        prefs.setBool('isactivate5', Activateinfo['주행 거리']);
+        prefs.setBool('isactivate6', Activateinfo['지출 내역']);
+        prefs.setBool('isactivate7', Activateinfo['점검 필요 항목']);
+      });
+    }
+
     return new Scaffold(
         appBar: new AppBar(
           elevation: 0.0,
@@ -99,8 +117,8 @@ class _WeeklyStatisticsEditPage extends State<WeeklyStatisticsEditPage> {
               color: Colors.white,
             ),
             onPressed: () {
+              _saveInfo();
               // 주간 통계 화면으로 넘어가도록 구현
-
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => statisticview()));
             },
