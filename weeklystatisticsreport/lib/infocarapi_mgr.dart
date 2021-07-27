@@ -130,6 +130,14 @@ void getsafyscore() async {
     lastavg = (sum / lastonecount);
     ecolastavg = ecosum / lastonecount;
 
+    if (lastonecount == 0) {
+      lastavg = 0;
+      ecolastavg = 0;
+    } else {
+      lastavg = sum / lastonecount;
+      ecolastavg = ecosum / lastonecount;
+    }
+
     //이번주 평균 계산
     sum = 0;
     ecosum = 0;
@@ -144,6 +152,14 @@ void getsafyscore() async {
     });
     thisavg = sum / onecount;
     ecothisavg = ecosum / onecount;
+
+    if (onecount == 0) {
+      thisavg = 0;
+      ecothisavg = 0;
+    } else {
+      thisavg = sum / onecount;
+      ecothisavg = ecosum / onecount;
+    }
 
     //경제운전 점수 리스트에 추가
     economicscorelist = new List.from(newjr.reversed);
