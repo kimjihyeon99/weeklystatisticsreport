@@ -166,21 +166,57 @@ class _WeeklyStatisticsEditPage extends State<WeeklyStatisticsEditPage> {
                 if (temp is isActivateItem) {
                   if (temp.isactivate == true) {
                     //활성화
-                    if (baseindex >= newIndex && newIndex != 0) {
+                    if (newIndex != 0) {
                       if (oldIndex < newIndex) {
                         newIndex -= 1;
                       }
                       final ListItem item = items.removeAt(oldIndex);
                       items.insert(newIndex, item);
+
+                      //deactive 영역으로 넘어가는 경우 아이콘 바꾸기
+                      if(baseindex < newIndex){
+                        //icon 바꾸기
+                        temp.isactivate = false;
+                        Activateinfo[temp.Activatename] = false;
+
+                        int ct = countactivate();
+
+                        items = List<ListItem>.generate(
+                            9,
+                                (i) => ((i % (ct + 1)) == 0 &&
+                                ((i ~/ (ct + 1)) == 0 || (i ~/ (ct + 1)) == 1))
+                                ? (i == 0 ? HeadingItem("활성화") : HeadingItem("비활성화"))
+                                : ((i ~/ (ct + 1)) == 0
+                                ? isActivateItem(activate[i - 1], true)
+                                : isActivateItem(deactivate[i - ct - 2], false)));
+                      }
+
                     }
                   } else {
                     //비활성화
-                    if (baseindex < newIndex && newIndex != 0) {
+                    if (newIndex != 0) {// 조건 지우기
                       if (oldIndex < newIndex) {
                         newIndex -= 1;
                       }
                       final ListItem item = items.removeAt(oldIndex);
                       items.insert(newIndex, item);
+
+                      //active 영역으로 넘어가는 경우 아이콘 바꾸기
+                      if(baseindex >= newIndex){
+                        temp.isactivate = true;
+                        Activateinfo[temp.Activatename] = true;
+
+                        int ct = countactivate();
+
+                        items = List<ListItem>.generate(
+                            9,
+                                (i) => ((i % (ct + 1)) == 0 &&
+                                ((i ~/ (ct + 1)) == 0 || (i ~/ (ct + 1)) == 1))
+                                ? (i == 0 ? HeadingItem("활성화") : HeadingItem("비활성화"))
+                                : ((i ~/ (ct + 1)) == 0
+                                ? isActivateItem(activate[i - 1], true)
+                                : isActivateItem(deactivate[i - ct - 2], false)));
+                      }
                     }
                   }
                 }
@@ -191,80 +227,79 @@ class _WeeklyStatisticsEditPage extends State<WeeklyStatisticsEditPage> {
   }
 
   Widget makeAppbarContainer(String menuName, int index) {
-    return Container(
+    return IgnorePointer(
       key: Key('$index'),
-      alignment: Alignment.centerLeft,
-      padding: const EdgeInsets.all(10.0),
-      child: Text(
-        menuName,
-        style: new TextStyle(
-          fontSize: 25.0,
-          color: Colors.white,
+      ignoring: true,
+      child: Container(
+        alignment: Alignment.centerLeft,
+        padding: const EdgeInsets.only(
+          top: 10,
+          bottom:10,
+          left: 20,
+          right: 10
         ),
+        child: Text(
+          menuName,
+          style: new TextStyle(
+            fontSize: 25.0,
+            color: Colors.white,
+          ),
+        ),
+        decoration: BoxDecoration(
+          color: SecondColor,
+        ),
+        width: double.infinity,
+        height: AppBar().preferredSize.height,
       ),
-      decoration: BoxDecoration(
-        color: SecondColor,
-      ),
-      width: double.infinity,
-      height: AppBar().preferredSize.height,
     );
   }
 
   Widget makeActivationContainer(String menuName, int index) {
     return Container(
       key: Key('$index'),
-      // border를 추가하기 위해 Row를 Container로 감쌈
-      child: Row(
-        children: <Widget>[
-          Expanded(
-            // for Alignment
-            child: new IconButton(
-              icon: Icon(Icons.remove_circle),
-              color: Color(0xFFff7473),
-              onPressed: () {
-                final item = items[index];
-                if (item is isActivateItem) {
-                  item.isactivate = false;
-                }
-                Activateinfo[menuName] = false;
+      child:  ListTile(
+        // border를 추가하기 위해 Row를 Container로 감쌈
+        leading: new IconButton(
+          icon: Icon(Icons.remove_circle),
+          color: Color(0xFFff7473),
+          onPressed: () {
+            final item = items[index];
+            if (item is isActivateItem) {
+              item.isactivate = false;
+            }
+            Activateinfo[menuName] = false;
 
-                int ct = countactivate();
+            int ct = countactivate();
 
-                items = List<ListItem>.generate(
-                    9,
+            items = List<ListItem>.generate(
+                9,
                     (i) => ((i % (ct + 1)) == 0 &&
-                            ((i ~/ (ct + 1)) == 0 || (i ~/ (ct + 1)) == 1))
-                        ? (i == 0 ? HeadingItem("활성화") : HeadingItem("비활성화"))
-                        : ((i ~/ (ct + 1)) == 0
-                            ? isActivateItem(activate[i - 1], true)
-                            : isActivateItem(deactivate[i - ct - 2], false)));
+                    ((i ~/ (ct + 1)) == 0 || (i ~/ (ct + 1)) == 1))
+                    ? (i == 0 ? HeadingItem("활성화") : HeadingItem("비활성화"))
+                    : ((i ~/ (ct + 1)) == 0
+                    ? isActivateItem(activate[i - 1], true)
+                    : isActivateItem(deactivate[i - ct - 2], false)));
 
-                //reload
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            WeeklyStatisticsEdit(items: items)));
-              },
-            ),
+            //reload
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        WeeklyStatisticsEdit(items: items)));
+          },
+        ),
+        title: Text(
+          menuName,
+          style: new TextStyle(
+            fontSize: 25.0,
+            color: Colors.white,
           ),
-          Expanded(
-            flex: 5, // for Alignment
-            child: new Text(
-              menuName,
-              style: new TextStyle(
-                fontSize: 25.0,
-                color: Colors.white,
-              ),
-            ),
-          ),
-          Expanded(
-            child: new Icon(
-              Icons.menu,
-              color: Colors.white,
-            ),
-          )
-        ],
+        ),
+        trailing: Icon(
+          Icons.reorder,
+          color: Colors.white,
+          size: 24.0,
+        ),
       ),
       decoration: BoxDecoration(
           border: Border.all(color: SecondColor, width: 0.1),
@@ -277,56 +312,52 @@ class _WeeklyStatisticsEditPage extends State<WeeklyStatisticsEditPage> {
     return new Container(
       key: Key('$index'),
       // border를 추가하기 위해 Row를 Container로 감쌈
-      child: Row(children: <Widget>[
-        Expanded(
-          // for Alignment
-          child: new IconButton(
-            icon: Icon(Icons.add_circle),
-            color: Color(0xFF8FBC94),
-            onPressed: () {
-              final item = items[index];
-              if (item is isActivateItem) {
-                item.isactivate = true;
-              }
-              Activateinfo[menuName] = true;
+      child: ListTile(
+        leading: new IconButton(
+                icon: Icon(Icons.add_circle),
+                color: Color(0xFF8FBC94),
+                onPressed: () {
+                  final item = items[index];
+                  if (item is isActivateItem) {
+                    item.isactivate = true;
+                  }
+                  Activateinfo[menuName] = true;
 
-              int ct = countactivate();
+                  int ct = countactivate();
 
-              items = List<ListItem>.generate(
-                  9,
-                  (i) => ((i % (ct + 1)) == 0 &&
-                          ((i ~/ (ct + 1)) == 0 || (i ~/ (ct + 1)) == 1))
-                      ? (i == 0 ? HeadingItem("활성화") : HeadingItem("비활성화"))
-                      : ((i ~/ (ct + 1)) == 0
-                          ? isActivateItem(activate[i - 1], true)
-                          : isActivateItem(deactivate[i - ct - 2], false)));
+                  items = List<ListItem>.generate(
+                      9,
+                      (i) => ((i % (ct + 1)) == 0 &&
+                              ((i ~/ (ct + 1)) == 0 || (i ~/ (ct + 1)) == 1))
+                          ? (i == 0 ? HeadingItem("활성화") : HeadingItem("비활성화"))
+                          : ((i ~/ (ct + 1)) == 0
+                              ? isActivateItem(activate[i - 1], true)
+                              : isActivateItem(deactivate[i - ct - 2], false)));
 
-              //reload
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          WeeklyStatisticsEdit(items: items)));
-            },
-          ),
-        ),
-        Expanded(
-          flex: 5, // for Alignment
-          child: new Text(
-            menuName,
-            style: new TextStyle(
-              fontSize: 25.0,
-              color: new Color(0xffE0E0E0),
-            ),
-          ),
-        ),
-        Expanded(
-          child: new Icon(
-            Icons.menu,
-            color: Colors.white.withOpacity(0.5),
-          ),
-        )
-      ]),
+                  //reload
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              WeeklyStatisticsEdit(items: items)));
+                },
+              ),
+        title: new Text(
+                menuName,
+                style: new TextStyle(
+                  fontSize: 25.0,
+                  color: new Color(0xffE0E0E0),
+                ),
+              ),
+        trailing:Icon(
+          Icons.reorder,
+          color: Colors.white.withOpacity(0.5),
+          size: 24.0,
+        ) ,
+        onLongPress: (){
+
+        },
+      ),
       decoration: BoxDecoration(
           border: Border.all(color: SecondColor, width: 0.1),
           color: PrimaryColor.withOpacity(0.1)),
