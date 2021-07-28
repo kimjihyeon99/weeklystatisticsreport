@@ -5,30 +5,52 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:intl/intl.dart';
 import 'save_getapi.dart';
 import 'package:flutter_animation_progress_bar/flutter_animation_progress_bar.dart';
-
 import 'dart:math'; //random 수 가져오기 위한것
 
 //가져온 api 정보 임시 저장소
-List<Getsaftyscore> saftyscorelist = []; //안전운전 점수리스트
-List<Getsaftyscore> economicscorelist = []; // 경제운전 점수 리스트
-List<Getdaliyfuel> daliyfuellist = []; //연비 리스트
-int drivingdistancelist = 0; //주행 거리 리스트
-int drivingdistancelist_last = 0; //이전주 주행 거리 리스트
-int maxdistance = 0; // 이번주와 이전주 중 더 긴 주행 거리 저장
-
-List<GetDrivingwarningscore> countAllEventForEachDay = [];
-List<CountEventForEvent> countEventForLastWeek = [];
-List<CountEventForEvent> countEventForThisWeek = [];
-int countAllEventForLastWeek = 0;
-int countAllEventForThisWeek = 0;
+List<Getsaftyscore> saftyscorelist = []; //2주동안 안전운전 점수
+List<Getsaftyscore> economicscorelist = []; //2주동안 경제운전 점수
+List<Getdaliyfuel> daliyfuellist = []; //2주동안 일일 연비
+List<GetDrivingwarningscore> countAllEventForEachDay =
+    []; //2주동안 일일 이벤트 경고 횟수 총합
+List<CountEventForEvent> countEventForLastWeek = []; //지난주 이벤트별 총 횟수
+List<CountEventForEvent> countEventForThisWeek = []; //이번주 이벤트별 총 횟수
 List<GetSpending> spendinglist_last = []; //지난주 지출 내역
 List<GetSpending> spendinglist_this = []; //이번주 지출 내역
-int sumAllspending_last = 0;
-int sumAllspending_this = 0;
-List<String> replace_item = [];
+List<String> replace_item = []; //점검 필요항목 리스트
+
+int drivingdistancelist_this = 0; //이번주 주행 거리
+int drivingdistancelist_last = 0; //지난주 주행 거리
+int maxdistance = 0; // 이번주와 지난주 중 더 긴 주행 거리 저장
+int countAllEventForLastWeek = 0; //지난주 모든 이벤트 경고 횟수
+int countAllEventForThisWeek = 0; //이번주 모든 이벤트 경고 횟수
+int sumAllspending_last = 0; //지난주 지출 총합
+int sumAllspending_this = 0; //이번주 지출 총합
+
+int lastweekcnt = 0; //지난주 주행하지 않은 횟수, 멘트를 위한 것
+//평균 점수
+//safe
+double safethisavg = 0;
+double safelastavg = 0;
+// eco
+double ecothisavg = 0;
+double ecolastavg = 0;
+//fuel
+double fuelthisavg = 0;
+double fuellastavg = 0;
+
+//이벤트 경고 횟수가 0개인지 여부
+bool isZeroEventCountForLastWeek = true;
+bool isZeroEventCountForThisWeek = true;
+
+//멘트 랜덤 정하기
+final int mentrandom = Random().nextInt(3);
+final int ecomentrandom = Random().nextInt(3);
+final int drvmentrandom = Random().nextInt(3);
+final int spdmentrandom = Random().nextInt(3);
 
 //안전 점수 : 지난주와  비교하는 코멘트
-List ment = [
+List safement = [
   "\n지난주보다 안전하게 운전한 덕분에 안전점수가 더 높아졌어요o(*￣▽￣*)o \n 앞으로도 안전운전 부탁해요✨",
   "\n지난주보다 안전점수가 높아졌어요😀 \n 점차 안전점수를 높여보세요!",
   "\n지난주보다 더 안전하게 운전하셨어요! \n 100점을 목표로 고고고🔥",
@@ -38,7 +60,7 @@ List ment = [
 ];
 
 //안전 점수 : 이번주만 데이터 있을 경우 코멘트
-List ment2 = [
+List safement2 = [
   "\n베스트 드라이버!!\n앞으로도 안전운전 약속🤙",
   "\n안전 점수가 상위 5% 이네요🏆",
   "\n안전 운행으로 수명 1년 증가!👏",
@@ -73,8 +95,7 @@ List ecoment2 = [
   "\n경제운전으로 기름값 아끼고\n치킨 한마리 더!🍗"
 ];
 
-//주행거리 멘트
-//지난주 > 이번주
+//주행거리 :지난주와 이번주 비교 멘트
 List drvment = [
   "이번주에는 저번주보다 덜 운전하셨네요👏\n환경에 큰 도움이 될 거에요🤩",
   "지난주보다 더 적게 달리셨어요~\n시간 날때 드라이브 한번 다녀오세요🚗",
@@ -84,8 +105,7 @@ List drvment = [
   "주행거리가 저번주보다 증가했네요!\n여행이라도 다녀오신건가요?⛱",
 ];
 
-//지출 내역 멘트
-//지난주,이번주 비교
+//지출 내역 :지난주와 이번주 비교 멘트
 List spdment = [
   "저번주보다 지출이 줄었어요👍👍\n이번주도 줄일 수 있도록 노력해봐요😁",
   "지난주 보다 지출 내역이 감소했어요 \n 좋은 운전 습관을 가지고 계시네요👍",
@@ -95,24 +115,12 @@ List spdment = [
   "지출이 지난주보다 많아지셨네요!\n다음세차는 손세차 어떠세요?🧼"
 ];
 
-int lastweekcnt = 0;
-//safe
-double thisavg = 0.00;
-double lastavg = 0.00;
-// eco
-double ecothisavg = 0;
-double ecolastavg = 0;
-//fuel
-double fuelthisavg = 0;
-double fuellastavg = 0;
-
-bool isZeroEventCountForLastWeek = true;
-bool isZeroEventCountForThisWeek = true;
-
-final int mentrandom = Random().nextInt(3);
-final int ecomentrandom = Random().nextInt(3);
-final int drvmentrandom = Random().nextInt(3);
-final int spdmentrandom = Random().nextInt(3);
+//지출 내역 :이번주 또는 지난주 지출이 없을 경우 멘트
+List emptyspdment = [
+  "지출 내역을 앞으로 꾸준히 작성하도록 노력해봐요✏\n 절약에 도움이 될거에요!",
+  "2주간의 차계부 기록으로\n자신의 소비습관을 비교해보세요😉",
+  "소비패턴을 확인하고\n합리적인 소비를 하도록해요!🙌😃",
+];
 
 //각자의 container 생성을 위한것
 abstract class containerItem {}
@@ -271,7 +279,7 @@ class saftyscoreContainer implements containerItem {
                 Column(
                   children: [
                     Text(
-                      "${lastavg.toStringAsFixed(2)} ",
+                      "${safelastavg.toStringAsFixed(2)} ",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         color: Color(0xFF9055A2),
@@ -282,7 +290,7 @@ class saftyscoreContainer implements containerItem {
                       height: 5,
                     ),
                     Text(
-                      "${thisavg.toStringAsFixed(2)} ",
+                      "${safethisavg.toStringAsFixed(2)} ",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         color: Color(0xFF9055A2),
@@ -305,25 +313,25 @@ class saftyscoreContainer implements containerItem {
         ),
         Align(
             alignment: Alignment.center,
-            child: (lastweekcnt > 3)
-                ? (thisavg > 90)
-                    ? Text(ment2.getRange(0, 3).toList()[mentrandom],
+            child: (lastweekcnt > 3) //지난주 주행하지 않은 횟수가 3보다 큰 경우
+                ? (safethisavg > 90) // 점수 별로 맞춤 코멘트
+                    ? Text(safement2.getRange(0, 3).toList()[mentrandom],
                         style: TextStyle(fontSize: 18.0, color: Colors.black),
                         textAlign: TextAlign.center)
-                    : (thisavg > 80)
-                        ? Text(ment2.getRange(3, 6).toList()[mentrandom],
+                    : (safethisavg > 80)
+                        ? Text(safement2.getRange(3, 6).toList()[mentrandom],
                             style:
                                 TextStyle(fontSize: 18.0, color: Colors.black),
                             textAlign: TextAlign.center)
-                        : Text(ment2.getRange(6, 9).toList()[mentrandom],
+                        : Text(safement2.getRange(6, 9).toList()[mentrandom],
                             style:
                                 TextStyle(fontSize: 18.0, color: Colors.black),
                             textAlign: TextAlign.center)
-                : (thisavg > lastavg)
-                    ? Text(ment.getRange(0, 3).toList()[mentrandom],
+                : (safethisavg > safelastavg)
+                    ? Text(safement.getRange(0, 3).toList()[mentrandom],
                         style: TextStyle(fontSize: 18.0, color: Colors.black),
                         textAlign: TextAlign.center)
-                    : Text(ment.getRange(3, 6).toList()[mentrandom],
+                    : Text(safement.getRange(3, 6).toList()[mentrandom],
                         style: TextStyle(fontSize: 18.0, color: Colors.black),
                         textAlign: TextAlign.center)),
         SizedBox(
@@ -526,8 +534,8 @@ class economicscoreContainer implements containerItem {
           ),
           Align(
               alignment: Alignment.center,
-              child: (lastweekcnt > 3)
-                  ? (ecothisavg > 90)
+              child: (lastweekcnt > 3) //지난주 주행하지 않은 횟수가 3보다 큰 경우
+                  ? (ecothisavg > 90) // 점수 별로 맞춤 코멘트
                       ? Text(ecoment2.getRange(0, 3).toList()[ecomentrandom],
                           style: TextStyle(fontSize: 18.0, color: Colors.black),
                           textAlign: TextAlign.center)
@@ -760,7 +768,7 @@ class drivingwarningscoreContainer implements containerItem {
             //가운데 정렬
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              isZeroEventCountForLastWeek
+              isZeroEventCountForLastWeek //지난주 이벤트 경고 횟수가 0인 경우
                   ? Column(
                       children: [
                         Container(
@@ -873,7 +881,7 @@ class drivingwarningscoreContainer implements containerItem {
               SizedBox(
                 width: 5,
               ),
-              isZeroEventCountForThisWeek
+              isZeroEventCountForThisWeek //이번주 이벤트 경고 횟수가 0인 경우
                   ? Column(
                       children: [
                         Container(
@@ -1139,7 +1147,7 @@ class daliyfuelContainer implements containerItem {
                   Column(
                     children: [
                       Text(
-                        "지난주 평균 점수",
+                        "지난주 평균 연비",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 18,
@@ -1150,7 +1158,7 @@ class daliyfuelContainer implements containerItem {
                         height: 5,
                       ),
                       Text(
-                        "이번주 평균 점수",
+                        "이번주 평균 연비",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 18,
@@ -1383,13 +1391,13 @@ class drivingdistanceContainer implements containerItem {
                       alignment: Alignment.lerp(
                           Alignment.topLeft,
                           Alignment.topRight,
-                          drivingdistancelist == null
+                          drivingdistancelist_this == null
                               ? 0
-                              : drivingdistancelist / maxdistance),
+                              : drivingdistancelist_this / maxdistance),
                       child: Column(
                         children: [
                           Text(
-                            "${drivingdistancelist == null ? 0 : drivingdistancelist} km",
+                            "${drivingdistancelist_this == null ? 0 : drivingdistancelist_this} km",
                             style: TextStyle(
                               fontSize: 15,
                             ),
@@ -1408,7 +1416,7 @@ class drivingdistanceContainer implements containerItem {
                         size: 20,
                         currentValue: drivingdistancelist_last == null
                             ? 0
-                            : drivingdistancelist,
+                            : drivingdistancelist_this,
                         backgroundColor: Colors.white,
                         progressColor: Color(0xFF79bd9a),
                         animatedDuration: Duration(milliseconds: 1000),
@@ -1428,11 +1436,13 @@ class drivingdistanceContainer implements containerItem {
           ),
           Align(
               alignment: Alignment.center,
-              //지난주 주행거리가 이번주 주행거리보다 클 경우
               child: ((drivingdistancelist_last == null
                           ? 0
                           : drivingdistancelist_last) >
-                      (drivingdistancelist == null ? 0 : drivingdistancelist))
+                      (drivingdistancelist_this == null
+                          ? 0
+                          : drivingdistancelist_this))
+                  //지난주 주행거리가 이번주 주행거리보다 클 경우
                   ? Text(drvment.getRange(0, 3).toList()[drvmentrandom],
                       style: TextStyle(fontSize: 18.0, color: Colors.black),
                       textAlign: TextAlign.center)
@@ -1849,25 +1859,28 @@ class spendingContainer implements containerItem {
                     )
             ],
           ),
-
           SizedBox(height: 15),
           Container(
               height: 1.0,
               width: double.infinity,
               color: Colors.grey.withOpacity(0.5)),
           SizedBox(height: 20),
-          //ment
           Align(
             alignment: Alignment.center,
-            child: (sumAllspending_last > sumAllspending_this)
-                //지난주가 지출이 많은 경우
-                ? Text(spdment.getRange(0, 3).toList()[spdmentrandom],
+            child: (sumAllspending_last == 0 || sumAllspending_this == 0)
+                ? //지난주나 이번주 지출내역이 없는 경우
+                Text(emptyspdment.getRange(0, 3).toList()[spdmentrandom],
                     style: TextStyle(fontSize: 18.0, color: Colors.black),
                     textAlign: TextAlign.center)
-                //이번주가 지출이 많은 경우
-                : Text(spdment.getRange(3, 6).toList()[spdmentrandom],
-                    style: TextStyle(fontSize: 18.0, color: Colors.black),
-                    textAlign: TextAlign.center),
+                : (sumAllspending_last > sumAllspending_this)
+                    //지난주가 지출이 많은 경우
+                    ? Text(spdment.getRange(0, 3).toList()[spdmentrandom],
+                        style: TextStyle(fontSize: 18.0, color: Colors.black),
+                        textAlign: TextAlign.center)
+                    //이번주가 지출이 많은 경우
+                    : Text(spdment.getRange(3, 6).toList()[spdmentrandom],
+                        style: TextStyle(fontSize: 18.0, color: Colors.black),
+                        textAlign: TextAlign.center),
           ),
           SizedBox(height: 10),
         ],
