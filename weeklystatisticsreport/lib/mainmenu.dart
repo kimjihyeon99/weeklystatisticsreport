@@ -1,8 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'statisticview.dart';
 import 'localnotifyMgr.dart';
 
-const PrimaryColor = const Color(0xff84B1ED);
+const PrimaryColor = const Color(0xff3C5186);
 
 void main() {
   runApp(mainmenu());
@@ -14,9 +15,9 @@ class mainmenu extends StatelessWidget {
       title: 'INFOCAR',
       theme: new ThemeData(
           fontFamily: 'bitro',
-          primaryColor: const Color(0xff84B1ED),
-          accentColor: const Color(0xff84B1ED),
-          canvasColor: const Color(0xff84B1ED)),
+          primaryColor: const Color(0xff3C5186),
+          accentColor: const Color(0xff3C5186),
+          canvasColor: const Color(0xff3C5186)),
       home: new mainmenuPage(),
     );
   }
@@ -66,84 +67,86 @@ class _mainmenuPage extends State<mainmenuPage> {
         body: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
-                colors: [PrimaryColor, Color(0xFFD8BFD8)],
+                colors: [PrimaryColor, Color(0xFFC6B4CE)],
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter),
           ),
           child: Column(
             children: <Widget>[
               makeRow(context,
-                  left: '주간통계',
-                  right: '차량진단',
+                  first: '주간통계',
+                  second: '차량진단',
+                  third:'대시보드',
                   icons: Icon(
                     Icons.leaderboard_outlined,
-                    size: 70,
+                    size: 40,
+                    color: Colors.white,
                   ),
                   icons2: Icon(
                     Icons.search,
-                    size: 70,
-                  )),
-              makeRow(context,
-                  left: '대시보드',
-                  right: '주행기록',
-                  icons: Icon(
-                    Icons.pie_chart_outline_outlined,
-                    size: 70,
+                    size: 40,
+                    color: Colors.white,
                   ),
-                  icons2: Icon(
+                  icons3: Icon(
+                  Icons.pie_chart_outline_outlined,
+                  size: 40,
+                    color: Colors.white,
+                )),
+              SizedBox(height: 20,),
+              makeRow(context,
+                  first: '주행기록',
+                  second: '운전스타일',
+                  third: '차량관리',
+                  icons: Icon(
                     Icons.location_on_outlined,
-                    size: 70,
-                  )),
-              makeRow(context,
-                  left: '운전스타일',
-                  right: '차량관리',
-                  icons: Icon(
+                    size: 40,
+                    color: Colors.white,
+                  ),
+                  icons2: Icon(
                     Icons.directions_car,
-                    size: 70,
+                    size: 40,
+                    color: Colors.white,
                   ),
-                  icons2: Icon(
+                  icons3: Icon(
                     Icons.handyman_outlined,
-                    size: 70,
+                    size: 40,
+                    color: Colors.white,
                   )),
+              SizedBox(height: 20,),
               makeRow(context,
-                  left: '엔진상태',
-                  right: '설정',
+                  first: '모니터링',
+                  second: '엔진상태',
+                  third: '설정',
                   icons: Icon(
-                    Icons.local_gas_station,
-                    size: 70,
+                    Icons.monitor,
+                    size: 40,
+                    color: Colors.white,
                   ),
                   icons2: Icon(
+                    Icons.local_gas_station,
+                    size: 40,
+                    color: Colors.white,
+                  ),
+                  icons3: Icon(
                     Icons.settings,
-                    size: 70,
+                    size: 40,
+                    color: Colors.white,
                   )),
             ],
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisAlignment: MainAxisAlignment.center,
           ),
         ));
   }
 
   Widget makeRow(BuildContext context,
-      {String left, String right, Icon icons, Icon icons2}) {
+      {String first, String second,  String third,Icon icons, Icon icons2, Icon icons3}) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
         Container(
-          child: ElevatedButton(
-            style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                (Set<MaterialState> states) {
-                  if (states.contains(MaterialState.pressed))
-                    return Color(0xff84B1ED);
-                  return PrimaryColor.withOpacity(
-                      0); // Use the component's default.
-                },
-              ),
-              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                  RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(18.0),
-              )),
-            ),
+          child: CupertinoButton(
             onPressed: () {
-              if (left.compareTo('주간통계') == 0) {
+              if (first.compareTo('주간통계') == 0) {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => statisticview()));
               }
@@ -155,40 +158,35 @@ class _mainmenuPage extends State<mainmenuPage> {
               children: [
                 icons,
                 Text(
-                  left,
+                  first,
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 23.0, color: Colors.white),
+                  style: TextStyle(fontSize: 15.0, color: Colors.white),
                 ),
               ],
             ),
           ),
-          width: 180,
-          height: 140.8,
+          width: 100,
+          height: 100,
           //150.8
-          decoration: BoxDecoration(
-            color: Colors.deepPurpleAccent.withOpacity(0.1),
-            borderRadius: BorderRadius.circular(18.0),
+          decoration:BoxDecoration(
+            shape: BoxShape.circle,
+            color: Colors.white.withOpacity(0.1),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.white.withOpacity(0.1),
+                spreadRadius: 3,
+                blurRadius: 5,
+                offset: Offset(1,3),
+                // changes position of shadow
+              ),
+            ],
           ),
           margin: EdgeInsets.only(left: 0, right: 0),
         ),
         Container(
-          child: ElevatedButton(
-            style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                (Set<MaterialState> states) {
-                  if (states.contains(MaterialState.pressed))
-                    return Color(0xff84B1ED);
-                  return PrimaryColor.withOpacity(
-                      0); // Use the component's default.
-                },
-              ),
-              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                  RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(18.0),
-              )),
-            ),
+          child: CupertinoButton(
             onPressed: () async {
-              if (right.compareTo('차량진단') == 0) {
+              if (second.compareTo('차량진단') == 0) {
                 // await localnotifyMgr.init().showNotification(); //test용
                 await localnotifyMgr.init().showWeeklyAtDayTimeNotification();
               }
@@ -200,24 +198,70 @@ class _mainmenuPage extends State<mainmenuPage> {
               children: [
                 icons2,
                 Text(
-                  right,
+                  second,
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 23.0, color: Colors.white),
+                  style: TextStyle(fontSize: 15.0, color: Colors.white),
                 ),
               ],
             ),
           ),
-          width: 180,
-          height: 140.8,
+          width: 100,
+          height: 100,
           //150.8
-          decoration: BoxDecoration(
-            color: Colors.deepPurpleAccent.withOpacity(0.1),
-            borderRadius: BorderRadius.circular(18.0),
+          decoration:BoxDecoration(
+            shape: BoxShape.circle,
+            color: Colors.white.withOpacity(0.1),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.white.withOpacity(0.1),
+                spreadRadius: 3,
+                blurRadius: 5,
+                offset: Offset(1,3),
+                // changes position of shadow
+              ),
+            ],
           ),
           margin: EdgeInsets.only(left: 0, right: 0),
         ),
+        Container(
+          child: CupertinoButton(
+            onPressed: (){
+
+            },
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                icons3,
+                Text(
+                  third,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 15.0, color: Colors.white),
+                ),
+              ],
+            ),
+          ),
+          width: 100,
+          height: 100,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: Colors.white.withOpacity(0.1),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.white.withOpacity(0.1),
+                spreadRadius: 3,
+                blurRadius: 5,
+                offset: Offset(1,3),
+                // changes position of shadow
+              ),
+            ],
+          ),
+
+          margin: EdgeInsets.only(left: 0, right: 0),
+        ),
       ],
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+
     );
   }
 }

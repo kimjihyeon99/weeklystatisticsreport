@@ -81,9 +81,9 @@ class statisticview extends StatelessWidget {
       title: 'Generated App',
       theme: new ThemeData(
           fontFamily: 'bitro',
-          primaryColor: const Color(0xff84B1ED),
-          accentColor: const Color(0xff84B1ED),
-          canvasColor: const Color(0xff84B1ED)),
+          primaryColor: const Color(0xff3C5186),
+          accentColor: const Color(0xff3C5186),
+          canvasColor: const Color(0xff3C5186)),
       home: new statisticviewPage(),
       navigatorKey: navigatorKey,
     );
@@ -215,20 +215,20 @@ class statistic_viewPage extends State<statisticviewPage> {
               return Container(
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
-                        colors: [Color(0xff84B1ED), Color(0xFFD8BFD8)],
+                        colors: [Color(0xff3C5186), Color(0xFFC6B4CE)],
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter),
                   ),
                   alignment: Alignment.center,
                   child: SpinKitFadingCube(
-                    color: Color(0xFFD8BFD8),
+                    color: Color(0xFFC6B4CE),
                     size: 40,
                   ));
             } else {
               return Container(
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
-                      colors: [Color(0xff84B1ED), Color(0xFFD8BFD8)],
+                      colors: [Color(0xff3C5186), Color(0xFFC6B4CE)],
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter),
                 ),
