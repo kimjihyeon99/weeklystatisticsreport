@@ -124,6 +124,7 @@ class localnotifyMgr {
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime,
       matchDateTimeComponents: DateTimeComponents.time,
+      payload: "new payload"
     );
   }
   // 알람을 월요일로 설정
