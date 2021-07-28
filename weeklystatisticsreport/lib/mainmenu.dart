@@ -147,17 +147,17 @@ class _mainmenuPage extends State<mainmenuPage> {
                   icons: Icon(
                     Icons.leaderboard_outlined,
                     size: 40,
-                    color: Colors.white,
+                    color: PrimaryColor,
                   ),
                   icons2: Icon(
                     Icons.search,
                     size: 40,
-                    color: Colors.white,
+                    color: PrimaryColor,
                   ),
                   icons3: Icon(
                     Icons.pie_chart_outline_outlined,
                     size: 40,
-                    color: Colors.white,
+                    color: PrimaryColor,
                   )),
               SizedBox(
                 height: 20,
@@ -169,17 +169,17 @@ class _mainmenuPage extends State<mainmenuPage> {
                   icons: Icon(
                     Icons.location_on_outlined,
                     size: 40,
-                    color: Colors.white,
+                    color: PrimaryColor,
                   ),
                   icons2: Icon(
                     Icons.directions_car,
                     size: 40,
-                    color: Colors.white,
+                    color: PrimaryColor,
                   ),
                   icons3: Icon(
                     Icons.handyman_outlined,
                     size: 40,
-                    color: Colors.white,
+                    color: PrimaryColor,
                   )),
               SizedBox(
                 height: 20,
@@ -191,17 +191,17 @@ class _mainmenuPage extends State<mainmenuPage> {
                   icons: Icon(
                     Icons.monitor,
                     size: 40,
-                    color: Colors.white,
+                    color: PrimaryColor,
                   ),
                   icons2: Icon(
                     Icons.local_gas_station,
                     size: 40,
-                    color: Colors.white,
+                    color: PrimaryColor,
                   ),
                   icons3: Icon(
                     Icons.settings,
                     size: 40,
-                    color: Colors.white,
+                    color: PrimaryColor,
                   )),
             ],
             mainAxisAlignment: MainAxisAlignment.start,
@@ -236,7 +236,7 @@ class _mainmenuPage extends State<mainmenuPage> {
                 Text(
                   first,
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 15.0, color: Colors.white),
+                  style: TextStyle(fontSize: 15.0, color: PrimaryColor, fontWeight: FontWeight.bold),
                 ),
               ],
             ),
@@ -276,7 +276,7 @@ class _mainmenuPage extends State<mainmenuPage> {
                 Text(
                   second,
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 15.0, color: Colors.white),
+                  style: TextStyle(fontSize: 15.0, color: PrimaryColor, fontWeight: FontWeight.bold),
                 ),
               ],
             ),
@@ -311,7 +311,7 @@ class _mainmenuPage extends State<mainmenuPage> {
                 Text(
                   third,
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 15.0, color: Colors.white),
+                  style: TextStyle(fontSize: 15.0, color: PrimaryColor, fontWeight: FontWeight.bold),
                 ),
               ],
             ),
