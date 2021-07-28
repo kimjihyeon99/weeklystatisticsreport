@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'statisticview.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-const PrimaryColor = const Color(0xff84B1ED);
-const SecondColor = const Color(0xff4F86C6);
+const PrimaryColor = const Color(0xff3C5186);
+const SecondColor = const Color(0xff022E57);
 
 //list를 head와 isActivate으로 나누기 위한 구조
 abstract class ListItem {}
@@ -129,7 +129,7 @@ class _WeeklyStatisticsEditPage extends State<WeeklyStatisticsEditPage> {
           height: MediaQuery.of(context).size.height,
           decoration: BoxDecoration(
             gradient: LinearGradient(
-                colors: [PrimaryColor, Color(0xFFD8BFD8)],
+                colors: [PrimaryColor, Color(0xFFC6B4CE)],
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter),
           ),

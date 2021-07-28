@@ -690,7 +690,7 @@ class drivingwarningscoreContainer implements containerItem {
             height: 15,
           ),
           Text(
-            "이벤트 별 주간 경고 횟수 총합",
+            "유형별 주간 경고 횟수 총합",
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
           SizedBox(
