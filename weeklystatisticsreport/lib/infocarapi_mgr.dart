@@ -23,8 +23,8 @@ int numyoil = yoil[todayyoil];
 Future<String> getallapi() async {
   await getsafyscore();
   await getdaliyfuel();
-  await getdrivingdistance_last(); //지난주
-  await getdrivingdistance(); //이번주
+  await getdrivingdistance_last();
+  await getdrivingdistance();
   await getdecelerationscore();
   await getaccelerationscore();
   await getrotationscore();
@@ -108,57 +108,58 @@ void getsafyscore() async {
       newjr.insert(
           i, new Getsaftyscore(eco_avg: 0, safe_avg: 0, Date: mydateday));
     }
-    //거꾸로 들어온 데이터 뒤집기
+
     //안전운전 점수 리스트 저장
     saftyscorelist = new List.from(newjr.reversed);
 
-    double sum = 0;
+    double safesum = 0;
     double ecosum = 0;
-    int lastonecount = 0;
+    int lastonecount = 0; //지난주 주행 횟수 확인
     //지난주 운전 횟수 계산, 지난주 평균 계산
     saftyscorelist.getRange(0, 7).toList().forEach((element) {
       if (element.safe_avg == 0) {
         lastweekcnt = lastweekcnt + 1;
       } else {
-        sum = sum + element.safe_avg;
+        safesum = safesum + element.safe_avg;
         ecosum = ecosum + element.eco_avg;
-        //경제 점수 평균
+
         lastonecount = lastonecount + 1;
       }
     });
-
-    lastavg = (sum / lastonecount);
+    //안전,경제 점수 평균
+    safelastavg = safesum / lastonecount;
     ecolastavg = ecosum / lastonecount;
 
     if (lastonecount == 0) {
-      lastavg = 0;
+      safelastavg = 0;
       ecolastavg = 0;
     } else {
-      lastavg = sum / lastonecount;
+      safelastavg = safesum / lastonecount;
       ecolastavg = ecosum / lastonecount;
     }
 
     //이번주 평균 계산
-    sum = 0;
+    safesum = 0;
     ecosum = 0;
-    int onecount = 0;
+    int thisonecount = 0;
     saftyscorelist.getRange(7, 14).toList().forEach((element) {
       if (element.safe_avg != 0) {
-        sum = sum + element.safe_avg;
+        safesum = safesum + element.safe_avg;
         ecosum = ecosum + element.eco_avg;
-        // 경제점수 평균
-        onecount = onecount + 1;
+
+        thisonecount = thisonecount + 1;
       }
     });
-    thisavg = sum / onecount;
-    ecothisavg = ecosum / onecount;
+    // 안전, 경제점수 평균
+    safethisavg = safesum / thisonecount;
+    ecothisavg = ecosum / thisonecount;
 
-    if (onecount == 0) {
-      thisavg = 0;
+    if (thisonecount == 0) {
+      safethisavg = 0;
       ecothisavg = 0;
     } else {
-      thisavg = sum / onecount;
-      ecothisavg = ecosum / onecount;
+      safethisavg = safesum / thisonecount;
+      ecothisavg = ecosum / thisonecount;
     }
 
     //경제운전 점수 리스트에 추가
@@ -206,7 +207,7 @@ void getdaliyfuel() async {
 
       int index = 0;
 
-      DateTime lastday; //다 돌아간 날짜를 체크하기 위함
+      DateTime lastday = new DateTime(now.year, now.month, now.day + 1); //다 돌아간 날짜를 체크하기 위함
       jr.forEach((x) {
         int day = int.parse(x.Date.split("-")[2]);
         while (date != day) {
@@ -378,13 +379,13 @@ void getdrivingdistance() async {
           .map<Getdrivingdistance>((json) => Getdrivingdistance.fromJson(json))
           .toList();
 
-      drivingdistancelist = (jr[0].RecDrvDisSum).toInt();
+      drivingdistancelist_this = (jr[0].RecDrvDisSum).toInt();
 
-      maxdistance = (drivingdistancelist > drivingdistancelist_last)
-          ? drivingdistancelist
+      maxdistance = (drivingdistancelist_this > drivingdistancelist_last)
+          ? drivingdistancelist_this
           : drivingdistancelist_last;
     } else {
-      drivingdistancelist = 0;
+      drivingdistancelist_this = 0;
     }
   } else {
     print('Request failed with status: ${response.statusCode}.');
@@ -445,11 +446,11 @@ void getdecelerationscore() async {
         .toList();
 
     int index = 0;
-    int countSum = 0;
+    int countSum = 0; // 해당 날짜에 일어난 이번주 급감속 총 횟수 계산
     DateTime lastday = new DateTime(now.year, now.month, now.day + 1);
 
     jr.forEach((x) {
-      countSum += x.countEvent; // 해당 날짜에 일어난 급감속 총 횟수 계산
+      countSum += x.countEvent;
 
       int day = int.parse(x.Date.split("-")[2]);
 
@@ -517,10 +518,10 @@ void getdecelerationscore() async {
         .toList();
 
     int index = 7;
-    int countSum = 0;
+    int countSum = 0; // 해당 날짜에 일어난 저번주 급감속 총 횟수 계산
     DateTime lastday = new DateTime(now.year, now.month, now.day - index + 1);
     jr.forEach((x) {
-      countSum += x.countEvent; // 해당 날짜에 일어난 급감속 총 횟수 계산
+      countSum += x.countEvent;
       int day = int.parse(x.Date.split("-")[2]);
       while (date != day) {
         DateTime mydate = new DateTime(now.year, now.month, now.day - index);
@@ -606,9 +607,9 @@ void getaccelerationscore() async {
         .toList();
 
     int index = 0;
-    int countSum = 0;
+    int countSum = 0; // 해당 날짜에 일어난 이번주 급가속 총 횟수 계산
     jr.forEach((x) {
-      countSum += x.countEvent; // 해당 날짜에 일어난 급가속 총 횟수 계산
+      countSum += x.countEvent;
       int day = int.parse(x.Date.split("-")[2]);
       while (date != day) {
         date = date - 1;
@@ -651,15 +652,15 @@ void getaccelerationscore() async {
         .toList();
 
     int index = 7;
-    int countSum = 0;
+    int countSum = 0; // 해당 날짜에 일어난 저번주 급가속 총 횟수 계산
     jr.forEach((x) {
-      countSum += x.countEvent; // 해당 날짜에 일어난 급가속 총 횟수 계산
+      countSum += x.countEvent;
       int day = int.parse(x.Date.split("-")[2]);
       while (date != day) {
         date = date - 1;
         index = index + 1;
       }
-      countAllEventForEachDay[index].countEvent += x.countEvent;
+      countAllEventForEachDay[index].countEvent += x.countEvent; //일일 급가속 횟수 계산
 
       index = index + 1;
       date = date - 1;
@@ -719,15 +720,15 @@ void getrotationscore() async {
         .toList();
 
     int index = 0;
-    int countSum = 0;
+    int countSum = 0; // 해당 날짜에 일어난 이번주 급회전 총 횟수 계산
     jr.forEach((x) {
-      countSum += x.countEvent; // 해당 날짜에 일어난 급회전 총 횟수 계산
+      countSum += x.countEvent;
       int day = int.parse(x.Date.split("-")[2]);
       while (date != day) {
         date = date - 1;
         index = index + 1;
       }
-      countAllEventForEachDay[index].countEvent += x.countEvent;
+      countAllEventForEachDay[index].countEvent += x.countEvent;//일일 급회전 횟수 계산
 
       index = index + 1;
       date = date - 1;
@@ -765,15 +766,15 @@ void getrotationscore() async {
         .toList();
 
     int index = 7;
-    int countSum = 0;
+    int countSum = 0; // 해당 날짜에 일어난 저번주 급회전 총 횟수 계산
     jr.forEach((x) {
-      countSum += x.countEvent; // 해당 날짜에 일어난 급회전 총 횟수 계산
+      countSum += x.countEvent;
       int day = int.parse(x.Date.split("-")[2]);
       while (date != day) {
         date = date - 1;
         index = index + 1;
       }
-      countAllEventForEachDay[index].countEvent += x.countEvent;
+      countAllEventForEachDay[index].countEvent += x.countEvent; //일일 급회전 횟수 계산
 
       index = index + 1;
       date = date - 1;
@@ -833,15 +834,15 @@ void getidlescore() async {
         .toList();
 
     int index = 0;
-    int countSum = 0;
+    int countSum = 0; // 해당 날짜에 일어난 이번주 공회전 총 횟수 계산
     jr.forEach((x) {
-      countSum += x.countEvent; // 해당 날짜에 일어난 공회전 총 횟수 계산
+      countSum += x.countEvent;
       int day = int.parse(x.Date.split("-")[2]);
       while (date != day) {
         date = date - 1;
         index = index + 1;
       }
-      countAllEventForEachDay[index].countEvent += x.countEvent;
+      countAllEventForEachDay[index].countEvent += x.countEvent; //일일 공회전 횟수 계산
 
       index = index + 1;
       date = date - 1;
@@ -880,15 +881,15 @@ void getidlescore() async {
         .toList();
 
     int index = 7;
-    int countSum = 0;
+    int countSum = 0; // 해당 날짜에 일어난 지난주 공회전 총 횟수 계산
     jr.forEach((x) {
-      countSum += x.countEvent; // 해당 날짜에 일어난 공회전 총 횟수 계산
+      countSum += x.countEvent;
       int day = int.parse(x.Date.split("-")[2]);
       while (date != day) {
         date = date - 1;
         index = index + 1;
       }
-      countAllEventForEachDay[index].countEvent += x.countEvent;
+      countAllEventForEachDay[index].countEvent += x.countEvent; //일일 공회전 횟수 계산
 
       index = index + 1;
       date = date - 1;
@@ -911,8 +912,8 @@ void getidlescore() async {
 // 지출 내역 api
 void getSpending() async {
   //초기화
-  spendinglist_last = []; //지난주 지출 내역
-  spendinglist_this = []; //이번주 지출 내역
+  spendinglist_last = [];
+  spendinglist_this = [];
   sumAllspending_last = 0;
   sumAllspending_this = 0;
 

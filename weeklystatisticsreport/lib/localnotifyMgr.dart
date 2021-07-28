@@ -54,7 +54,7 @@ class localnotifyMgr {
       onNotificationClick(payload);
     });
   }
-
+  //test 용 알림 기능
   Future<void> showNotification() async {
     var androidChannel = AndroidNotificationDetails(
         'CHANNEL_ID', 'CHANNEL_NAME', 'CHANNEL_DESCRIPTION',
