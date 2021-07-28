@@ -52,8 +52,16 @@ class _mainmenuPage extends State<mainmenuPage> {
     }
   }
 
+  AlignmentGeometry _alignment = Alignment.centerLeft;
+
   @override
   Widget build(BuildContext context) {
+    setState(() {
+      _alignment = _alignment == Alignment.centerLeft
+          ? Alignment.centerRight
+          : Alignment.centerLeft;
+    });
+
     return new Scaffold(
         appBar: AppBar(
           elevation: 0.0,
@@ -73,10 +81,69 @@ class _mainmenuPage extends State<mainmenuPage> {
           ),
           child: Column(
             children: <Widget>[
+              SizedBox(
+                height: 50,
+              ),
+              Container(
+                child: Column(children: [
+                  SizedBox(height: 25,),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image(
+                        image: AssetImage("assets/bmw_logo.png"),
+                        height: 30,
+                      ),
+                      SizedBox(
+                        width: 15,
+                      ),
+                      Text(
+                        "BMW i4",
+                        style: TextStyle(fontSize: 27,color: Colors.white),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Image(
+                    image: AssetImage("assets/mycar.png"),
+                    height: 110,
+                  ),
+
+                ]),
+                height: 200,
+                width: 360,
+                decoration: BoxDecoration(
+                  image:
+                  DecorationImage(
+                      fit: BoxFit.cover,
+                      colorFilter: new ColorFilter.mode(
+                          Colors.transparent.withOpacity(0.5), BlendMode.dstATop),
+                      image: AssetImage("assets/back2.jpg"),
+                  ),
+
+                  borderRadius: BorderRadius.circular(30),
+                  color: Colors.transparent,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.3),
+                      spreadRadius: 3,
+                      blurRadius: 5,
+                      offset: Offset(3, 3),
+                      // changes position of shadow
+                    ),
+                  ],
+                ),
+              ),
+              //car img
+              SizedBox(
+                height: 60,
+              ),
               makeRow(context,
                   first: '주간통계',
                   second: '차량진단',
-                  third:'대시보드',
+                  third: '대시보드',
                   icons: Icon(
                     Icons.leaderboard_outlined,
                     size: 40,
@@ -88,11 +155,13 @@ class _mainmenuPage extends State<mainmenuPage> {
                     color: Colors.white,
                   ),
                   icons3: Icon(
-                  Icons.pie_chart_outline_outlined,
-                  size: 40,
+                    Icons.pie_chart_outline_outlined,
+                    size: 40,
                     color: Colors.white,
-                )),
-              SizedBox(height: 20,),
+                  )),
+              SizedBox(
+                height: 20,
+              ),
               makeRow(context,
                   first: '주행기록',
                   second: '운전스타일',
@@ -112,7 +181,9 @@ class _mainmenuPage extends State<mainmenuPage> {
                     size: 40,
                     color: Colors.white,
                   )),
-              SizedBox(height: 20,),
+              SizedBox(
+                height: 20,
+              ),
               makeRow(context,
                   first: '모니터링',
                   second: '엔진상태',
@@ -133,13 +204,18 @@ class _mainmenuPage extends State<mainmenuPage> {
                     color: Colors.white,
                   )),
             ],
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
           ),
         ));
   }
 
   Widget makeRow(BuildContext context,
-      {String first, String second,  String third,Icon icons, Icon icons2, Icon icons3}) {
+      {String first,
+      String second,
+      String third,
+      Icon icons,
+      Icon icons2,
+      Icon icons3}) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
@@ -168,7 +244,7 @@ class _mainmenuPage extends State<mainmenuPage> {
           width: 100,
           height: 100,
           //150.8
-          decoration:BoxDecoration(
+          decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: Colors.white.withOpacity(0.1),
             boxShadow: [
@@ -176,7 +252,7 @@ class _mainmenuPage extends State<mainmenuPage> {
                 color: Colors.white.withOpacity(0.1),
                 spreadRadius: 3,
                 blurRadius: 5,
-                offset: Offset(1,3),
+                offset: Offset(3, 3),
                 // changes position of shadow
               ),
             ],
@@ -208,7 +284,7 @@ class _mainmenuPage extends State<mainmenuPage> {
           width: 100,
           height: 100,
           //150.8
-          decoration:BoxDecoration(
+          decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: Colors.white.withOpacity(0.1),
             boxShadow: [
@@ -216,7 +292,7 @@ class _mainmenuPage extends State<mainmenuPage> {
                 color: Colors.white.withOpacity(0.1),
                 spreadRadius: 3,
                 blurRadius: 5,
-                offset: Offset(1,3),
+                offset: Offset(3, 3),
                 // changes position of shadow
               ),
             ],
@@ -225,9 +301,7 @@ class _mainmenuPage extends State<mainmenuPage> {
         ),
         Container(
           child: CupertinoButton(
-            onPressed: (){
-
-            },
+            onPressed: () {},
             child: Column(
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -252,16 +326,14 @@ class _mainmenuPage extends State<mainmenuPage> {
                 color: Colors.white.withOpacity(0.1),
                 spreadRadius: 3,
                 blurRadius: 5,
-                offset: Offset(1,3),
+                offset: Offset(3, 3),
                 // changes position of shadow
               ),
             ],
           ),
-
           margin: EdgeInsets.only(left: 0, right: 0),
         ),
       ],
-
     );
   }
 }
