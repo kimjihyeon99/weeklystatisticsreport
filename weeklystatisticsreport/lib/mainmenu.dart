@@ -236,7 +236,7 @@ class _mainmenuPage extends State<mainmenuPage> {
                 Text(
                   first,
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 15.0, color: PrimaryColor, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontFamily: "bitro", fontSize: 15.0, color: PrimaryColor, fontWeight: FontWeight.bold),
                 ),
               ],
             ),
@@ -276,7 +276,7 @@ class _mainmenuPage extends State<mainmenuPage> {
                 Text(
                   second,
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 15.0, color: PrimaryColor, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontFamily: "bitro",fontSize: 15.0, color: PrimaryColor, fontWeight: FontWeight.bold),
                 ),
               ],
             ),
@@ -311,7 +311,7 @@ class _mainmenuPage extends State<mainmenuPage> {
                 Text(
                   third,
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 15.0, color: PrimaryColor, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontFamily: "bitro",fontSize: 15.0, color: PrimaryColor, fontWeight: FontWeight.bold),
                 ),
               ],
             ),
