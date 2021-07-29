@@ -120,7 +120,7 @@ class _mainmenuPage extends State<mainmenuPage> {
                       fit: BoxFit.cover,
                       colorFilter: new ColorFilter.mode(
                           Colors.transparent.withOpacity(0.5), BlendMode.dstATop),
-                      image: AssetImage("assets/back2.jpg"),
+                      image: AssetImage("assets/background_car.jpg"),
                   ),
 
                   borderRadius: BorderRadius.circular(30),

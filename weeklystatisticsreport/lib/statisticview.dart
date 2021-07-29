@@ -56,19 +56,19 @@ List<ListItem> mylist = List<ListItem>.generate(
 //처음 activate 개수를 세기 위한것
 int firstcountactivate() {
   int count = 0;
-  // activate = [];
-  // deactivate = [];
 
   for (int i = 0; i < Activateinfo.length; i++) {
     if (Activateinfo[activateName[i]] == true) {
-      // activate.add(activateName[i]);
       count = count + 1;
-    } else {
-      // deactivate.add(activateName[i]);
     }
   }
   return count;
 }
+
+//color initialize
+const PrimaryColor = const Color(0xff3C5186);
+const SecondColor = const Color(0xFFC6B4CE);
+
 
 GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
@@ -215,20 +215,20 @@ class statistic_viewPage extends State<statisticviewPage> {
               return Container(
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
-                        colors: [Color(0xff3C5186), Color(0xFFC6B4CE)],
+                        colors: [PrimaryColor, SecondColor],
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter),
                   ),
                   alignment: Alignment.center,
                   child: SpinKitFadingCube(
-                    color: Color(0xFFC6B4CE),
+                    color: SecondColor,
                     size: 40,
                   ));
             } else {
               return Container(
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
-                      colors: [Color(0xff3C5186), Color(0xFFC6B4CE)],
+                      colors: [PrimaryColor, SecondColor],
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter),
                 ),

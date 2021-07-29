@@ -1,17 +1,18 @@
 //////////////////////////Get class 가져온 정보 저장하는 공간
-class Getsaftyscore {
+//안전점수, 경제점수
+class Getdrivingscore {
   double eco_avg;
   double safe_avg;
   String Date;
 
-  Getsaftyscore({
+  Getdrivingscore({
     this.eco_avg,
     this.safe_avg,
     this.Date,
   });
 
-  factory Getsaftyscore.fromJson(Map<String, dynamic> json) {
-    return Getsaftyscore(
+  factory Getdrivingscore.fromJson(Map<String, dynamic> json) {
+    return Getdrivingscore(
       eco_avg: json['eco_avg'] as double,
       safe_avg: json['safe_avg'] as double,
       Date: json['Date'] as String,
@@ -53,6 +54,7 @@ class Getdrivingdistance {
   }
 }
 
+//운전스타일 경고 횟수
 class GetDrivingwarningscore {
   int countEvent;
   String Date;
@@ -70,6 +72,7 @@ class GetDrivingwarningscore {
   }
 }
 
+//이벤트별 운전스타일 경고 횟수 총합
 class CountEventForEvent {
   String name;
   int count;
@@ -87,6 +90,7 @@ class GetSpending {
   GetSpending({this.name, this.cost});
 }
 
+//점검 필요항목
 class GetInspection {
   String name;
   int replacement_cycle_distance;

@@ -58,8 +58,6 @@ flutter:
      - assets/mycar.png
      - assets/bmw_logo.png
      - assets/background_car.jpg
-     - assets/car_background.jpg
-     - assets/back2.jpg
      - json/inspection.json
   #   - images/a_dot_ham.jpeg
 

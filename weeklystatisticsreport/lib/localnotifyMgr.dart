@@ -52,7 +52,6 @@ class localnotifyMgr {
   setOnNotificationClick(Function onNotificationClick) async {
     await flutterLocalNotificationsPlugin.initialize(initSetting,
         onSelectNotification: (String payload) async {
-      print(payload);
       onNotificationClick(payload);
     });
   }
@@ -74,26 +73,6 @@ class localnotifyMgr {
 
   //매주 월요일 12시에 알림 기능 제공함
   Future<void> showWeeklyAtDayTimeNotification() async {
-    /* deprecated 된 showWeeklyAtDayAndTime 사용 */
-    // var time = Time(11, 25, 0);
-    // var androidChannel = AndroidNotificationDetails(
-    //     'CHANNEL_ID', 'CHANNEL_NAME', 'CHANNEL_DESCRIPTION',
-    //     importance: Importance.max, priority: Priority.high, playSound: true);
-    // var iosChannel = IOSNotificationDetails();
-    // var platformChannel =
-    //     NotificationDetails(android: androidChannel, iOS: iosChannel);
-    // print(platformChannel);
-    // // 알람 내용 설정
-    // await flutterLocalNotificationsPlugin.showWeeklyAtDayAndTime(
-    //     0,
-    //     '🔔 주간리포트가 도착했습니다 🔔',
-    //     '지난 일주일간의 통계를 확인해보세요',
-    //     Day.wednesday,
-    //     time,
-    //     platformChannel,
-    //     payload: 'new payload'
-    // );
-
     /* zonedSchedule 사용 */
     var androidChannel = AndroidNotificationDetails(
         'CHANNEL_ID', 'CHANNEL_NAME', 'CHANNEL_DESCRIPTION',
@@ -115,22 +94,19 @@ class localnotifyMgr {
     final notiDesc = '지난 일주일간의 통계를 확인해보세요';
 
     await flutterLocalNotificationsPlugin.zonedSchedule(
-      0,
-      notiTitle,
-      notiDesc,
-      _nextInstanceOfMondayTenAM(),
-      platformChannel,
-      androidAllowWhileIdle: true,
-      uiLocalNotificationDateInterpretation:
-          UILocalNotificationDateInterpretation.absoluteTime,
-      matchDateTimeComponents: DateTimeComponents.time,
-      payload: "new payload"
-    );
+        0, notiTitle, notiDesc, _nextInstanceOfMondayTenAM(), platformChannel,
+        androidAllowWhileIdle: true,
+        uiLocalNotificationDateInterpretation:
+            UILocalNotificationDateInterpretation.absoluteTime,
+        matchDateTimeComponents: DateTimeComponents.time,
+        payload: "new payload");
   }
+
   // 알람을 월요일로 설정
   tz.TZDateTime _nextInstanceOfMondayTenAM() {
     tz.TZDateTime scheduledDate = _nextInstanceOfTenAM();
-    while (scheduledDate.weekday != DateTime.monday) { // 설정된 알림이 월요일이 아닌 경우, 알람을 1일 뒤로 미룸
+    while (scheduledDate.weekday != DateTime.monday) {
+      // 설정된 알림이 월요일이 아닌 경우, 알람을 1일 뒤로 미룸
       scheduledDate = scheduledDate.add(const Duration(days: 1));
     }
     return scheduledDate;
@@ -142,8 +118,8 @@ class localnotifyMgr {
     tz.setLocalLocation(tz.getLocation('Asia/Seoul')); // 지역 설정
     final tz.TZDateTime now = tz.TZDateTime.now(tz.local); // 현재 날짜와 시간 불러오기
 
-    tz.TZDateTime scheduledDate =
-        tz.TZDateTime(tz.local, now.year, now.month, now.day, 12, 0); // 오늘 날짜의 12시로 알림 설정
+    tz.TZDateTime scheduledDate = tz.TZDateTime(
+        tz.local, now.year, now.month, now.day, 12, 0); // 오늘 날짜의 12시로 알림 설정
     // 이미 지난 시간으로 알람이 설정됐을 경우, 알람을 1일 뒤로 미룸
     if (scheduledDate.isBefore(now)) {
       scheduledDate = scheduledDate.add(const Duration(days: 1));

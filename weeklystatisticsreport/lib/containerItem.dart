@@ -8,8 +8,8 @@ import 'package:flutter_animation_progress_bar/flutter_animation_progress_bar.da
 import 'dart:math'; //random 수 가져오기 위한것
 
 //가져온 api 정보 임시 저장소
-List<Getsaftyscore> saftyscorelist = []; //2주동안 안전운전 점수
-List<Getsaftyscore> economicscorelist = []; //2주동안 경제운전 점수
+List<Getdrivingscore> saftyscorelist = []; //2주동안 안전운전 점수
+List<Getdrivingscore> economicscorelist = []; //2주동안 경제운전 점수
 List<Getdaliyfuel> daliyfuellist = []; //2주동안 일일 연비
 List<GetDrivingwarningscore> countAllEventForEachDay =
     []; //2주동안 일일 이벤트 경고 횟수 총합
@@ -208,30 +208,30 @@ class saftyscoreContainer implements containerItem {
           legend: Legend(isVisible: true, position: LegendPosition.top),
           tooltipBehavior: TooltipBehavior(enable: true),
           series: <ChartSeries>[
-            ColumnSeries<Getsaftyscore, String>(
+            ColumnSeries<Getdrivingscore, String>(
                 name: "지난주",
                 borderRadius: BorderRadius.only(
                     topRight: Radius.circular(5), topLeft: Radius.circular(5)),
                 color: Color(0xFFdedcee),
                 dataSource: saftyscorelist.getRange(0, 7).toList(),
-                xValueMapper: (Getsaftyscore gf, _) => DateFormat('EEE').format(
+                xValueMapper: (Getdrivingscore gf, _) => DateFormat('EEE').format(
                     new DateTime(
                         int.parse(gf.Date.split("-")[0]),
                         int.parse(gf.Date.split("-")[1]),
                         int.parse(gf.Date.split("-")[2]))),
-                yValueMapper: (Getsaftyscore gf, _) => gf.safe_avg),
-            ColumnSeries<Getsaftyscore, String>(
+                yValueMapper: (Getdrivingscore gf, _) => gf.safe_avg),
+            ColumnSeries<Getdrivingscore, String>(
                 name: "이번주",
                 borderRadius: BorderRadius.only(
                     topRight: Radius.circular(5), topLeft: Radius.circular(5)),
                 color: Color(0xFF6a60a9),
                 dataSource: saftyscorelist.getRange(7, 14).toList(),
-                xValueMapper: (Getsaftyscore gf, _) => DateFormat('EEE').format(
+                xValueMapper: (Getdrivingscore gf, _) => DateFormat('EEE').format(
                     new DateTime(
                         int.parse(gf.Date.split("-")[0]),
                         int.parse(gf.Date.split("-")[1]),
                         int.parse(gf.Date.split("-")[2]))),
-                yValueMapper: (Getsaftyscore gf, _) => gf.safe_avg)
+                yValueMapper: (Getdrivingscore gf, _) => gf.safe_avg)
           ],
           primaryXAxis: CategoryAxis(),
           primaryYAxis: NumericAxis(
@@ -427,32 +427,32 @@ class economicscoreContainer implements containerItem {
             legend: Legend(isVisible: true, position: LegendPosition.top),
             tooltipBehavior: TooltipBehavior(enable: true),
             series: <ChartSeries>[
-              ColumnSeries<Getsaftyscore, String>(
+              ColumnSeries<Getdrivingscore, String>(
                   name: "지난주",
                   borderRadius: BorderRadius.only(
                       topRight: Radius.circular(5),
                       topLeft: Radius.circular(5)),
                   color: Color(0xFFCADBE9),
                   dataSource: economicscorelist.getRange(0, 7).toList(),
-                  xValueMapper: (Getsaftyscore gf, _) => DateFormat('EEE')
+                  xValueMapper: (Getdrivingscore gf, _) => DateFormat('EEE')
                       .format(new DateTime(
                           int.parse(gf.Date.split("-")[0]),
                           int.parse(gf.Date.split("-")[1]),
                           int.parse(gf.Date.split("-")[2]))),
-                  yValueMapper: (Getsaftyscore gf, _) => gf.eco_avg),
-              ColumnSeries<Getsaftyscore, String>(
+                  yValueMapper: (Getdrivingscore gf, _) => gf.eco_avg),
+              ColumnSeries<Getdrivingscore, String>(
                   name: "이번주",
                   borderRadius: BorderRadius.only(
                       topRight: Radius.circular(5),
                       topLeft: Radius.circular(5)),
                   color: Color(0xFF6AAFE6),
                   dataSource: economicscorelist.getRange(7, 14).toList(),
-                  xValueMapper: (Getsaftyscore gf, _) => DateFormat('EEE')
+                  xValueMapper: (Getdrivingscore gf, _) => DateFormat('EEE')
                       .format(new DateTime(
                           int.parse(gf.Date.split("-")[0]),
                           int.parse(gf.Date.split("-")[1]),
                           int.parse(gf.Date.split("-")[2]))),
-                  yValueMapper: (Getsaftyscore gf, _) => gf.eco_avg)
+                  yValueMapper: (Getdrivingscore gf, _) => gf.eco_avg)
             ],
             primaryXAxis: CategoryAxis(),
             primaryYAxis: NumericAxis(
