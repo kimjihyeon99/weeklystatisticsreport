@@ -27,10 +27,6 @@ class isActivateItem implements ListItem {
 int baseindex = 0;
 
 class WeeklyStatisticsEdit extends StatelessWidget {
-  //staticview에서 받아온 정보
-  // final List<ListItem> items;
-  //
-  // WeeklyStatisticsEdit({Key key, @required this.items}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -86,11 +82,16 @@ class _WeeklyStatisticsEditPage extends State<WeeklyStatisticsEditPage> {
     //순서 정보가 바뀔때 마다 , mylist에 저장하기와  activate deactivate 도 업데이트(동기화)
 
     // int ct = countactivate();
-    // print(ct);
+
+    items.forEach((element) {
+      if( element is isActivateItem){
+        print(element.Activatename);
+      }
+
+    });
 
     _saveInfo() async {
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.clear();
       setState(() {
         prefs.setStringList('activate', activate?.cast<String>());
         prefs.setStringList('deactivate', deactivate?.cast<String>());
@@ -178,26 +179,10 @@ class _WeeklyStatisticsEditPage extends State<WeeklyStatisticsEditPage> {
                       print("base:   $baseindex");
                       print("old:   $oldIndex");
                       print("new:   $newIndex");
-                      if (baseindex < newIndex) {
+                      if (baseindex -1< newIndex) {
                         //icon 바꾸기
                         temp.isactivate = false;
                         Activateinfo[temp.Activatename] = false;
-
-                        int ct = countactivate();
-
-                        items = List<ListItem>.generate(
-                            9,
-                            (i) => ((i % (ct + 1)) == 0 &&
-                                    ((i ~/ (ct + 1)) == 0 ||
-                                        (i ~/ (ct + 1)) == 1))
-                                ? (i == 0
-                                    ? HeadingItem("활성화")
-                                    : HeadingItem("비활성화"))
-                                : ((i ~/ (ct + 1)) == 0
-                                    ? isActivateItem(activate[i - 1], true)
-                                    : isActivateItem(
-                                        deactivate[i - ct - 2], false)));
-
                       }
                     }
                   } else {
@@ -211,27 +196,27 @@ class _WeeklyStatisticsEditPage extends State<WeeklyStatisticsEditPage> {
                       items.insert(newIndex, item);
 
                       //active 영역으로 넘어가는 경우 아이콘 바꾸기
-                      if (baseindex > newIndex) {
+                      if (baseindex+1 > newIndex) {
                         temp.isactivate = true;
                         Activateinfo[temp.Activatename] = true;
-
-                        int ct = countactivate();
-
-                        items = List<ListItem>.generate(
-                            9,
-                            (i) => ((i % (ct + 1)) == 0 &&
-                                    ((i ~/ (ct + 1)) == 0 ||
-                                        (i ~/ (ct + 1)) == 1))
-                                ? (i == 0
-                                    ? HeadingItem("활성화")
-                                    : HeadingItem("비활성화"))
-                                : ((i ~/ (ct + 1)) == 0
-                                    ? isActivateItem(activate[i - 1], true)
-                                    : isActivateItem(
-                                        deactivate[i - ct - 2], false)));
                       }
                     }
                   }
+
+                  int ct = countactivate();
+
+                  items = List<ListItem>.generate(
+                      9,
+                          (i) => ((i % (ct + 1)) == 0 &&
+                          ((i ~/ (ct + 1)) == 0 ||
+                              (i ~/ (ct + 1)) == 1))
+                          ? (i == 0
+                          ? HeadingItem("활성화")
+                          : HeadingItem("비활성화"))
+                          : ((i ~/ (ct + 1)) == 0
+                          ? isActivateItem(activate[i - 1], true)
+                          : isActivateItem(
+                          deactivate[i - ct - 2], false)));
                 }
               });
             },

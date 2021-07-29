@@ -41,17 +41,10 @@ Map Activateinfo = {
   "점검 필요 항목": true
 };
 //item lsit
-int initcount = firstcountactivate();
+
 
 //보낼 정보 초기화하기
-List<ListItem> mylist = List<ListItem>.generate(
-    9,
-    (i) => ((i % (initcount + 1)) == 0 &&
-            ((i ~/ (initcount + 1)) == 0 || (i ~/ (initcount + 1)) == 1))
-        ? (i == 0 ? HeadingItem("활성화") : HeadingItem("비활성화"))
-        : ((i ~/ (initcount + 1)) == 0
-            ? isActivateItem(activate[i - 1], true)
-            : isActivateItem(deactivate[i - initcount - 2], false)));
+List<ListItem> mylist;
 
 //처음 activate 개수를 세기 위한것
 int firstcountactivate() {
@@ -103,6 +96,17 @@ class statistic_viewPage extends State<statisticviewPage> {
     super.initState();
     myapi = getallapi();
     _loadInfo();
+
+    int initcount = firstcountactivate();
+
+    mylist = List<ListItem>.generate(
+        9,
+            (i) => ((i % (initcount + 1)) == 0 &&
+            ((i ~/ (initcount + 1)) == 0 || (i ~/ (initcount + 1)) == 1))
+            ? (i == 0 ? HeadingItem("활성화") : HeadingItem("비활성화"))
+            : ((i ~/ (initcount + 1)) == 0
+            ? isActivateItem(activate[i - 1], true)
+            : isActivateItem(deactivate[i - initcount - 2], false)));
   }
 
   _loadInfo() async {

@@ -48,7 +48,7 @@ class _mainmenuPage extends State<mainmenuPage> {
 
     if (payload.compareTo("new payload") == 0) {
       Navigator.push(context,
-          MaterialPageRoute(builder: (context) => mainmenu()));
+          MaterialPageRoute(builder: (context) => statisticview()));
     }
   }
 
