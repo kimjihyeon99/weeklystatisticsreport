@@ -56,7 +56,6 @@ List<ListItem> mylist = List<ListItem>.generate(
 //처음 activate 개수를 세기 위한것
 int firstcountactivate() {
   int count = 0;
-
   for (int i = 0; i < Activateinfo.length; i++) {
     if (Activateinfo[activateName[i]] == true) {
       count = count + 1;
@@ -150,8 +149,8 @@ class statistic_viewPage extends State<statisticviewPage> {
               color: Colors.white,
             ),
             onPressed: () {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => mainmenu()));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => mainmenu()));
             },
           ),
           actions: <Widget>[
@@ -198,13 +197,15 @@ class statistic_viewPage extends State<statisticviewPage> {
                   Icons.settings,
                   color: Colors.white,
                 ),
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              //현재 list 정보 같이 보내기
-                              WeeklyStatisticsEdit(items: mylist)));
+                onPressed: () async{
+                  final returnData = await  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => WeeklyStatisticsEditPage(items:mylist)));
+
+                  print(returnData);
+                  setState(() {
+                    mylist = returnData;
+                  });
+
                 })
           ],
         ),

@@ -21,34 +21,16 @@ class isActivateItem implements ListItem {
   isActivateItem(this.Activatename, this.isactivate);
 }
 
-//업데이트를 위한 activate 개수를 세기 위한것
-int countactivate() {
-  int count = 0;
-  activate = [];
-  deactivate = [];
 
-  for (int i = 0; i < mylist.length; i++) {
-    final item = mylist[i];
-    if (item is isActivateItem) {
-      if (item.isactivate) {
-        activate.add(item.Activatename);
-        count = count + 1;
-      } else {
-        deactivate.add(item.Activatename);
-      }
-    }
-  }
-  return count;
-}
 
 //head를 넘어가서 위치 바꾸기 방지를 위한 것
 int baseindex = 0;
 
 class WeeklyStatisticsEdit extends StatelessWidget {
   //staticview에서 받아온 정보
-  final List<ListItem> items;
-
-  WeeklyStatisticsEdit({Key key, @required this.items}) : super(key: key);
+  // final List<ListItem> items;
+  //
+  // WeeklyStatisticsEdit({Key key, @required this.items}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +41,7 @@ class WeeklyStatisticsEdit extends StatelessWidget {
           primaryColor: PrimaryColor,
           accentColor: PrimaryColor,
           canvasColor: PrimaryColor),
-      home: new WeeklyStatisticsEditPage(items: items),
+      home: new WeeklyStatisticsEditPage(),
     );
   }
 }
@@ -71,7 +53,7 @@ class WeeklyStatisticsEditPage extends StatefulWidget {
 
   @override
   _WeeklyStatisticsEditPage createState() =>
-      new _WeeklyStatisticsEditPage(items: items);
+      new _WeeklyStatisticsEditPage(items:items);
 }
 
 class _WeeklyStatisticsEditPage extends State<WeeklyStatisticsEditPage> {
@@ -79,13 +61,32 @@ class _WeeklyStatisticsEditPage extends State<WeeklyStatisticsEditPage> {
 
   _WeeklyStatisticsEditPage({@required this.items});
 
+  //업데이트를 위한 activate 개수를 세기 위한것
+  int countactivate() {
+    int count = 0;
+    activate = [];
+    deactivate = [];
+
+    for (int i = 0; i < items.length; i++) {
+      final item = items[i];
+      if (item is isActivateItem) {
+        if (item.isactivate) {
+          activate.add(item.Activatename);
+          count = count + 1;
+        } else {
+          deactivate.add(item.Activatename);
+        }
+      }
+    }
+    return count;
+  }
+
   @override
   Widget build(BuildContext context) {
     //순서 정보가 바뀔때 마다 , mylist에 저장하기와  activate deactivate 도 업데이트(동기화)
 
-    items = mylist;
-    int ct = countactivate();
-    print(ct);
+    // int ct = countactivate();
+    // print(ct);
 
     _saveInfo() async {
       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -119,9 +120,7 @@ class _WeeklyStatisticsEditPage extends State<WeeklyStatisticsEditPage> {
             ),
             onPressed: () {
               _saveInfo();
-              // 주간 통계 화면으로 넘어가도록 구현
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => statisticview()));
+              Navigator.pop(context, items);
             },
           ),
         ),
@@ -155,8 +154,8 @@ class _WeeklyStatisticsEditPage extends State<WeeklyStatisticsEditPage> {
                 //head를 넘어가면 위치바꾸기 적용 안되게 제한하기
                 final ListItem temp = items[oldIndex];
 
-                for (int i = 0; i < mylist.length; i++) {
-                  var item = mylist[i];
+                for (int i = 0; i < items.length; i++) {
+                  var item = items[i];
                   if (item is HeadingItem) {
                     if (item.isActivate.compareTo("비활성화") == 0) {
                       baseindex = i;
@@ -175,7 +174,11 @@ class _WeeklyStatisticsEditPage extends State<WeeklyStatisticsEditPage> {
                       items.insert(newIndex, item);
 
                       //deactive 영역으로 넘어가는 경우 아이콘 바꾸기
-                      if (baseindex - 1 < newIndex) {
+                      print("===========");
+                      print("base:   $baseindex");
+                      print("old:   $oldIndex");
+                      print("new:   $newIndex");
+                      if (baseindex < newIndex) {
                         //icon 바꾸기
                         temp.isactivate = false;
                         Activateinfo[temp.Activatename] = false;
@@ -194,7 +197,7 @@ class _WeeklyStatisticsEditPage extends State<WeeklyStatisticsEditPage> {
                                     ? isActivateItem(activate[i - 1], true)
                                     : isActivateItem(
                                         deactivate[i - ct - 2], false)));
-                        mylist = items;
+
                       }
                     }
                   } else {
@@ -208,7 +211,7 @@ class _WeeklyStatisticsEditPage extends State<WeeklyStatisticsEditPage> {
                       items.insert(newIndex, item);
 
                       //active 영역으로 넘어가는 경우 아이콘 바꾸기
-                      if (baseindex + 1 > newIndex) {
+                      if (baseindex > newIndex) {
                         temp.isactivate = true;
                         Activateinfo[temp.Activatename] = true;
 
@@ -226,7 +229,6 @@ class _WeeklyStatisticsEditPage extends State<WeeklyStatisticsEditPage> {
                                     ? isActivateItem(activate[i - 1], true)
                                     : isActivateItem(
                                         deactivate[i - ct - 2], false)));
-                        mylist = items;
                       }
                     }
                   }
@@ -287,7 +289,6 @@ class _WeeklyStatisticsEditPage extends State<WeeklyStatisticsEditPage> {
                       : ((i ~/ (ct + 1)) == 0
                           ? isActivateItem(activate[i - 1], true)
                           : isActivateItem(deactivate[i - ct - 2], false)));
-              mylist = items;
             });
           },
         ),
@@ -337,7 +338,6 @@ class _WeeklyStatisticsEditPage extends State<WeeklyStatisticsEditPage> {
                         : ((i ~/ (ct + 1)) == 0
                             ? isActivateItem(activate[i - 1], true)
                             : isActivateItem(deactivate[i - ct - 2], false)));
-                mylist = items;
               });
             },
           ),
