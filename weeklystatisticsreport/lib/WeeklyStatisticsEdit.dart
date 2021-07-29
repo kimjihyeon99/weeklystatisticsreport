@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'statisticview.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-const PrimaryColor = const Color(0xff3C5186);
-const SecondColor = const Color(0xff022E57);
+const PrimaryColor = const Color(0xff022E57);
+const SecondColor = const Color(0xff3C5186);
 
 //list를 head와 isActivate으로 나누기 위한 구조
 abstract class ListItem {}
@@ -34,9 +34,9 @@ class WeeklyStatisticsEdit extends StatelessWidget {
       title: '주간 통계 화면 편집',
       theme: new ThemeData(
           fontFamily: 'bitro',
-          primaryColor: PrimaryColor,
-          accentColor: PrimaryColor,
-          canvasColor: PrimaryColor),
+          primaryColor: SecondColor,
+          accentColor: SecondColor,
+          canvasColor: SecondColor),
       home: new WeeklyStatisticsEditPage(),
     );
   }
@@ -81,15 +81,6 @@ class _WeeklyStatisticsEditPage extends State<WeeklyStatisticsEditPage> {
   Widget build(BuildContext context) {
     //순서 정보가 바뀔때 마다 , mylist에 저장하기와  activate deactivate 도 업데이트(동기화)
 
-    // int ct = countactivate();
-
-    items.forEach((element) {
-      if( element is isActivateItem){
-        print(element.Activatename);
-      }
-
-    });
-
     _saveInfo() async {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       setState(() {
@@ -129,7 +120,7 @@ class _WeeklyStatisticsEditPage extends State<WeeklyStatisticsEditPage> {
           height: MediaQuery.of(context).size.height,
           decoration: BoxDecoration(
             gradient: LinearGradient(
-                colors: [PrimaryColor, Color(0xFFC6B4CE)],
+                colors: [SecondColor, Color(0xFFC6B4CE)],
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter),
           ),
@@ -175,10 +166,6 @@ class _WeeklyStatisticsEditPage extends State<WeeklyStatisticsEditPage> {
                       items.insert(newIndex, item);
 
                       //deactive 영역으로 넘어가는 경우 아이콘 바꾸기
-                      print("===========");
-                      print("base:   $baseindex");
-                      print("old:   $oldIndex");
-                      print("new:   $newIndex");
                       if (baseindex -1< newIndex) {
                         //icon 바꾸기
                         temp.isactivate = false;
@@ -240,7 +227,7 @@ class _WeeklyStatisticsEditPage extends State<WeeklyStatisticsEditPage> {
           ),
         ),
         decoration: BoxDecoration(
-          color: SecondColor,
+          color: PrimaryColor,
         ),
         width: double.infinity,
         height: AppBar().preferredSize.height,
@@ -291,8 +278,8 @@ class _WeeklyStatisticsEditPage extends State<WeeklyStatisticsEditPage> {
         ),
       ),
       decoration: BoxDecoration(
-          border: Border.all(color: SecondColor, width: 0.1),
-          color: PrimaryColor.withOpacity(0.1)),
+          border: Border.all(color: PrimaryColor, width: 0.1),
+          color: SecondColor.withOpacity(0.1)),
       height: 50,
     );
   }
@@ -339,8 +326,8 @@ class _WeeklyStatisticsEditPage extends State<WeeklyStatisticsEditPage> {
             size: 24.0,
           )),
       decoration: BoxDecoration(
-          border: Border.all(color: SecondColor, width: 0.1),
-          color: PrimaryColor.withOpacity(0.1)),
+          border: Border.all(color: PrimaryColor, width: 0.1),
+          color: SecondColor.withOpacity(0.1)),
       height: 50,
     );
   }
