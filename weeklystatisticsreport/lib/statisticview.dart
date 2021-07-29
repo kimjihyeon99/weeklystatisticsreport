@@ -96,17 +96,6 @@ class statistic_viewPage extends State<statisticviewPage> {
     super.initState();
     myapi = getallapi();
     _loadInfo();
-
-    int initcount = firstcountactivate();
-
-    mylist = List<ListItem>.generate(
-        9,
-            (i) => ((i % (initcount + 1)) == 0 &&
-            ((i ~/ (initcount + 1)) == 0 || (i ~/ (initcount + 1)) == 1))
-            ? (i == 0 ? HeadingItem("활성화") : HeadingItem("비활성화"))
-            : ((i ~/ (initcount + 1)) == 0
-            ? isActivateItem(activate[i - 1], true)
-            : isActivateItem(deactivate[i - initcount - 2], false)));
   }
 
   _loadInfo() async {
@@ -132,7 +121,19 @@ class statistic_viewPage extends State<statisticviewPage> {
       Activateinfo['주행 거리'] = prefs.getBool('isactivate5') ?? true;
       Activateinfo['지출 내역'] = prefs.getBool('isactivate6') ?? true;
       Activateinfo['점검 필요 항목'] = prefs.getBool('isactivate7') ?? true;
+
     });
+
+    int initcount = firstcountactivate();
+
+    mylist = List<ListItem>.generate(
+        9,
+            (i) => ((i % (initcount + 1)) == 0 &&
+            ((i ~/ (initcount + 1)) == 0 || (i ~/ (initcount + 1)) == 1))
+            ? (i == 0 ? HeadingItem("활성화") : HeadingItem("비활성화"))
+            : ((i ~/ (initcount + 1)) == 0
+            ? isActivateItem(activate[i - 1], true)
+            : isActivateItem(deactivate[i - initcount - 2], false)));
   }
 
   @override
@@ -202,10 +203,10 @@ class statistic_viewPage extends State<statisticviewPage> {
                   color: Colors.white,
                 ),
                 onPressed: () async{
+
                   final returnData = await  Navigator.push(context,
                       MaterialPageRoute(builder: (context) => WeeklyStatisticsEditPage(items:mylist)));
 
-                  print(returnData);
                   setState(() {
                     mylist = returnData;
                   });
