@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'statisticview.dart';
@@ -66,6 +68,66 @@ class _mainmenuPage extends State<mainmenuPage> {
           centerTitle: true,
           backgroundColor: PrimaryColor,
         ),
+        drawer: Drawer(
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: [
+              DrawerHeader(
+                  decoration: BoxDecoration(
+                  color: Color(0xffC6B4CE).withOpacity(0.4),
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(20),
+              bottomRight: Radius.circular(20),
+            )
+
+                ),
+                child: Container(
+                  margin: EdgeInsets.only(left: 10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(height: 15,),
+                      Image(image: AssetImage("assets/bmw_logo.png"),width: 50,height: 50,),
+                      SizedBox(height: 15,),
+                      Text("BMW i4",style: TextStyle(color: PrimaryColor,fontSize: 20, fontWeight: FontWeight.bold),),
+                      SizedBox(height: 5,),
+                      Text("홍길동",style: TextStyle(color: Colors.white.withOpacity(0.9),fontSize: 15,))
+                    ],
+                  ),
+                ),
+              ),
+              ListTile(
+                leading: Icon(Icons.apps,color: Colors.white,),
+                title: const Text('내 차 목록',style: TextStyle(color: Colors.white),),
+                onTap: () {
+                  // Update the state of the app
+                  // ...
+                  // Then close the drawer
+                  Navigator.pop(context);
+                },
+              ),
+              new Container(
+                  height: 0.5,
+                  width: double.infinity,
+                  color: Colors.grey.withOpacity(0.3)),
+              ListTile(
+                leading: Icon(Icons.settings,color: Colors.white),
+                title: const Text('설정',style: TextStyle(color: Colors.white)),
+                onTap: () {
+                  // Update the state of the app
+                  // ...
+                  // Then close the drawer
+                  Navigator.pop(context);
+                },
+              ),
+              new Container(
+                  height: 0.5,
+                  width: double.infinity,
+                  color: Colors.grey.withOpacity(0.3)),
+            ],
+          ),
+        ),
+
         body: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
