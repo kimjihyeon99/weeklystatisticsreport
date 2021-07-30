@@ -73,9 +73,9 @@ class statisticview extends StatelessWidget {
       title: 'Generated App',
       theme: new ThemeData(
           fontFamily: 'bitro',
-          primaryColor: const Color(0xff3C5186),
-          accentColor: const Color(0xff3C5186),
-          canvasColor: const Color(0xff3C5186)),
+          primaryColor: PrimaryColor,
+          accentColor: PrimaryColor,
+          canvasColor: PrimaryColor),
       home: new statisticviewPage(),
       navigatorKey: navigatorKey,
     );

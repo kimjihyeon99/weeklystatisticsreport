@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'statisticview.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-const PrimaryColor = const Color(0xff022E57);
-const SecondColor = const Color(0xff3C5186);
+const headingColor = const Color(0xff022E57);
+const PrimaryColor = const Color(0xff3C5186);
+const SecondColor = Color(0xFFC6B4CE);
 
 //list를 head와 isActivate으로 나누기 위한 구조
 abstract class ListItem {}
@@ -21,13 +22,10 @@ class isActivateItem implements ListItem {
   isActivateItem(this.Activatename, this.isactivate);
 }
 
-
-
 //head를 넘어가서 위치 바꾸기 방지를 위한 것
 int baseindex = 0;
 
 class WeeklyStatisticsEdit extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
@@ -49,7 +47,7 @@ class WeeklyStatisticsEditPage extends StatefulWidget {
 
   @override
   _WeeklyStatisticsEditPage createState() =>
-      new _WeeklyStatisticsEditPage(items:items);
+      new _WeeklyStatisticsEditPage(items: items);
 }
 
 class _WeeklyStatisticsEditPage extends State<WeeklyStatisticsEditPage> {
@@ -97,6 +95,26 @@ class _WeeklyStatisticsEditPage extends State<WeeklyStatisticsEditPage> {
       });
     }
 
+    void _BottomSheet(context) {
+      showModalBottomSheet(
+          context: context,
+          backgroundColor: Colors.transparent,
+          builder: (builder) {
+            return new Container(
+                height: 60,
+                margin: EdgeInsets.all(20),
+                decoration: new BoxDecoration(
+                    color: SecondColor.withOpacity(0.5),
+                    borderRadius: new BorderRadius.all(
+                      const Radius.circular(15.0),
+                    )),
+                child: Align(
+                  alignment: Alignment.center,
+                  child: Text("화면 배치가 초기화 되었습니다.", style: TextStyle(fontSize:18,fontWeight: FontWeight.bold,color: Colors.white),),
+                ));
+          });
+    }
+
     return new Scaffold(
         appBar: new AppBar(
           elevation: 0.0,
@@ -115,12 +133,59 @@ class _WeeklyStatisticsEditPage extends State<WeeklyStatisticsEditPage> {
               Navigator.pop(context, items);
             },
           ),
+          actions: [
+            IconButton(
+              icon: Icon(
+                Icons.refresh,
+                color: Colors.white,
+              ),
+              onPressed: () {
+                // 초기화 동작
+                activate = [
+                  "안전 점수",
+                  "경제 점수",
+                  "운전스타일 경고 횟수",
+                  "일일 연비",
+                  "주행 거리",
+                  "지출 내역",
+                  "점검 필요 항목"
+                ];
+                deactivate = [];
+
+                Activateinfo = {
+                  "안전 점수": true,
+                  "경제 점수": true,
+                  "운전스타일 경고 횟수": true,
+                  "일일 연비": true,
+                  "주행 거리": true,
+                  "지출 내역": true,
+                  "점검 필요 항목": true
+                };
+                setState(() {
+                  items = List<ListItem>.generate(
+                      9,
+                      (i) => (i == 8
+                          ? HeadingItem("비활성화")
+                          : (i == 0)
+                              ? HeadingItem("활성화")
+                              : isActivateItem(activate[i - 1], true)));
+                });
+
+                _BottomSheet(context);
+
+                Future.delayed(const Duration(seconds: 1), () {
+                  // deleayed code here
+                  Navigator.pop(context);
+                });
+              },
+            ),
+          ],
         ),
         body: Container(
           height: MediaQuery.of(context).size.height,
           decoration: BoxDecoration(
             gradient: LinearGradient(
-                colors: [SecondColor, Color(0xFFC6B4CE)],
+                colors: [PrimaryColor, SecondColor],
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter),
           ),
@@ -166,7 +231,7 @@ class _WeeklyStatisticsEditPage extends State<WeeklyStatisticsEditPage> {
                       items.insert(newIndex, item);
 
                       //deactive 영역으로 넘어가는 경우 아이콘 바꾸기
-                      if (baseindex -1< newIndex) {
+                      if (baseindex - 1 < newIndex) {
                         //icon 바꾸기
                         temp.isactivate = false;
                         Activateinfo[temp.Activatename] = false;
@@ -183,7 +248,7 @@ class _WeeklyStatisticsEditPage extends State<WeeklyStatisticsEditPage> {
                       items.insert(newIndex, item);
 
                       //active 영역으로 넘어가는 경우 아이콘 바꾸기
-                      if (baseindex+1 > newIndex) {
+                      if (baseindex + 1 > newIndex) {
                         temp.isactivate = true;
                         Activateinfo[temp.Activatename] = true;
                       }
@@ -194,16 +259,12 @@ class _WeeklyStatisticsEditPage extends State<WeeklyStatisticsEditPage> {
 
                   items = List<ListItem>.generate(
                       9,
-                          (i) => ((i % (ct + 1)) == 0 &&
-                          ((i ~/ (ct + 1)) == 0 ||
-                              (i ~/ (ct + 1)) == 1))
-                          ? (i == 0
-                          ? HeadingItem("활성화")
-                          : HeadingItem("비활성화"))
+                      (i) => ((i % (ct + 1)) == 0 &&
+                              ((i ~/ (ct + 1)) == 0 || (i ~/ (ct + 1)) == 1))
+                          ? (i == 0 ? HeadingItem("활성화") : HeadingItem("비활성화"))
                           : ((i ~/ (ct + 1)) == 0
-                          ? isActivateItem(activate[i - 1], true)
-                          : isActivateItem(
-                          deactivate[i - ct - 2], false)));
+                              ? isActivateItem(activate[i - 1], true)
+                              : isActivateItem(deactivate[i - ct - 2], false)));
                 }
               });
             },
@@ -227,7 +288,7 @@ class _WeeklyStatisticsEditPage extends State<WeeklyStatisticsEditPage> {
           ),
         ),
         decoration: BoxDecoration(
-          color: PrimaryColor,
+          color: headingColor,
         ),
         width: double.infinity,
         height: AppBar().preferredSize.height,
@@ -278,7 +339,7 @@ class _WeeklyStatisticsEditPage extends State<WeeklyStatisticsEditPage> {
         ),
       ),
       decoration: BoxDecoration(
-          border: Border.all(color: PrimaryColor, width: 0.1),
+          border: Border.all(color: headingColor, width: 0.1),
           color: SecondColor.withOpacity(0.1)),
       height: 50,
     );
@@ -326,7 +387,7 @@ class _WeeklyStatisticsEditPage extends State<WeeklyStatisticsEditPage> {
             size: 24.0,
           )),
       decoration: BoxDecoration(
-          border: Border.all(color: PrimaryColor, width: 0.1),
+          border: Border.all(color: headingColor, width: 0.1),
           color: SecondColor.withOpacity(0.1)),
       height: 50,
     );

@@ -4,6 +4,7 @@ import 'statisticview.dart';
 import 'localnotifyMgr.dart';
 
 const PrimaryColor = const Color(0xff3C5186);
+const SecondColor = const Color(0xffC6B4CE);
 
 void main() {
   runApp(mainmenu());
@@ -15,9 +16,9 @@ class mainmenu extends StatelessWidget {
       title: 'INFOCAR',
       theme: new ThemeData(
           fontFamily: 'bitro',
-          primaryColor: const Color(0xff3C5186),
-          accentColor: const Color(0xff3C5186),
-          canvasColor: const Color(0xff3C5186)),
+          primaryColor: PrimaryColor,
+          accentColor: PrimaryColor,
+          canvasColor: PrimaryColor),
       home: new mainmenuPage(),
     );
   }
@@ -52,15 +53,8 @@ class _mainmenuPage extends State<mainmenuPage> {
     }
   }
 
-  AlignmentGeometry _alignment = Alignment.centerLeft;
-
   @override
   Widget build(BuildContext context) {
-    setState(() {
-      _alignment = _alignment == Alignment.centerLeft
-          ? Alignment.centerRight
-          : Alignment.centerLeft;
-    });
 
     return new Scaffold(
         appBar: AppBar(
@@ -75,7 +69,7 @@ class _mainmenuPage extends State<mainmenuPage> {
         body: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
-                colors: [PrimaryColor, Color(0xFFC6B4CE)],
+                colors: [PrimaryColor, SecondColor],
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter),
           ),
