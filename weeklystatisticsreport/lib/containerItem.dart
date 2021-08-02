@@ -15,6 +15,7 @@ List<GetDrivingwarningscore> countAllEventForEachDay =
     []; //2주동안 일일 이벤트 경고 횟수 총합
 List<CountEventForEvent> countEventForLastWeek = []; //지난주 이벤트별 총 횟수
 List<CountEventForEvent> countEventForThisWeek = []; //이번주 이벤트별 총 횟수
+double thisTotalEventCountAvgForAllUser = 0; // 이번주 전체 사용자 이벤트 평균횟수
 List<GetSpending> spendinglist_last = []; //지난주 지출 내역
 List<GetSpending> spendinglist_this = []; //이번주 지출 내역
 List<String> replace_item = []; //점검 필요항목 리스트
@@ -1004,6 +1005,61 @@ class drivingwarningscoreContainer implements containerItem {
           ),
           SizedBox(
             height: 10,
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Container(
+              height: 1.0,
+              width: double.infinity,
+              color: Colors.grey.withOpacity(0.5)),
+          SizedBox(
+            height: 15,
+          ),
+          Text(
+            '이번주 경고 횟수 비교',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Align(
+            child: Text('전체 사용자 평균'),
+            alignment: Alignment.centerLeft,
+          ),
+          FAProgressBar(
+            size: 20,
+            currentValue: thisTotalEventCountAvgForAllUser.toInt(),
+            backgroundColor: Colors.white,
+            progressColor: Color(0xFF79bd9a),
+            animatedDuration: Duration(milliseconds: 1000),
+            maxValue: countAllEventForThisWeek >
+                    thisTotalEventCountAvgForAllUser.toInt()
+                ? countAllEventForThisWeek
+                : thisTotalEventCountAvgForAllUser.toInt(),
+            displayText: '회',
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Align(
+            child: Text('본인'),
+            alignment: Alignment.centerLeft,
+          ),
+          FAProgressBar(
+            size: 20,
+            currentValue: countAllEventForThisWeek,
+            backgroundColor: Colors.white,
+            progressColor: countAllEventForThisWeek >
+                thisTotalEventCountAvgForAllUser.toInt()
+                ? Colors.red
+                : Colors.yellow,
+            animatedDuration: Duration(milliseconds: 1000),
+            maxValue: countAllEventForThisWeek >
+                    thisTotalEventCountAvgForAllUser.toInt()
+                ? countAllEventForThisWeek
+                : thisTotalEventCountAvgForAllUser.toInt(),
+            displayText: '회',
           ),
         ],
       ));
