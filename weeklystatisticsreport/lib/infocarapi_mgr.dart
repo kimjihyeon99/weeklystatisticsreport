@@ -30,6 +30,7 @@ Future<String> getallapi() async {
   await getaccelerationscore();
   await getrotationscore();
   await getidlescore();
+  await getThisTotalEventCountAvgAllUser();
   await getSpending();
   await getInspection();
 
@@ -952,6 +953,42 @@ void getidlescore() async {
     countAllEventForLastWeek += lastcountSum;
 
     countAllEventForEachDay = new List.from(countAllEventForEachDay.reversed);
+  } else {
+    print('Request failed with status: ${response.statusCode}.');
+  }
+}
+
+// 이번주 전체 사용자 위험운전행동 평균횟수 api
+void getThisTotalEventCountAvgAllUser() async {
+
+  final DateTime thisSundayDate =
+  new DateTime(originnow.year, originnow.month, originnow.day - numyoil);
+  final DateTime thisMondayDate = new DateTime(
+      originnow.year, originnow.month, originnow.day - 6 - numyoil);
+
+  final DateFormat formatter = DateFormat('yyyy-MM-dd'); // string으로 바꾸기 위함
+
+  //날짜를 문자열로 변환하기, class에 넣어주기 위함
+  final String thisSunday = formatter.format(thisSundayDate);
+  final String thisMonday = formatter.format(thisMondayDate);
+
+  String url =
+      'https://server2.mureung.com/infocarAdminPageAPI/sideproject/totalEventCountAvg?userKey=1147&startDate=$thisMonday&endDate=$thisSunday';
+  final response = await http.get(
+    Uri.parse(url),
+    headers: {
+      "F_TOKEN":
+      "D5CFB732E7BA8E56356AA766B61EEF32F5F1BCA6F554FB0A9432D285A7E012A3"
+    },
+  );
+
+  if (response.statusCode == 200) {
+    if (response.body.isNotEmpty) {
+      var jsonResponse = convert.jsonDecode(response.body);
+      thisTotalEventCountAvgForAllUser = jsonResponse['response']['body']['items']['EventCountAvg'];
+    } else {
+      thisTotalEventCountAvgForAllUser = 0;
+    }
   } else {
     print('Request failed with status: ${response.statusCode}.');
   }
