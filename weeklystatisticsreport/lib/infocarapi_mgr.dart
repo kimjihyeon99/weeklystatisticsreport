@@ -25,6 +25,7 @@ Future<String> getallapi() async {
   await getdaliyfuel();
   await getdrivingdistance_last();
   await getdrivingdistance();
+  await getTotalDrivingdistance();
   await getdecelerationscore();
   await getaccelerationscore();
   await getrotationscore();
@@ -382,6 +383,59 @@ void getdrivingdistance() async {
     print('Request failed with status: ${response.statusCode}.');
   }
 }
+
+//총 사용자 이번주 주행거리 합 평균
+void getTotalDrivingdistance() async {
+  //현재 날짜와 지난주 날짜 가져오기
+  final DateTime now =
+  new DateTime(originnow.year, originnow.month, originnow.day - numyoil);
+  final DateTime lastweek = new DateTime(
+      originnow.year, originnow.month, originnow.day - 6 - numyoil);
+
+  final DateFormat formatter = DateFormat('yyyy-MM-dd'); // string으로 바꾸기 위함
+
+  //날짜를 문자열로 변환하기, class에 넣어주기 위함
+  final String today = formatter.format(now);
+  final String lastweekday = formatter.format(lastweek);
+
+  String url =
+      'https://server2.mureung.com/infocarAdminPageAPI/sideproject/totalDrvDisAvg?startDate=$lastweekday&endDate=$today';
+  final response = await http.get(
+    Uri.parse(url),
+    headers: {
+      "F_TOKEN":
+      "D5CFB732E7BA8E56356AA766B61EEF32F5F1BCA6F554FB0A9432D285A7E012A3"
+    },
+  );
+
+  if (response.statusCode == 200) {
+    if (response.body.isNotEmpty) {
+      var jsonResponse = convert.jsonDecode(response.body);
+      var jr = jsonResponse['response']['body']['items'];
+
+      // 전처리
+      List tempjr = [];
+      tempjr.add(jr);
+      jr = tempjr;
+
+      jr = jr.cast<Map<String, dynamic>>();
+      jr = jr
+          .map<GetTotaldrivingdistance>((json) => GetTotaldrivingdistance.fromJson(json))
+          .toList();
+
+      Totaldrivingdistancelist_this = (jr[0].DrvDisAvg).toInt();
+      maxdistance = (drivingdistancelist_this > drivingdistancelist_last)
+          ? (drivingdistancelist_this > Totaldrivingdistancelist_this ? drivingdistancelist_this:Totaldrivingdistancelist_this)
+          : (drivingdistancelist_last > Totaldrivingdistancelist_this ? drivingdistancelist_last:Totaldrivingdistancelist_this );
+    } else {
+      Totaldrivingdistancelist_this = 0;
+    }
+  } else {
+    print('Request failed with status: ${response.statusCode}.');
+  }
+
+}
+
 
 ////위험 운전행동 발생 횟수 기능 api
 

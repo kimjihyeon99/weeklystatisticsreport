@@ -21,6 +21,7 @@ List<String> replace_item = []; //점검 필요항목 리스트
 
 int drivingdistancelist_this = 0; //이번주 주행 거리
 int drivingdistancelist_last = 0; //지난주 주행 거리
+int Totaldrivingdistancelist_this = 0; //앱 이용자들의 이번주 주행 거리 평균
 int maxdistance = 0; // 이번주와 지난주 중 더 긴 주행 거리 저장
 int countAllEventForLastWeek = 0; //지난주 모든 이벤트 경고 횟수
 int countAllEventForThisWeek = 0; //이번주 모든 이벤트 경고 횟수
@@ -1333,7 +1334,8 @@ class drivingdistanceContainer implements containerItem {
                   //text
                   Text("이번주")
                 ],
-              )
+              ),
+
             ],
           ),
           SizedBox(
@@ -1381,9 +1383,6 @@ class drivingdistanceContainer implements containerItem {
                 ],
               )),
           SizedBox(
-            height: 15,
-          ),
-          SizedBox(
               width: 300,
               child: Column(
                 children: [
@@ -1414,11 +1413,84 @@ class drivingdistanceContainer implements containerItem {
                       borderRadius: BorderRadius.all(Radius.circular(10.0)),
                       child: FAProgressBar(
                         size: 20,
-                        currentValue: drivingdistancelist_last == null
+                        currentValue: drivingdistancelist_this == null
                             ? 0
                             : drivingdistancelist_this,
                         backgroundColor: Colors.white,
                         progressColor: Color(0xFF79bd9a),
+                        animatedDuration: Duration(milliseconds: 1000),
+                        maxValue: maxdistance,
+                      )),
+                ],
+              )),
+          SizedBox(
+            height: 15,
+          ),
+          Container(
+              height: 1.0,
+              width: double.infinity,
+              color: Colors.grey.withOpacity(0.5)),
+          SizedBox(
+            height: 15,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              //box
+              Container(
+                width: 10,
+                height: 5,
+                decoration: BoxDecoration(
+                  color: Color(0xFF3b8686),
+                  borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                ),
+              ),
+              SizedBox(
+                width: 5,
+              ),
+              //text
+              Text("이번주 모든 사용자")
+            ],
+          ),
+          SizedBox(
+            height: 15,
+          ),
+          SizedBox(
+              width: 300,
+              child: Column(
+                children: [
+                  Align(
+                      alignment: Alignment.lerp(
+                          Alignment.topLeft,
+                          Alignment.topRight,
+                          Totaldrivingdistancelist_this == null
+                              ? 0
+                              : Totaldrivingdistancelist_this / maxdistance),
+                      child: Column(
+                        children: [
+                          Text(
+                            "${Totaldrivingdistancelist_this == null ? 0 : Totaldrivingdistancelist_this} km",
+                            style: TextStyle(
+                              fontSize: 15,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                          Image(
+                            height: 40,
+                            width: 40,
+                            image: AssetImage('assets/car_img.png'),
+                          ),
+                        ],
+                      )),
+                  ClipRRect(
+                      borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                      child: FAProgressBar(
+                        size: 20,
+                        currentValue: Totaldrivingdistancelist_this == null
+                            ? 0
+                            : Totaldrivingdistancelist_this,
+                        backgroundColor: Colors.white,
+                        progressColor: Color(0xFF3b8686),
                         animatedDuration: Duration(milliseconds: 1000),
                         maxValue: maxdistance,
                       )),
