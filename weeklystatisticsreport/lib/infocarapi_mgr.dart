@@ -452,21 +452,11 @@ void getTotalDrivingdistance() async {
     if (response.body.isNotEmpty) {
       var jsonResponse = convert.jsonDecode(response.body);
       var jr = jsonResponse['response']['body']['items'];
+      Totaldrivingdistancelist_this = jr['DrvDisAvg'].toInt();
 
-      // 전처리
-      List tempjr = [];
-      tempjr.add(jr);
-      jr = tempjr;
-
-      jr = jr.cast<Map<String, dynamic>>();
-      jr = jr
-          .map<GetTotaldrivingdistance>((json) => GetTotaldrivingdistance.fromJson(json))
-          .toList();
-
-      Totaldrivingdistancelist_this = (jr[0].DrvDisAvg).toInt();
-      maxdistance = (drivingdistancelist_this > drivingdistancelist_last)
-          ? (drivingdistancelist_this > Totaldrivingdistancelist_this ? drivingdistancelist_this:Totaldrivingdistancelist_this)
-          : (drivingdistancelist_last > Totaldrivingdistancelist_this ? drivingdistancelist_last:Totaldrivingdistancelist_this );
+      maxdistance = (maxdistance > Totaldrivingdistancelist_this)
+          ? maxdistance
+          : Totaldrivingdistancelist_this;
     } else {
       Totaldrivingdistancelist_this = 0;
     }
