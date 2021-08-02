@@ -39,6 +39,7 @@ double ecolastavg = 0;
 //fuel
 double fuelthisavg = 0;
 double fuellastavg = 0;
+double allfluelavg = 0;
 
 //이벤트 경고 횟수가 0개인지 여부
 bool isZeroEventCountForLastWeek = true;
@@ -215,8 +216,8 @@ class saftyscoreContainer implements containerItem {
                     topRight: Radius.circular(5), topLeft: Radius.circular(5)),
                 color: Color(0xFFdedcee),
                 dataSource: saftyscorelist.getRange(0, 7).toList(),
-                xValueMapper: (Getdrivingscore gf, _) => DateFormat('EEE').format(
-                    new DateTime(
+                xValueMapper: (Getdrivingscore gf, _) => DateFormat('EEE')
+                    .format(new DateTime(
                         int.parse(gf.Date.split("-")[0]),
                         int.parse(gf.Date.split("-")[1]),
                         int.parse(gf.Date.split("-")[2]))),
@@ -227,8 +228,8 @@ class saftyscoreContainer implements containerItem {
                     topRight: Radius.circular(5), topLeft: Radius.circular(5)),
                 color: Color(0xFF6a60a9),
                 dataSource: saftyscorelist.getRange(7, 14).toList(),
-                xValueMapper: (Getdrivingscore gf, _) => DateFormat('EEE').format(
-                    new DateTime(
+                xValueMapper: (Getdrivingscore gf, _) => DateFormat('EEE')
+                    .format(new DateTime(
                         int.parse(gf.Date.split("-")[0]),
                         int.parse(gf.Date.split("-")[1]),
                         int.parse(gf.Date.split("-")[2]))),
@@ -1224,15 +1225,15 @@ class daliyfuelContainer implements containerItem {
                     ],
                   ),
                   Column(
-                    children: [
-                      Text(
-                        "${fuellastavg.toStringAsFixed(2)} ",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xff79a8a9),
-                          fontSize: 18,
-                        ),
+                    children: [  Text(
+                      "${fuellastavg.toStringAsFixed(2)} ",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xff79a8a9),
+                        fontSize: 18,
                       ),
+                    ),
+
                       SizedBox(
                         height: 5,
                       ),
@@ -1256,8 +1257,45 @@ class daliyfuelContainer implements containerItem {
               width: double.infinity,
               color: Colors.grey.withOpacity(0.3)),
           SizedBox(
-            height: 5,
+            height: 15,
           ),
+          Align(
+              alignment: Alignment.center,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Column(
+                    children: [
+                      Text(
+                        "전체 사용자 평균 연비",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                        ),
+                        textAlign: TextAlign.left,
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                    ],
+                  ),
+                  Column(
+                    children: [  Text(
+                      "${allfluelavg.toStringAsFixed(2)} ",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.blueGrey,
+                        fontSize: 18,
+                      ),
+                    ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                    ],
+                  )
+                ],
+              )),
+
         ],
       ));
 
