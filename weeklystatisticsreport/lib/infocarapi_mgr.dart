@@ -23,7 +23,7 @@ int numyoil = yoil[todayyoil];
 Future<String> getallapi() async {
   await getsafyscore();
   await getdaliyfuel();
-
+  await getAlldailyfuel();
   await getdrivingdistance_last();
   await getdrivingdistance();
   await getdecelerationscore();
@@ -283,6 +283,41 @@ void getdaliyfuel() async {
     print('Request failed with status: ${response.statusCode}.');
   }
 }
+
+// all 연비 점수 api
+void getAlldailyfuel() async{
+  //이번주 날짜 가져오기
+  final DateTime now =
+  new DateTime(originnow.year, originnow.month, originnow.day - numyoil);
+  final DateTime lastweek = new DateTime(
+      originnow.year, originnow.month, originnow.day - 6 - numyoil);
+
+  final DateFormat formatter = DateFormat('yyyy-MM-dd'); // string으로 바꾸기 위함
+
+  //날짜를 문자열로 변환하기, class에 넣어주기 위함
+  final String today = formatter.format(now);
+  final String lastweekday = formatter.format(lastweek);
+
+
+  String url =
+      'https://server2.mureung.com/infocarAdminPageAPI/sideproject/totalCbookAvg?startDate=$lastweekday&endDate=$today';
+  final response = await http.get(
+    Uri.parse(url),
+    headers: {
+      "F_TOKEN":
+      "D5CFB732E7BA8E56356AA766B61EEF32F5F1BCA6F554FB0A9432D285A7E012A3"
+    },
+  );
+
+  if(response.statusCode == 200){
+    var jsonResponse = convert.jsonDecode(response.body);
+    var jr = jsonResponse['response']['body']['items'];
+    allfluelavg = jr['CbookCountAvg'];
+  }else{
+
+  }
+}
+
 
 //지난주 주행거리 합 api
 void getdrivingdistance_last() async {
