@@ -54,6 +54,23 @@ class Getdrivingdistance {
   }
 }
 
+//Total 주행거리
+class GetTotaldrivingdistance {
+  double DrvDisAvg;
+
+  GetTotaldrivingdistance({
+    this.DrvDisAvg,
+  });
+
+  factory GetTotaldrivingdistance.fromJson(Map<String, dynamic> json) {
+    return GetTotaldrivingdistance(
+      DrvDisAvg:
+      json['DrvDisAvg'].isNaN ? 0.0 : json['DrvDisAvg'] as double,
+    );
+  }
+}
+
+
 //운전스타일 경고 횟수
 class GetDrivingwarningscore {
   int countEvent;
