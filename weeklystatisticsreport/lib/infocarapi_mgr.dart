@@ -23,6 +23,7 @@ int numyoil = yoil[todayyoil];
 Future<String> getallapi() async {
   await getsafyscore();
   await getdaliyfuel();
+
   await getdrivingdistance_last();
   await getdrivingdistance();
   await getdecelerationscore();
@@ -31,8 +32,6 @@ Future<String> getallapi() async {
   await getidlescore();
   await getSpending();
   await getInspection();
-
-  print('Data Loaded');
 
   return 'Data Loaded';
 }
@@ -51,7 +50,7 @@ void getsafyscore() async {
   final String today = formatter.format(now);
   final String lastweekday = formatter.format(lastweek);
 
-  int date = now.day as int; //현재 날짜에서 '일'만 가져와서 아래에서 카운트 하기 위함
+  DateTime date = now; //현재 날짜에서 '일'만 가져와서 아래에서 카운트 하기 위함
 
   //api 연결
   String url =
@@ -79,14 +78,17 @@ void getsafyscore() async {
     DateTime lastday =
         new DateTime(now.year, now.month, now.day + 1); //다 돌아간 날짜를 체크하기 위함
     jr.forEach((x) {
-      int day = int.parse(x.Date.split("-")[2]);
-      while (date != day) {
+      var date_str = formatter.format(date);
+      
+      while (date_str != x.Date) {
         DateTime mydate = new DateTime(now.year, now.month, now.day - index);
         String mydateday = formatter.format(mydate);
         //비어있는 데이터 넣기
         newjr.insert(index,
             new Getdrivingscore(eco_avg: 0, safe_avg: 0, Date: mydateday));
-        date = date - 1;
+
+        date = new DateTime(date.year, date.month, date.day-1);
+        date_str = formatter.format(date);
         index = index + 1;
       }
 
@@ -95,7 +97,7 @@ void getsafyscore() async {
       //기존 데이터 넣기
       newjr.insert(index, x);
 
-      date = date - 1;
+      date = new DateTime(date.year, date.month, date.day-1);
       index = index + 1;
     });
 
@@ -185,7 +187,7 @@ void getdaliyfuel() async {
   final String today = formatter.format(now);
   final String lastweekday = formatter.format(lastweek);
 
-  int date = now.day as int; //현재 날짜에서 '일'만 가져와서 아래에서 카운트 하기 위함
+  DateTime date = now; //현재 날짜에서 '일'만 가져와서 아래에서 카운트 하기 위함
 
   String url =
       'https://server2.mureung.com/infocarAdminPageAPI/sideproject/recdrvFuelUsement?userKey=1147&startDate=$lastweekday&endDate=$today';
@@ -209,14 +211,16 @@ void getdaliyfuel() async {
     DateTime lastday =
         new DateTime(now.year, now.month, now.day + 1); //다 돌아간 날짜를 체크하기 위함
     jr.forEach((x) {
-      int day = int.parse(x.Date.split("-")[2]);
-      while (date != day) {
+      var date_str = formatter.format(date);
+
+      while (date_str != x.Date) {
         DateTime mydate = new DateTime(now.year, now.month, now.day - index);
         String mydateday = formatter.format(mydate);
         //비어있는 데이터 넣기
         newjr.insert(
             index, new Getdaliyfuel(DrvFuelUsement: 0, Date: mydateday));
-        date = date - 1;
+        date = new DateTime(date.year, date.month, date.day-1);
+        date_str = formatter.format(date);
         index = index + 1;
       }
 
@@ -224,7 +228,7 @@ void getdaliyfuel() async {
       //기존 데이터 넣기
       newjr.insert(index, x);
 
-      date = date - 1;
+      date = new DateTime(date.year, date.month, date.day-1);
       index = index + 1;
     });
 
@@ -412,7 +416,7 @@ void getdecelerationscore() async {
   final String thisMondayDay = formatter.format(thisMonday);
   final String lastweekday = formatter.format(lastweek);
 
-  int date = now.day as int; //현재 날짜에서 '일'만 가져와서 아래에서 카운트 하기 위함
+  DateTime date = now; //현재 날짜에서 '일'만 가져와서 아래에서 카운트 하기 위함
 
   // 이번주
   String url =
@@ -443,9 +447,9 @@ void getdecelerationscore() async {
     jr.forEach((x) {
       thiscountSum += x.countEvent;
 
-      int day = int.parse(x.Date.split("-")[2]);
+      var date_str = formatter.format(date);
 
-      while (date != day) {
+      while (date_str != x.Date) {
         DateTime mydate = new DateTime(now.year, now.month, now.day - index);
         String mydateday = formatter.format(mydate);
 
@@ -453,7 +457,8 @@ void getdecelerationscore() async {
         countAllEventForEachDay.insert(
             index, new GetDrivingwarningscore(countEvent: 0, Date: mydateday));
         //update
-        date = date - 1;
+        date = new DateTime(date.year, date.month, date.day-1);
+        date_str = formatter.format(date);
         index = index + 1;
       }
 
@@ -461,8 +466,8 @@ void getdecelerationscore() async {
       countAllEventForEachDay.insert(index, x);
 
       //update
+      date = new DateTime(date.year, date.month, date.day-1);
       index = index + 1;
-      date = date - 1;
     });
 
     if (thiscountSum > 0) {
@@ -513,22 +518,26 @@ void getdecelerationscore() async {
     DateTime lastday = new DateTime(now.year, now.month, now.day - index + 1);
     jr.forEach((x) {
       lastcountSum += x.countEvent;
-      int day = int.parse(x.Date.split("-")[2]);
-      while (date != day) {
+
+      var date_str = formatter.format(date);
+
+      while (date_str != x.Date) {
         DateTime mydate = new DateTime(now.year, now.month, now.day - index);
 
         String mydateday = formatter.format(mydate);
         //비어있는 데이터 넣기
         countAllEventForEachDay.insert(
             index, new GetDrivingwarningscore(countEvent: 0, Date: mydateday));
-        date = date - 1;
+        date = new DateTime(date.year, date.month, date.day-1);
+        date_str = formatter.format(date);
         index = index + 1;
       }
       lastday = DateFormat('yyyy-MM-dd').parse(x.Date);
       countAllEventForEachDay.insert(index, x);
 
+      date = new DateTime(date.year, date.month, date.day-1);
       index = index + 1;
-      date = date - 1;
+
     });
 
     int countday = lastday.difference(lastweek).inDays;
@@ -575,7 +584,7 @@ void getaccelerationscore() async {
   final String thisMondayDay = formatter.format(thisMonday);
   final String lastweekday = formatter.format(lastweek);
 
-  int date = now.day as int; //현재 날짜에서 '일'만 가져와서 아래에서 카운트 하기 위함
+  DateTime date = now; //현재 날짜에서 '일'만 가져와서 아래에서 카운트 하기 위함
 
   // 이번주
   String url =
@@ -600,15 +609,18 @@ void getaccelerationscore() async {
     int thiscountSum = 0; // 해당 날짜에 일어난 이번주 급가속 총 횟수 계산
     jr.forEach((x) {
       thiscountSum += x.countEvent;
-      int day = int.parse(x.Date.split("-")[2]);
-      while (date != day) {
-        date = date - 1;
+
+      var date_str = formatter.format(date);
+
+      while (date_str != x.Date) {
+        date = new DateTime(date.year, date.month, date.day-1);
+        date_str = formatter.format(date);
         index = index + 1;
       }
       countAllEventForEachDay[index].countEvent += x.countEvent;
 
+      date = new DateTime(date.year, date.month, date.day-1);
       index = index + 1;
-      date = date - 1;
     });
 
     if (thiscountSum > 0) {
@@ -645,15 +657,18 @@ void getaccelerationscore() async {
     int lastcountSum = 0; // 해당 날짜에 일어난 저번주 급가속 총 횟수 계산
     jr.forEach((x) {
       lastcountSum += x.countEvent;
-      int day = int.parse(x.Date.split("-")[2]);
-      while (date != day) {
-        date = date - 1;
+
+      var date_str = formatter.format(date);
+
+      while (date_str != x.Date) {
+        date = new DateTime(date.year, date.month, date.day-1);
+        date_str = formatter.format(date);
         index = index + 1;
       }
       countAllEventForEachDay[index].countEvent += x.countEvent; //일일 급가속 횟수 계산
 
+      date = new DateTime(date.year, date.month, date.day-1);
       index = index + 1;
-      date = date - 1;
     });
 
     if (lastcountSum > 0) {
@@ -688,7 +703,7 @@ void getrotationscore() async {
   final String thisMondayDay = formatter.format(thisMonday);
   final String lastweekday = formatter.format(lastweek);
 
-  int date = now.day as int; //현재 날짜에서 '일'만 가져와서 아래에서 카운트 하기 위함
+  DateTime date = now; //현재 날짜에서 '일'만 가져와서 아래에서 카운트 하기 위함
 
   // 이번주
   String url =
@@ -713,15 +728,18 @@ void getrotationscore() async {
     int thiscountSum = 0; // 해당 날짜에 일어난 이번주 급회전 총 횟수 계산
     jr.forEach((x) {
       thiscountSum += x.countEvent;
-      int day = int.parse(x.Date.split("-")[2]);
-      while (date != day) {
-        date = date - 1;
+
+      var date_str = formatter.format(date);
+
+      while (date_str != x.Date) {
+        date = new DateTime(date.year, date.month, date.day-1);
+        date_str = formatter.format(date);
         index = index + 1;
       }
       countAllEventForEachDay[index].countEvent += x.countEvent; //일일 급회전 횟수 계산
 
+      date = new DateTime(date.year, date.month, date.day-1);
       index = index + 1;
-      date = date - 1;
     });
 
     if (thiscountSum > 0) {
@@ -759,15 +777,17 @@ void getrotationscore() async {
     int lastcountSum = 0; // 해당 날짜에 일어난 저번주 급회전 총 횟수 계산
     jr.forEach((x) {
       lastcountSum += x.countEvent;
-      int day = int.parse(x.Date.split("-")[2]);
-      while (date != day) {
-        date = date - 1;
+      var date_str = formatter.format(date);
+
+      while (date_str != x.Date) {
+        date = new DateTime(date.year, date.month, date.day-1);
+        date_str = formatter.format(date);
         index = index + 1;
       }
       countAllEventForEachDay[index].countEvent += x.countEvent; //일일 급회전 횟수 계산
 
+      date = new DateTime(date.year, date.month, date.day-1);
       index = index + 1;
-      date = date - 1;
     });
 
     if (lastcountSum > 0) {
@@ -802,7 +822,7 @@ void getidlescore() async {
   final String thisMondayDay = formatter.format(thisMonday);
   final String lastweekday = formatter.format(lastweek);
 
-  int date = now.day as int; //현재 날짜에서 '일'만 가져와서 아래에서 카운트 하기 위함
+  DateTime date = now; //현재 날짜에서 '일'만 가져와서 아래에서 카운트 하기 위함
 
   // 이번주
   String url =
@@ -827,15 +847,17 @@ void getidlescore() async {
     int thiscountSum = 0; // 해당 날짜에 일어난 이번주 공회전 총 횟수 계산
     jr.forEach((x) {
       thiscountSum += x.countEvent;
-      int day = int.parse(x.Date.split("-")[2]);
-      while (date != day) {
-        date = date - 1;
+      var date_str = formatter.format(date);
+
+      while (date_str != x.Date) {
+        date = new DateTime(date.year, date.month, date.day-1);
+        date_str = formatter.format(date);
         index = index + 1;
       }
       countAllEventForEachDay[index].countEvent += x.countEvent; //일일 공회전 횟수 계산
 
+      date = new DateTime(date.year, date.month, date.day-1);
       index = index + 1;
-      date = date - 1;
     });
 
     if (thiscountSum > 0) {
@@ -874,15 +896,16 @@ void getidlescore() async {
     int lastcountSum = 0; // 해당 날짜에 일어난 지난주 공회전 총 횟수 계산
     jr.forEach((x) {
       lastcountSum += x.countEvent;
-      int day = int.parse(x.Date.split("-")[2]);
-      while (date != day) {
-        date = date - 1;
+      var date_str = formatter.format(date);
+      while (date_str != x.Date) {
+        date = new DateTime(date.year, date.month, date.day-1);
+        date_str = formatter.format(date);
         index = index + 1;
       }
       countAllEventForEachDay[index].countEvent += x.countEvent; //일일 공회전 횟수 계산
 
+      date = new DateTime(date.year, date.month, date.day-1);
       index = index + 1;
-      date = date - 1;
     });
 
     if (lastcountSum > 0) {

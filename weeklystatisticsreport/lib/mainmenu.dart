@@ -74,7 +74,7 @@ class _mainmenuPage extends State<mainmenuPage> {
             children: [
               DrawerHeader(
                   decoration: BoxDecoration(
-                  color: Color(0xffC6B4CE).withOpacity(0.4),
+                  color: SecondColor.withOpacity(0.4),
             borderRadius: BorderRadius.only(
               bottomLeft: Radius.circular(20),
               bottomRight: Radius.circular(20),
