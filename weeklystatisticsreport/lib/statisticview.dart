@@ -42,7 +42,6 @@ Map Activateinfo = {
 };
 //item lsit
 
-
 //보낼 정보 초기화하기
 List<ListItem> mylist;
 
@@ -61,7 +60,6 @@ int firstcountactivate() {
 const PrimaryColor = const Color(0xff3C5186);
 const SecondColor = const Color(0xFFC6B4CE);
 
-
 GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 class statisticview extends StatelessWidget {
@@ -70,8 +68,8 @@ class statisticview extends StatelessWidget {
     navigatorKey = GlobalKey<NavigatorState>();
     return new MaterialApp(
       theme: new ThemeData(
-          fontFamily: 'bitro',
-          primaryColor: PrimaryColor,
+        fontFamily: 'bitro',
+        primaryColor: PrimaryColor,
       ),
       home: new statisticviewPage(),
       navigatorKey: navigatorKey,
@@ -118,19 +116,18 @@ class statistic_viewPage extends State<statisticviewPage> {
       Activateinfo['주행 거리'] = prefs.getBool('isactivate5') ?? true;
       Activateinfo['지출 내역'] = prefs.getBool('isactivate6') ?? true;
       Activateinfo['점검 필요 항목'] = prefs.getBool('isactivate7') ?? true;
-
     });
 
     int initcount = firstcountactivate();
 
     mylist = List<ListItem>.generate(
         9,
-            (i) => ((i % (initcount + 1)) == 0 &&
-            ((i ~/ (initcount + 1)) == 0 || (i ~/ (initcount + 1)) == 1))
+        (i) => ((i % (initcount + 1)) == 0 &&
+                ((i ~/ (initcount + 1)) == 0 || (i ~/ (initcount + 1)) == 1))
             ? (i == 0 ? HeadingItem("활성화") : HeadingItem("비활성화"))
             : ((i ~/ (initcount + 1)) == 0
-            ? isActivateItem(activate[i - 1], true)
-            : isActivateItem(deactivate[i - initcount - 2], false)));
+                ? isActivateItem(activate[i - 1], true)
+                : isActivateItem(deactivate[i - initcount - 2], false)));
   }
 
   @override
@@ -151,8 +148,8 @@ class statistic_viewPage extends State<statisticviewPage> {
               color: Colors.white,
             ),
             onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => mainmenu()));
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => mainmenu()));
             },
           ),
           actions: <Widget>[
@@ -199,14 +196,16 @@ class statistic_viewPage extends State<statisticviewPage> {
                   Icons.settings,
                   color: Colors.white,
                 ),
-                onPressed: () async{
-                  final returnData = await  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => WeeklyStatisticsEditPage(items:mylist)));
+                onPressed: () async {
+                  final returnData = await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              WeeklyStatisticsEditPage(items: mylist)));
 
                   setState(() {
                     mylist = returnData;
                   });
-
                 })
           ],
         ),

@@ -16,15 +16,14 @@ class mainmenu extends StatelessWidget {
   Widget build(BuildContext context) {
     return new MaterialApp(
       theme: new ThemeData(
-        fontFamily: 'bitro',
-        textTheme: TextTheme(
-            bodyText1: TextStyle(
-                fontSize: 15.0,
-                color: Color(0xff3C5186),
-                fontWeight: FontWeight.bold)),
-        primaryColor: PrimaryColor,
-        canvasColor: PrimaryColor
-      ),
+          fontFamily: 'bitro',
+          textTheme: TextTheme(
+              bodyText1: TextStyle(
+                  fontSize: 15.0,
+                  color: Color(0xff3C5186),
+                  fontWeight: FontWeight.bold)),
+          primaryColor: PrimaryColor,
+          canvasColor: PrimaryColor),
       home: new mainmenuPage(),
     );
   }
