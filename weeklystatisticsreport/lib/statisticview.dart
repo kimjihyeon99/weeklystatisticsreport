@@ -62,21 +62,6 @@ const SecondColor = const Color(0xFFC6B4CE);
 
 GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
-class statisticview extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    navigatorKey = GlobalKey<NavigatorState>();
-    return new MaterialApp(
-      theme: new ThemeData(
-        fontFamily: 'bitro',
-        primaryColor: PrimaryColor,
-      ),
-      home: new statisticviewPage(),
-      navigatorKey: navigatorKey,
-    );
-  }
-}
-
 class statisticviewPage extends StatefulWidget {
   statisticviewPage({Key key}) : super(key: key);
 
