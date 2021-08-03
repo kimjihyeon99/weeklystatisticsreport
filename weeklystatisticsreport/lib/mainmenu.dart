@@ -304,6 +304,7 @@ class _mainmenuPage extends State<mainmenuPage> {
           child: CupertinoButton(
             onPressed: () {
               if (first.compareTo('주간통계') == 0) {
+                print(isBuildStatisticviewPage);
                 if(isBuildStatisticviewPage == true) { // API를 이미 호출했던 전적이 있는 경우
                   Navigator.pop(context);
                 }else {
@@ -363,7 +364,6 @@ class _mainmenuPage extends State<mainmenuPage> {
           ),
           width: 100,
           height: 100,
-          //150.8
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: Colors.white.withOpacity(0.1),

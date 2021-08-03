@@ -6,6 +6,7 @@ import 'containerItem.dart';
 import 'infocarapi_mgr.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:math';
 
 //activate 와 deactivate 구분하기 위한 list
 List activate = [
@@ -84,6 +85,7 @@ class statistic_viewPage extends State<statisticviewPage> {
 
   _loadInfo() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    final ScrollController _scrollController = ScrollController();
 
     setState(() {
       activate = prefs.getStringList('activate') ??
@@ -119,6 +121,8 @@ class statistic_viewPage extends State<statisticviewPage> {
                 : isActivateItem(deactivate[i - initcount - 2], false)));
   }
 
+  final ScrollController _scrollController = ScrollController();
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -137,8 +141,8 @@ class statistic_viewPage extends State<statisticviewPage> {
               color: Colors.white,
             ),
             onPressed: () {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => mainmenuPage()));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => mainmenuPage()));
             },
           ),
           actions: <Widget>[
@@ -198,66 +202,100 @@ class statistic_viewPage extends State<statisticviewPage> {
                 })
           ],
         ),
-        body:
-        WillPopScope(
-          //물리적 뒤로가기 처리
-          onWillPop: () {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => mainmenuPage()));
-            return Future.value(true);
-          },
-          child:  FutureBuilder(
-            future: myapi,
-            builder: (context, snapshot) {
-              if (snapshot.hasData == false) {
-                return Container(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                          colors: [PrimaryColor, SecondColor],
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter),
-                    ),
-                    alignment: Alignment.center,
-                    child: SpinKitFadingCube(
-                      color: SecondColor,
-                      size: 40,
-                    ));
-              } else {
-                return Container(
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                        colors: [PrimaryColor, SecondColor],
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter),
-                  ),
-                  child: ListView.builder(
-                      padding: const EdgeInsets.all(20.0),
-                      itemCount: activate.length,
-                      itemBuilder: (context, index) {
-                        final itemname = activate[index];
-                        String name = itemname;
-                        //name이랑 activatename과 비교해서 같으면 해당 container를 반환하기
-                        if (name.compareTo(activateName[0]) == 0) {
-                          return new saftyscoreContainer().mycon;
-                        } else if (name.compareTo(activateName[1]) == 0) {
-                          return new economicscoreContainer().mycon;
-                        } else if (name.compareTo(activateName[2]) == 0) {
-                          return new drivingwarningscoreContainer().mycon;
-                        } else if (name.compareTo(activateName[3]) == 0) {
-                          return new daliyfuelContainer().mycon;
-                        } else if (name.compareTo(activateName[4]) == 0) {
-                          return new drivingdistanceContainer().mycon;
-                        } else if (name.compareTo(activateName[5]) == 0) {
-                          return new spendingContainer().mycon;
-                        } else if (name.compareTo(activateName[6]) == 0) {
-                          return new inspectionContainer().mycon;
-                        }
-                      }),
-                );
-              }
+        body: WillPopScope(
+            //물리적 뒤로가기 처리
+            onWillPop: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => mainmenuPage()));
+              return Future.value(true);
             },
-          ),
-        )
-       );
+            child: FutureBuilder(
+              future: myapi,
+              builder: (context, snapshot) {
+                if (snapshot.hasData == false) {
+                  return Container(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                            colors: [PrimaryColor, SecondColor],
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter),
+                      ),
+                      alignment: Alignment.center,
+                      child: SpinKitFadingCube(
+                        color: SecondColor,
+                        size: 40,
+                      ));
+                } else {
+                  return Stack(
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                              colors: [PrimaryColor, SecondColor],
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter),
+                        ),
+                        child: ListView.builder(
+                            controller: _scrollController,
+                            padding: const EdgeInsets.all(20.0),
+                            itemCount: activate.length,
+                            itemBuilder: (context, index) {
+                              final itemname = activate[index];
+                              String name = itemname;
+                              //name이랑 activatename과 비교해서 같으면 해당 container를 반환하기
+                              if (name.compareTo(activateName[0]) == 0) {
+                                return new saftyscoreContainer().mycon;
+                              } else if (name.compareTo(activateName[1]) == 0) {
+                                return new economicscoreContainer().mycon;
+                              } else if (name.compareTo(activateName[2]) == 0) {
+                                return new drivingwarningscoreContainer().mycon;
+                              } else if (name.compareTo(activateName[3]) == 0) {
+                                return new daliyfuelContainer().mycon;
+                              } else if (name.compareTo(activateName[4]) == 0) {
+                                return new drivingdistanceContainer().mycon;
+                              } else if (name.compareTo(activateName[5]) == 0) {
+                                return new spendingContainer().mycon;
+                              } else if (name.compareTo(activateName[6]) == 0) {
+                                return new inspectionContainer().mycon;
+                              }
+                            }),
+                      ),
+
+                      Positioned(
+                        bottom: 0.0,
+                        right: (MediaQuery.of(context).size.width - 70) / 2,
+                        left: (MediaQuery.of(context).size.width - 70) / 2,
+                        child: Container(
+                          child: CupertinoButton(
+                            child: Container(
+                              child: RotatedBox(
+                                quarterTurns: 3,
+                                child: Icon(
+                                  Icons.double_arrow_rounded,
+                                  color: Colors.white,
+                                  size: 30,
+                                ),
+                              )
+                            ),
+                            onPressed: () {
+                              _scrollController.animateTo(
+                                  _scrollController.position.minScrollExtent,
+                                  duration: Duration(milliseconds: 500),
+                                  curve: Curves.fastOutSlowIn);
+                            },
+                          ),
+                          width: 70,
+                          height: 70,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: SecondColor,
+                          ),
+                        ),
+                      )
+                    ],
+                  );
+                }
+              },
+            )));
   }
 }

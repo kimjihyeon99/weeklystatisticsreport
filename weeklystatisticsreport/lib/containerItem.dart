@@ -313,7 +313,7 @@ class saftyscoreContainer implements containerItem {
             width: double.infinity,
             color: Colors.grey.withOpacity(0.3)),
         SizedBox(
-          height: 5,
+          height: 10,
         ),
         Align(
             alignment: Alignment.center,
@@ -339,7 +339,7 @@ class saftyscoreContainer implements containerItem {
                         style: TextStyle(fontSize: 18.0, color: Colors.black),
                         textAlign: TextAlign.center)),
         SizedBox(
-          height: 10,
+          height: 20,
         ),
       ],
     ),
@@ -534,7 +534,7 @@ class economicscoreContainer implements containerItem {
               width: double.infinity,
               color: Colors.grey.withOpacity(0.3)),
           SizedBox(
-            height: 5,
+            height: 10,
           ),
           Align(
               alignment: Alignment.center,
@@ -562,7 +562,7 @@ class economicscoreContainer implements containerItem {
                           style: TextStyle(fontSize: 18.0, color: Colors.black),
                           textAlign: TextAlign.center)),
           SizedBox(
-            height: 10,
+            height: 20,
           ),
         ],
       ));
@@ -1064,6 +1064,8 @@ class drivingwarningscoreContainer implements containerItem {
                 : TotalEventCountAvgForAllUser,
             displayText: '회',
           ),
+
+          SizedBox(height: 20,)
         ],
       ));
 
@@ -1298,6 +1300,7 @@ class daliyfuelContainer implements containerItem {
                   )
                 ],
               )),
+          SizedBox(height: 20,)
         ],
       ));
 
@@ -1615,9 +1618,7 @@ class drivingdistanceContainer implements containerItem {
                   : Text(drvment.getRange(3, 6).toList()[drvmentrandom],
                       style: TextStyle(fontSize: 18.0, color: Colors.black),
                       textAlign: TextAlign.center)),
-          SizedBox(
-            height: 10,
-          ),
+          SizedBox(height: 20,)
         ],
       ));
 
@@ -2048,7 +2049,7 @@ class spendingContainer implements containerItem {
                         style: TextStyle(fontSize: 18.0, color: Colors.black),
                         textAlign: TextAlign.center),
           ),
-          SizedBox(height: 10),
+          SizedBox(height: 20,)
         ],
       ));
 
@@ -2173,6 +2174,7 @@ class inspectionContainer implements containerItem {
                   ],
                 );
               }),
+          SizedBox(height: 10,)
         ],
       ));
 
