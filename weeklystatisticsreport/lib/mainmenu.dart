@@ -12,8 +12,11 @@ void main() {
   runApp(mainmenu());
 }
 
+
 class mainmenu extends StatelessWidget {
   Widget build(BuildContext context) {
+    navigatorKey = GlobalKey<NavigatorState>();
+
     return new MaterialApp(
       theme: new ThemeData(
           fontFamily: 'bitro',
@@ -25,6 +28,7 @@ class mainmenu extends StatelessWidget {
           primaryColor: PrimaryColor,
           canvasColor: PrimaryColor),
       home: new mainmenuPage(),
+      navigatorKey: navigatorKey,
     );
   }
 }
@@ -54,7 +58,7 @@ class _mainmenuPage extends State<mainmenuPage> {
 
     if (payload.compareTo("new payload") == 0) {
       Navigator.push(
-          context, MaterialPageRoute(builder: (context) => statisticview()));
+          context, MaterialPageRoute(builder: (context) => statisticviewPage()));
     }
   }
 
@@ -62,7 +66,7 @@ class _mainmenuPage extends State<mainmenuPage> {
   Widget build(BuildContext context) {
     return new Scaffold(
         appBar: AppBar(
-          elevation: 0.0,
+          elevation: 0.0, //그림자 제거
           title: Text(
             'INFOCAR',
             style: TextStyle(fontSize: 23.0, color: Colors.white),
@@ -298,7 +302,7 @@ class _mainmenuPage extends State<mainmenuPage> {
             onPressed: () {
               if (first.compareTo('주간통계') == 0) {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => statisticview()));
+                    MaterialPageRoute(builder: (context) => statisticviewPage()));
               }
             },
             child: Column(

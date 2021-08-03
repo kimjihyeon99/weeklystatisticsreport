@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'statisticview.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -35,7 +37,8 @@ class WeeklyStatisticsEditPage extends StatefulWidget {
       new _WeeklyStatisticsEditPage(items: items);
 }
 
-class _WeeklyStatisticsEditPage extends State<WeeklyStatisticsEditPage> {
+class _WeeklyStatisticsEditPage extends State<WeeklyStatisticsEditPage>
+    with WidgetsBindingObserver {
   List<ListItem> items;
 
   _WeeklyStatisticsEditPage({@required this.items});
@@ -60,26 +63,49 @@ class _WeeklyStatisticsEditPage extends State<WeeklyStatisticsEditPage> {
     return count;
   }
 
+  _saveInfo() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      prefs.setStringList('activate', activate?.cast<String>());
+      prefs.setStringList('deactivate', deactivate?.cast<String>());
+
+      prefs.setBool('isactivate1', Activateinfo['안전 점수']);
+      prefs.setBool('isactivate2', Activateinfo['경제 점수']);
+      prefs.setBool('isactivate3', Activateinfo['운전스타일 경고 횟수']);
+      prefs.setBool('isactivate4', Activateinfo['일일 연비']);
+      prefs.setBool('isactivate5', Activateinfo['주행 거리']);
+      prefs.setBool('isactivate6', Activateinfo['지출 내역']);
+      prefs.setBool('isactivate7', Activateinfo['점검 필요 항목']);
+    });
+  }
+
+  //백그라운드 상태에서 삭제해도
+  // @override
+  void initState() {
+    //앱 상태 변경 이벤트 등록
+    WidgetsBinding.instance.addObserver(this);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    //앱 상태 변경 이벤트 해제
+    //문제는 앱 종료시 dispose함수가 호출되지 않아 해당 함수를 실행 할 수가 없다.
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    switch (state) {
+      case AppLifecycleState.paused:
+        _saveInfo();
+        break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    //순서 정보가 바뀔때 마다 , mylist에 저장하기와  activate deactivate 도 업데이트(동기화)
-
-    _saveInfo() async {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      setState(() {
-        prefs.setStringList('activate', activate?.cast<String>());
-        prefs.setStringList('deactivate', deactivate?.cast<String>());
-
-        prefs.setBool('isactivate1', Activateinfo['안전 점수']);
-        prefs.setBool('isactivate2', Activateinfo['경제 점수']);
-        prefs.setBool('isactivate3', Activateinfo['운전스타일 경고 횟수']);
-        prefs.setBool('isactivate4', Activateinfo['일일 연비']);
-        prefs.setBool('isactivate5', Activateinfo['주행 거리']);
-        prefs.setBool('isactivate6', Activateinfo['지출 내역']);
-        prefs.setBool('isactivate7', Activateinfo['점검 필요 항목']);
-      });
-    }
-
     void _BottomSheet(context) {
       showModalBottomSheet(
           isDismissible: false,
@@ -107,6 +133,7 @@ class _WeeklyStatisticsEditPage extends State<WeeklyStatisticsEditPage> {
                 ));
           });
     }
+
 
     return new Scaffold(
         appBar: new AppBar(
@@ -174,93 +201,103 @@ class _WeeklyStatisticsEditPage extends State<WeeklyStatisticsEditPage> {
             ),
           ],
         ),
-        body: Container(
-          height: MediaQuery.of(context).size.height,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-                colors: [PrimaryColor, SecondColor],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter),
-          ),
-          child: new ReorderableListView.builder(
-            physics: NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            itemCount: items.length,
-            itemBuilder: (context, index) {
-              final item = items[index];
+        body: WillPopScope(//물리적 뒤로가기 처리
+          onWillPop: (){
+            _saveInfo();
+            Navigator.pop(context, items);
+            return Future.value(true);
+          },
+          child: Container(
+            height: MediaQuery.of(context).size.height,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  colors: [PrimaryColor, SecondColor],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter),
+            ),
+            child: new ReorderableListView.builder(
+              physics: NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: items.length,
+              itemBuilder: (context, index) {
+                final item = items[index];
 
-              if (item is HeadingItem) {
-                return makeAppbarContainer(item.isActivate, index);
-              } else if (item is isActivateItem) {
-                if (item.isactivate == true) {
-                  return makeActivationContainer(item.Activatename, index);
-                } else {
-                  return makeDeactivationContainer(item.Activatename, index);
-                }
-              }
-            },
-            onReorder: (int oldIndex, int newIndex) {
-              setState(() {
-                //head를 넘어가면 위치바꾸기 적용 안되게 제한하기
-                final ListItem temp = items[oldIndex];
-
-                for (int i = 0; i < items.length; i++) {
-                  var item = items[i];
-                  if (item is HeadingItem) {
-                    if (item.isActivate.compareTo("비활성화") == 0) {
-                      baseindex = i;
-                    }
-                  }
-                }
-
-                if (temp is isActivateItem) {
-                  if (temp.isactivate == true) {
-                    //활성화
-                    if (newIndex != 0) {
-                      if (oldIndex < newIndex) {
-                        newIndex -= 1;
-                      }
-                      final ListItem item = items.removeAt(oldIndex);
-                      items.insert(newIndex, item);
-
-                      //deactive 영역으로 넘어가는 경우 아이콘 바꾸기
-                      if (baseindex - 1 < newIndex) {
-                        //icon 바꾸기
-                        temp.isactivate = false;
-                        Activateinfo[temp.Activatename] = false;
-                      }
-                    }
+                if (item is HeadingItem) {
+                  return makeAppbarContainer(item.isActivate, index);
+                } else if (item is isActivateItem) {
+                  if (item.isactivate == true) {
+                    return makeActivationContainer(item.Activatename, index);
                   } else {
-                    //비활성화
-                    if (newIndex != 0) {
-                      // 조건 지우기
-                      if (oldIndex < newIndex) {
-                        newIndex -= 1;
-                      }
-                      final ListItem item = items.removeAt(oldIndex);
-                      items.insert(newIndex, item);
+                    return makeDeactivationContainer(item.Activatename, index);
+                  }
+                }
+              },
+              onReorder: (int oldIndex, int newIndex) {
+                setState(() {
+                  //head를 넘어가면 위치바꾸기 적용 안되게 제한하기
+                  final ListItem temp = items[oldIndex];
 
-                      //active 영역으로 넘어가는 경우 아이콘 바꾸기
-                      if (baseindex + 1 > newIndex) {
-                        temp.isactivate = true;
-                        Activateinfo[temp.Activatename] = true;
+                  for (int i = 0; i < items.length; i++) {
+                    var item = items[i];
+                    if (item is HeadingItem) {
+                      if (item.isActivate.compareTo("비활성화") == 0) {
+                        baseindex = i;
                       }
                     }
                   }
 
-                  int ct = countactivate();
+                  if (temp is isActivateItem) {
+                    if (temp.isactivate == true) {
+                      //활성화
+                      if (newIndex != 0) {
+                        if (oldIndex < newIndex) {
+                          newIndex -= 1;
+                        }
+                        final ListItem item = items.removeAt(oldIndex);
+                        items.insert(newIndex, item);
 
-                  items = List<ListItem>.generate(
-                      9,
-                      (i) => ((i % (ct + 1)) == 0 &&
-                              ((i ~/ (ct + 1)) == 0 || (i ~/ (ct + 1)) == 1))
-                          ? (i == 0 ? HeadingItem("활성화") : HeadingItem("비활성화"))
-                          : ((i ~/ (ct + 1)) == 0
-                              ? isActivateItem(activate[i - 1], true)
-                              : isActivateItem(deactivate[i - ct - 2], false)));
-                }
-              });
-            },
+                        //deactive 영역으로 넘어가는 경우 아이콘 바꾸기
+                        if (baseindex - 1 < newIndex) {
+                          //icon 바꾸기
+                          temp.isactivate = false;
+                          Activateinfo[temp.Activatename] = false;
+                        }
+                      }
+                    } else {
+                      //비활성화
+                      if (newIndex != 0) {
+                        // 조건 지우기
+                        if (oldIndex < newIndex) {
+                          newIndex -= 1;
+                        }
+                        final ListItem item = items.removeAt(oldIndex);
+                        items.insert(newIndex, item);
+
+                        //active 영역으로 넘어가는 경우 아이콘 바꾸기
+                        if (baseindex + 1 > newIndex) {
+                          temp.isactivate = true;
+                          Activateinfo[temp.Activatename] = true;
+                        }
+                      }
+                    }
+
+                    int ct = countactivate();
+
+                    items = List<ListItem>.generate(
+                        9,
+                        (i) => ((i % (ct + 1)) == 0 &&
+                                ((i ~/ (ct + 1)) == 0 || (i ~/ (ct + 1)) == 1))
+                            ? (i == 0
+                                ? HeadingItem("활성화")
+                                : HeadingItem("비활성화"))
+                            : ((i ~/ (ct + 1)) == 0
+                                ? isActivateItem(activate[i - 1], true)
+                                : isActivateItem(
+                                    deactivate[i - ct - 2], false)));
+                  }
+                });
+              },
+            ),
           ),
         ));
   }
