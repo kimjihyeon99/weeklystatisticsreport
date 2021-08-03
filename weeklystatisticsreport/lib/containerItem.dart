@@ -44,8 +44,8 @@ double fuellastavg = 0;
 double Totalfluelavg = 0;//전체 사용자의 연비 평균
 
 //이벤트 경고 횟수가 0개인지 여부
-bool isZeroEventCountForLastWeek = true;
-bool isZeroEventCountForThisWeek = true;
+bool isZeroEventCountForLastWeek = false;
+bool isZeroEventCountForThisWeek = false;
 
 //멘트 랜덤 정하기
 final int mentrandom = Random().nextInt(3);

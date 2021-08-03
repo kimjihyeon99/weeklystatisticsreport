@@ -97,7 +97,13 @@ class _WeeklyStatisticsEditPage extends State<WeeklyStatisticsEditPage> {
                     )),
                 child: Align(
                   alignment: Alignment.center,
-                  child: Text("화면 배치가 초기화 되었습니다.", style: TextStyle(fontSize:18,fontWeight: FontWeight.bold,color: Colors.white),),
+                  child: Text(
+                    "화면 배치가 초기화 되었습니다.",
+                    style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white),
+                  ),
                 ));
           });
     }

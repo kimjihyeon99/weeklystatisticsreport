@@ -25,13 +25,13 @@ Future<String> getallapi() async {
   await getdaliyfuel();
   await getTotaldailyfuel();
   await getdrivingdistance_last();
-  await getdrivingdistance();
+  await getdrivingdistance_this();
   await getTotalDrivingdistance();
   await getdecelerationscore();
-  await getaccelerationscore();
-  await getrotationscore();
-  await getidlescore();
-  await getThisTotalEventCountAvgAllUser();
+  await geteventscore("EventCode02", "급가속");
+  await geteventscore("EventCode10", "급회전");
+  await geteventscore("EventCode01", "공회전");
+  await getTotalEventCount();
   await getSpending();
   await getInspection();
 
@@ -81,7 +81,7 @@ void getsafyscore() async {
         new DateTime(now.year, now.month, now.day + 1); //다 돌아간 날짜를 체크하기 위함
     jr.forEach((x) {
       var date_str = formatter.format(date);
-      
+
       while (date_str != x.Date) {
         DateTime mydate = new DateTime(now.year, now.month, now.day - index);
         String mydateday = formatter.format(mydate);
@@ -89,7 +89,7 @@ void getsafyscore() async {
         newjr.insert(index,
             new Getdrivingscore(eco_avg: 0, safe_avg: 0, Date: mydateday));
 
-        date = new DateTime(date.year, date.month, date.day-1);
+        date = new DateTime(date.year, date.month, date.day - 1);
         date_str = formatter.format(date);
         index = index + 1;
       }
@@ -99,7 +99,7 @@ void getsafyscore() async {
       //기존 데이터 넣기
       newjr.insert(index, x);
 
-      date = new DateTime(date.year, date.month, date.day-1);
+      date = new DateTime(date.year, date.month, date.day - 1);
       index = index + 1;
     });
 
@@ -221,7 +221,7 @@ void getdaliyfuel() async {
         //비어있는 데이터 넣기
         newjr.insert(
             index, new Getdaliyfuel(DrvFuelUsement: 0, Date: mydateday));
-        date = new DateTime(date.year, date.month, date.day-1);
+        date = new DateTime(date.year, date.month, date.day - 1);
         date_str = formatter.format(date);
         index = index + 1;
       }
@@ -230,7 +230,7 @@ void getdaliyfuel() async {
       //기존 데이터 넣기
       newjr.insert(index, x);
 
-      date = new DateTime(date.year, date.month, date.day-1);
+      date = new DateTime(date.year, date.month, date.day - 1);
       index = index + 1;
     });
 
@@ -287,10 +287,10 @@ void getdaliyfuel() async {
 }
 
 // 총 사용자 이번주 연비 점수 api
-void getTotaldailyfuel() async{
+void getTotaldailyfuel() async {
   //이번주 날짜 가져오기
   final DateTime now =
-  new DateTime(originnow.year, originnow.month, originnow.day - numyoil);
+      new DateTime(originnow.year, originnow.month, originnow.day - numyoil);
   final DateTime lastweek = new DateTime(
       originnow.year, originnow.month, originnow.day - 6 - numyoil);
 
@@ -306,19 +306,18 @@ void getTotaldailyfuel() async{
     Uri.parse(url),
     headers: {
       "F_TOKEN":
-      "D5CFB732E7BA8E56356AA766B61EEF32F5F1BCA6F554FB0A9432D285A7E012A3"
+          "D5CFB732E7BA8E56356AA766B61EEF32F5F1BCA6F554FB0A9432D285A7E012A3"
     },
   );
 
-  if(response.statusCode == 200){
+  if (response.statusCode == 200) {
     var jsonResponse = convert.jsonDecode(response.body);
     var jr = jsonResponse['response']['body']['items'];
     Totalfluelavg = jr['CbookCountAvg'];
-  }else{
+  } else {
     print('Request failed with status: ${response.statusCode}.');
   }
 }
-
 
 //지난주 주행거리 합 api
 void getdrivingdistance_last() async {
@@ -372,7 +371,7 @@ void getdrivingdistance_last() async {
 }
 
 //이번주 주행거리 합
-void getdrivingdistance() async {
+void getdrivingdistance_this() async {
   //현재 날짜와 지난주 날짜 가져오기
   final DateTime now =
       new DateTime(originnow.year, originnow.month, originnow.day - numyoil);
@@ -427,7 +426,7 @@ void getdrivingdistance() async {
 void getTotalDrivingdistance() async {
   //현재 날짜와 지난주 날짜 가져오기
   final DateTime now =
-  new DateTime(originnow.year, originnow.month, originnow.day - numyoil);
+      new DateTime(originnow.year, originnow.month, originnow.day - numyoil);
   final DateTime lastweek = new DateTime(
       originnow.year, originnow.month, originnow.day - 6 - numyoil);
 
@@ -443,27 +442,24 @@ void getTotalDrivingdistance() async {
     Uri.parse(url),
     headers: {
       "F_TOKEN":
-      "D5CFB732E7BA8E56356AA766B61EEF32F5F1BCA6F554FB0A9432D285A7E012A3"
+          "D5CFB732E7BA8E56356AA766B61EEF32F5F1BCA6F554FB0A9432D285A7E012A3"
     },
   );
 
   if (response.statusCode == 200) {
-      var jsonResponse = convert.jsonDecode(response.body);
-      var jr = jsonResponse['response']['body']['items'];
-      TotaldrivingdistanceForAllUser = jr['DrvDisAvg'].toInt();
+    var jsonResponse = convert.jsonDecode(response.body);
+    var jr = jsonResponse['response']['body']['items'];
+    TotaldrivingdistanceForAllUser = jr['DrvDisAvg'].toInt();
 
-      maxdistance = (maxdistance > TotaldrivingdistanceForAllUser)
-          ? maxdistance
-          : TotaldrivingdistanceForAllUser;
+    maxdistance = (maxdistance > TotaldrivingdistanceForAllUser)
+        ? maxdistance
+        : TotaldrivingdistanceForAllUser;
   } else {
     print('Request failed with status: ${response.statusCode}.');
   }
-
 }
 
-
 ////위험 운전행동 발생 횟수 기능 api
-
 //급감속 api
 void getdecelerationscore() async {
   // 초기화
@@ -504,6 +500,7 @@ void getdecelerationscore() async {
           "D5CFB732E7BA8E56356AA766B61EEF32F5F1BCA6F554FB0A9432D285A7E012A3"
     },
   );
+  int index = 0; //2주간의 날짜를 순서대로 가져오기 위한 것
 
   if (response.statusCode == 200) {
     var jsonResponse = convert.jsonDecode(response.body);
@@ -515,7 +512,6 @@ void getdecelerationscore() async {
             (json) => GetDrivingwarningscore.fromJson(json))
         .toList();
 
-    int index = 0;
     int thiscountSum = 0; // 해당 날짜에 일어난 이번주 급감속 총 횟수 계산
     DateTime lastday = new DateTime(now.year, now.month, now.day + 1);
 
@@ -532,7 +528,7 @@ void getdecelerationscore() async {
         countAllEventForEachDay.insert(
             index, new GetDrivingwarningscore(countEvent: 0, Date: mydateday));
         //update
-        date = new DateTime(date.year, date.month, date.day-1);
+        date = new DateTime(date.year, date.month, date.day - 1);
         date_str = formatter.format(date);
         index = index + 1;
       }
@@ -541,13 +537,9 @@ void getdecelerationscore() async {
       countAllEventForEachDay.insert(index, x);
 
       //update
-      date = new DateTime(date.year, date.month, date.day-1);
+      date = new DateTime(date.year, date.month, date.day - 1);
       index = index + 1;
     });
-
-    if (thiscountSum > 0) {
-      isZeroEventCountForThisWeek = false;
-    }
 
     countEventForThisWeek
         .add(new CountEventForEvent(name: "급감속", count: thiscountSum));
@@ -588,7 +580,6 @@ void getdecelerationscore() async {
             (json) => GetDrivingwarningscore.fromJson(json))
         .toList();
 
-    int index = 7;
     int lastcountSum = 0; // 해당 날짜에 일어난 저번주 급감속 총 횟수 계산
     DateTime lastday = new DateTime(now.year, now.month, now.day - index + 1);
     jr.forEach((x) {
@@ -598,21 +589,19 @@ void getdecelerationscore() async {
 
       while (date_str != x.Date) {
         DateTime mydate = new DateTime(now.year, now.month, now.day - index);
-
         String mydateday = formatter.format(mydate);
         //비어있는 데이터 넣기
         countAllEventForEachDay.insert(
             index, new GetDrivingwarningscore(countEvent: 0, Date: mydateday));
-        date = new DateTime(date.year, date.month, date.day-1);
+        date = new DateTime(date.year, date.month, date.day - 1);
         date_str = formatter.format(date);
         index = index + 1;
       }
       lastday = DateFormat('yyyy-MM-dd').parse(x.Date);
       countAllEventForEachDay.insert(index, x);
 
-      date = new DateTime(date.year, date.month, date.day-1);
+      date = new DateTime(date.year, date.month, date.day - 1);
       index = index + 1;
-
     });
 
     int countday = lastday.difference(lastweek).inDays;
@@ -626,10 +615,6 @@ void getdecelerationscore() async {
           i, new GetDrivingwarningscore(countEvent: 0, Date: mydateday));
     }
 
-    if (lastcountSum > 0) {
-      isZeroEventCountForLastWeek = false;
-    }
-
     countEventForLastWeek
         .add(new CountEventForEvent(name: "급감속", count: lastcountSum));
 
@@ -639,8 +624,8 @@ void getdecelerationscore() async {
   }
 }
 
-//급가속 api
-void getaccelerationscore() async {
+//급가속, 급회전, 공회전 api
+void geteventscore(String eventcode, String eventname) async {
   //현재 날짜와 지난주 날짜 가져오기
   final DateTime now =
       new DateTime(originnow.year, originnow.month, originnow.day - numyoil);
@@ -663,7 +648,7 @@ void getaccelerationscore() async {
 
   // 이번주
   String url =
-      'https://server2.mureung.com/infocarAdminPageAPI/sideproject/eventCount?userKey=1147&startDate=$thisMondayDay&endDate=$today&eventCode=EventCode02';
+      'https://server2.mureung.com/infocarAdminPageAPI/sideproject/eventCount?userKey=1147&startDate=$thisMondayDay&endDate=$today&eventCode=$eventcode'; //이벤트 코드
   var response = await http.get(
     Uri.parse(url),
     headers: {
@@ -671,6 +656,7 @@ void getaccelerationscore() async {
           "D5CFB732E7BA8E56356AA766B61EEF32F5F1BCA6F554FB0A9432D285A7E012A3"
     },
   );
+  int index = 0; //2주간의 날짜를 순서대로 가져오기 위한 것
   if (response.statusCode == 200) {
     var jsonResponse = convert.jsonDecode(response.body);
     var jr = jsonResponse['response']['body']['items'];
@@ -680,276 +666,37 @@ void getaccelerationscore() async {
             (json) => GetDrivingwarningscore.fromJson(json))
         .toList();
 
-    int index = 0;
-    int thiscountSum = 0; // 해당 날짜에 일어난 이번주 급가속 총 횟수 계산
-    jr.forEach((x) {
-      thiscountSum += x.countEvent;
-
-      var date_str = formatter.format(date);
-
-      while (date_str != x.Date) {
-        date = new DateTime(date.year, date.month, date.day-1);
-        date_str = formatter.format(date);
-        index = index + 1;
-      }
-      countAllEventForEachDay[index].countEvent += x.countEvent;
-
-      date = new DateTime(date.year, date.month, date.day-1);
-      index = index + 1;
-    });
-
-    if (thiscountSum > 0) {
-      isZeroEventCountForThisWeek = false;
-    }
-
-    countEventForThisWeek
-        .add(new CountEventForEvent(name: "급가속", count: thiscountSum));
-    countAllEventForThisWeek += thiscountSum;
-  } else {
-    print('Request failed with status: ${response.statusCode}.');
-  }
-
-  // 저번주
-  url =
-      'https://server2.mureung.com/infocarAdminPageAPI/sideproject/eventCount?userKey=1147&startDate=$lastweekday&endDate=$lastSundayDay&eventCode=EventCode02';
-  response = await http.get(
-    Uri.parse(url),
-    headers: {
-      "F_TOKEN":
-          "D5CFB732E7BA8E56356AA766B61EEF32F5F1BCA6F554FB0A9432D285A7E012A3"
-    },
-  );
-  if (response.statusCode == 200) {
-    var jsonResponse = convert.jsonDecode(response.body);
-    var jr = jsonResponse['response']['body']['items'];
-    jr = jr.cast<Map<String, dynamic>>();
-    jr = jr
-        .map<GetDrivingwarningscore>(
-            (json) => GetDrivingwarningscore.fromJson(json))
-        .toList();
-
-    int index = 7;
-    int lastcountSum = 0; // 해당 날짜에 일어난 저번주 급가속 총 횟수 계산
-    jr.forEach((x) {
-      lastcountSum += x.countEvent;
-
-      var date_str = formatter.format(date);
-
-      while (date_str != x.Date) {
-        date = new DateTime(date.year, date.month, date.day-1);
-        date_str = formatter.format(date);
-        index = index + 1;
-      }
-      countAllEventForEachDay[index].countEvent += x.countEvent; //일일 급가속 횟수 계산
-
-      date = new DateTime(date.year, date.month, date.day-1);
-      index = index + 1;
-    });
-
-    if (lastcountSum > 0) {
-      isZeroEventCountForLastWeek = false;
-    }
-
-    countEventForLastWeek
-        .add(new CountEventForEvent(name: "급가속", count: lastcountSum));
-    countAllEventForLastWeek += lastcountSum;
-  } else {
-    print('Request failed with status: ${response.statusCode}.');
-  }
-}
-
-//급회전 api
-void getrotationscore() async {
-  //현재 날짜와 지난주 날짜 가져오기
-  final DateTime now =
-      new DateTime(originnow.year, originnow.month, originnow.day - numyoil);
-  final DateTime lastSunday = new DateTime(
-      originnow.year, originnow.month, originnow.day - numyoil - 7);
-  final DateTime thisMonday = new DateTime(
-      originnow.year, originnow.month, originnow.day - numyoil - 6);
-  final DateTime lastweek = new DateTime(
-      originnow.year, originnow.month, originnow.day - 13 - numyoil);
-
-  final DateFormat formatter = DateFormat('yyyy-MM-dd'); // string으로 바꾸기 위함
-
-  //날짜를 문자열로 변환하기, class에 넣어주기 위함
-  final String today = formatter.format(now);
-  final String lastSundayDay = formatter.format(lastSunday);
-  final String thisMondayDay = formatter.format(thisMonday);
-  final String lastweekday = formatter.format(lastweek);
-
-  DateTime date = now; //현재 날짜에서 '일'만 가져와서 아래에서 카운트 하기 위함
-
-  // 이번주
-  String url =
-      'https://server2.mureung.com/infocarAdminPageAPI/sideproject/eventCount?userKey=1147&startDate=$thisMondayDay&endDate=$today&eventCode=EventCode10';
-  var response = await http.get(
-    Uri.parse(url),
-    headers: {
-      "F_TOKEN":
-          "D5CFB732E7BA8E56356AA766B61EEF32F5F1BCA6F554FB0A9432D285A7E012A3"
-    },
-  );
-  if (response.statusCode == 200) {
-    var jsonResponse = convert.jsonDecode(response.body);
-    var jr = jsonResponse['response']['body']['items'];
-    jr = jr.cast<Map<String, dynamic>>();
-    jr = jr
-        .map<GetDrivingwarningscore>(
-            (json) => GetDrivingwarningscore.fromJson(json))
-        .toList();
-
-    int index = 0;
-    int thiscountSum = 0; // 해당 날짜에 일어난 이번주 급회전 총 횟수 계산
-    jr.forEach((x) {
-      thiscountSum += x.countEvent;
-
-      var date_str = formatter.format(date);
-
-      while (date_str != x.Date) {
-        date = new DateTime(date.year, date.month, date.day-1);
-        date_str = formatter.format(date);
-        index = index + 1;
-      }
-      countAllEventForEachDay[index].countEvent += x.countEvent; //일일 급회전 횟수 계산
-
-      date = new DateTime(date.year, date.month, date.day-1);
-      index = index + 1;
-    });
-
-    if (thiscountSum > 0) {
-      isZeroEventCountForThisWeek = false;
-    }
-
-    countEventForThisWeek
-        .add(new CountEventForEvent(name: "급회전", count: thiscountSum));
-    countAllEventForThisWeek += thiscountSum;
-  } else {
-    print('Request failed with status: ${response.statusCode}.');
-  }
-
-  // 저번주
-  url =
-      'https://server2.mureung.com/infocarAdminPageAPI/sideproject/eventCount?userKey=1147&startDate=$lastweekday&endDate=$lastSundayDay&eventCode=EventCode10';
-
-  response = await http.get(
-    Uri.parse(url),
-    headers: {
-      "F_TOKEN":
-          "D5CFB732E7BA8E56356AA766B61EEF32F5F1BCA6F554FB0A9432D285A7E012A3"
-    },
-  );
-  if (response.statusCode == 200) {
-    var jsonResponse = convert.jsonDecode(response.body);
-    var jr = jsonResponse['response']['body']['items'];
-    jr = jr.cast<Map<String, dynamic>>();
-    jr = jr
-        .map<GetDrivingwarningscore>(
-            (json) => GetDrivingwarningscore.fromJson(json))
-        .toList();
-
-    int index = 7;
-    int lastcountSum = 0; // 해당 날짜에 일어난 저번주 급회전 총 횟수 계산
-    jr.forEach((x) {
-      lastcountSum += x.countEvent;
-      var date_str = formatter.format(date);
-
-      while (date_str != x.Date) {
-        date = new DateTime(date.year, date.month, date.day-1);
-        date_str = formatter.format(date);
-        index = index + 1;
-      }
-      countAllEventForEachDay[index].countEvent += x.countEvent; //일일 급회전 횟수 계산
-
-      date = new DateTime(date.year, date.month, date.day-1);
-      index = index + 1;
-    });
-
-    if (lastcountSum > 0) {
-      isZeroEventCountForLastWeek = false;
-    }
-
-    countEventForLastWeek
-        .add(new CountEventForEvent(name: "급회전", count: lastcountSum));
-    countAllEventForLastWeek += lastcountSum;
-  } else {
-    print('Request failed with status: ${response.statusCode}.');
-  }
-}
-
-//공회전 api
-void getidlescore() async {
-  //현재 날짜와 지난주 날짜 가져오기
-  final DateTime now =
-      new DateTime(originnow.year, originnow.month, originnow.day - numyoil);
-  final DateTime lastSunday = new DateTime(
-      originnow.year, originnow.month, originnow.day - numyoil - 7);
-  final DateTime thisMonday = new DateTime(
-      originnow.year, originnow.month, originnow.day - numyoil - 6);
-  final DateTime lastweek = new DateTime(
-      originnow.year, originnow.month, originnow.day - 13 - numyoil);
-
-  final DateFormat formatter = DateFormat('yyyy-MM-dd'); // string으로 바꾸기 위함
-
-  //날짜를 문자열로 변환하기, class에 넣어주기 위함
-  final String today = formatter.format(now);
-  final String lastSundayDay = formatter.format(lastSunday);
-  final String thisMondayDay = formatter.format(thisMonday);
-  final String lastweekday = formatter.format(lastweek);
-
-  DateTime date = now; //현재 날짜에서 '일'만 가져와서 아래에서 카운트 하기 위함
-
-  // 이번주
-  String url =
-      'https://server2.mureung.com/infocarAdminPageAPI/sideproject/eventCount?userKey=1147&startDate=$thisMondayDay&endDate=$today&eventCode=EventCode01';
-  var response = await http.get(
-    Uri.parse(url),
-    headers: {
-      "F_TOKEN":
-          "D5CFB732E7BA8E56356AA766B61EEF32F5F1BCA6F554FB0A9432D285A7E012A3"
-    },
-  );
-  if (response.statusCode == 200) {
-    var jsonResponse = convert.jsonDecode(response.body);
-    var jr = jsonResponse['response']['body']['items'];
-    jr = jr.cast<Map<String, dynamic>>();
-    jr = jr
-        .map<GetDrivingwarningscore>(
-            (json) => GetDrivingwarningscore.fromJson(json))
-        .toList();
-
-    int index = 0;
     int thiscountSum = 0; // 해당 날짜에 일어난 이번주 공회전 총 횟수 계산
     jr.forEach((x) {
       thiscountSum += x.countEvent;
       var date_str = formatter.format(date);
 
       while (date_str != x.Date) {
-        date = new DateTime(date.year, date.month, date.day-1);
+        date = new DateTime(date.year, date.month, date.day - 1);
         date_str = formatter.format(date);
         index = index + 1;
       }
       countAllEventForEachDay[index].countEvent += x.countEvent; //일일 공회전 횟수 계산
 
-      date = new DateTime(date.year, date.month, date.day-1);
+      date = new DateTime(date.year, date.month, date.day - 1);
       index = index + 1;
     });
 
-    if (thiscountSum > 0) {
-      isZeroEventCountForThisWeek = false;
-    }
-
     countEventForThisWeek
-        .add(new CountEventForEvent(name: "공회전", count: thiscountSum));
+        .add(new CountEventForEvent(name: eventname, count: thiscountSum));
 
     countAllEventForThisWeek += thiscountSum;
+
+    if (eventname == "공회전" && countAllEventForThisWeek == 0) {
+      isZeroEventCountForThisWeek = true;
+    }
   } else {
     print('Request failed with status: ${response.statusCode}.');
   }
 
   // 저번주
   url =
-      'https://server2.mureung.com/infocarAdminPageAPI/sideproject/eventCount?userKey=1147&startDate=$lastweekday&endDate=$lastSundayDay&eventCode=EventCode01';
+      'https://server2.mureung.com/infocarAdminPageAPI/sideproject/eventCount?userKey=1147&startDate=$lastweekday&endDate=$lastSundayDay&eventCode=$eventcode';
 
   response = await http.get(
     Uri.parse(url),
@@ -967,30 +714,29 @@ void getidlescore() async {
             (json) => GetDrivingwarningscore.fromJson(json))
         .toList();
 
-    int index = 7;
     int lastcountSum = 0; // 해당 날짜에 일어난 지난주 공회전 총 횟수 계산
     jr.forEach((x) {
       lastcountSum += x.countEvent;
       var date_str = formatter.format(date);
       while (date_str != x.Date) {
-        date = new DateTime(date.year, date.month, date.day-1);
+        date = new DateTime(date.year, date.month, date.day - 1);
         date_str = formatter.format(date);
         index = index + 1;
       }
       countAllEventForEachDay[index].countEvent += x.countEvent; //일일 공회전 횟수 계산
 
-      date = new DateTime(date.year, date.month, date.day-1);
+      date = new DateTime(date.year, date.month, date.day - 1);
       index = index + 1;
     });
-
-    if (lastcountSum > 0) {
-      isZeroEventCountForLastWeek = false;
-    }
+    //고치기-> countAll 로 지난주 카운트가 있는지 확인하기
 
     countEventForLastWeek
-        .add(new CountEventForEvent(name: "공회전", count: lastcountSum));
-    countAllEventForLastWeek += lastcountSum;
+        .add(new CountEventForEvent(name: eventname, count: lastcountSum));
 
+    countAllEventForLastWeek += lastcountSum;
+    if (eventname == "공회전" && countAllEventForLastWeek == 0) {
+      isZeroEventCountForLastWeek = true;
+    }
     countAllEventForEachDay = new List.from(countAllEventForEachDay.reversed);
   } else {
     print('Request failed with status: ${response.statusCode}.');
@@ -998,10 +744,9 @@ void getidlescore() async {
 }
 
 // 이번주 전체 사용자 위험운전행동 평균횟수 api
-void getThisTotalEventCountAvgAllUser() async {
-
+void getTotalEventCount() async {
   final DateTime thisSundayDate =
-  new DateTime(originnow.year, originnow.month, originnow.day - numyoil);
+      new DateTime(originnow.year, originnow.month, originnow.day - numyoil);
   final DateTime thisMondayDate = new DateTime(
       originnow.year, originnow.month, originnow.day - 6 - numyoil);
 
@@ -1017,13 +762,14 @@ void getThisTotalEventCountAvgAllUser() async {
     Uri.parse(url),
     headers: {
       "F_TOKEN":
-      "D5CFB732E7BA8E56356AA766B61EEF32F5F1BCA6F554FB0A9432D285A7E012A3"
+          "D5CFB732E7BA8E56356AA766B61EEF32F5F1BCA6F554FB0A9432D285A7E012A3"
     },
   );
 
   if (response.statusCode == 200) {
-      var jsonResponse = convert.jsonDecode(response.body);
-      TotalEventCountAvgForAllUser = jsonResponse['response']['body']['items']['EventCountAvg'].toInt();
+    var jsonResponse = convert.jsonDecode(response.body);
+    TotalEventCountAvgForAllUser =
+        jsonResponse['response']['body']['items']['EventCountAvg'].toInt();
   } else {
     print('Request failed with status: ${response.statusCode}.');
   }
