@@ -12,7 +12,6 @@ void main() {
   runApp(mainmenu());
 }
 
-
 class mainmenu extends StatelessWidget {
   Widget build(BuildContext context) {
     navigatorKey = GlobalKey<NavigatorState>();
@@ -57,8 +56,12 @@ class _mainmenuPage extends State<mainmenuPage> {
     print('Payload : $payload');
 
     if (payload.compareTo("new payload") == 0) {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => statisticviewPage()));
+      if(isBuildStatisticviewPage == true) { // API를 이미 호출했던 전적이 있는 경우
+        Navigator.pop(context);
+      }else {
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => statisticviewPage()));
+      }
     }
   }
 
@@ -301,8 +304,12 @@ class _mainmenuPage extends State<mainmenuPage> {
           child: CupertinoButton(
             onPressed: () {
               if (first.compareTo('주간통계') == 0) {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => statisticviewPage()));
+                if(isBuildStatisticviewPage == true) { // API를 이미 호출했던 전적이 있는 경우
+                  Navigator.pop(context);
+                }else {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => statisticviewPage()));
+                }
               }
             },
             child: Column(
