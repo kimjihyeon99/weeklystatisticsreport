@@ -62,6 +62,8 @@ const SecondColor = const Color(0xFFC6B4CE);
 
 GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
+bool isBuildStatisticviewPage = false; // Api를 한번만 호출하기 위해 사용
+
 class statisticviewPage extends StatefulWidget {
   statisticviewPage({Key key}) : super(key: key);
 
@@ -74,6 +76,8 @@ class statistic_viewPage extends State<statisticviewPage> {
 
   void initState() {
     super.initState();
+    isBuildStatisticviewPage = true;
+
     myapi = getallapi();
     _loadInfo();
   }
@@ -134,7 +138,7 @@ class statistic_viewPage extends State<statisticviewPage> {
             ),
             onPressed: () {
               Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => mainmenu()));
+                  context, MaterialPageRoute(builder: (context) => mainmenuPage()));
             },
           ),
           actions: <Widget>[
