@@ -15,12 +15,16 @@ void main() {
 class mainmenu extends StatelessWidget {
   Widget build(BuildContext context) {
     return new MaterialApp(
-      title: 'INFOCAR',
       theme: new ThemeData(
-          fontFamily: 'bitro',
-          primaryColor: PrimaryColor,
-          accentColor: PrimaryColor,
-          canvasColor: PrimaryColor),
+        fontFamily: 'bitro',
+        textTheme: TextTheme(
+            bodyText1: TextStyle(
+                fontSize: 15.0,
+                color: Color(0xff3C5186),
+                fontWeight: FontWeight.bold)),
+        primaryColor: PrimaryColor,
+        canvasColor: PrimaryColor
+      ),
       home: new mainmenuPage(),
     );
   }
@@ -50,14 +54,13 @@ class _mainmenuPage extends State<mainmenuPage> {
     print('Payload : $payload');
 
     if (payload.compareTo("new payload") == 0) {
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => statisticview()));
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => statisticview()));
     }
   }
 
   @override
   Widget build(BuildContext context) {
-
     return new Scaffold(
         appBar: AppBar(
           elevation: 0.0,
@@ -73,50 +76,68 @@ class _mainmenuPage extends State<mainmenuPage> {
             padding: EdgeInsets.zero,
             children: [
               DrawerHeader(
-                  decoration: BoxDecoration(
-                  color: SecondColor.withOpacity(0.4),
-            borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(20),
-              bottomRight: Radius.circular(20),
-            )
-
-                ),
+                decoration: BoxDecoration(
+                    color: SecondColor.withOpacity(0.4),
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(20),
+                      bottomRight: Radius.circular(20),
+                    )),
                 child: Container(
                   margin: EdgeInsets.only(left: 10),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(height: 15,),
-                      Image(image: AssetImage("assets/bmw_logo.png"),width: 50,height: 50,),
-                      SizedBox(height: 15,),
-                      Text("BMW i4",style: TextStyle(color: PrimaryColor,fontSize: 20, fontWeight: FontWeight.bold),),
-                      SizedBox(height: 5,),
-                      Text("홍길동",style: TextStyle(color: Colors.white.withOpacity(0.9),fontSize: 15,))
+                      SizedBox(
+                        height: 15,
+                      ),
+                      Image(
+                        image: AssetImage("assets/bmw_logo.png"),
+                        width: 50,
+                        height: 50,
+                      ),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      Text(
+                        "BMW i4",
+                        style: TextStyle(
+                            color: PrimaryColor,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Text("홍길동",
+                          style: TextStyle(
+                            color: Colors.white.withOpacity(0.9),
+                            fontSize: 15,
+                          ))
                     ],
                   ),
                 ),
               ),
               ListTile(
-                leading: Icon(Icons.apps,color: Colors.white,),
-                title: const Text('내 차 목록',style: TextStyle(color: Colors.white),),
+                leading: Icon(
+                  Icons.apps,
+                  color: Colors.white,
+                ),
+                title: const Text(
+                  '내 차 목록',
+                  style: TextStyle(color: Colors.white),
+                ),
                 onTap: () {
-                  // Update the state of the app
-                  // ...
-                  // Then close the drawer
                   Navigator.pop(context);
                 },
               ),
-              new Container(
+              Container(
                   height: 0.5,
                   width: double.infinity,
                   color: Colors.grey.withOpacity(0.3)),
               ListTile(
-                leading: Icon(Icons.settings,color: Colors.white),
-                title: const Text('설정',style: TextStyle(color: Colors.white)),
+                leading: Icon(Icons.settings, color: Colors.white),
+                title: const Text('설정', style: TextStyle(color: Colors.white)),
                 onTap: () {
-                  // Update the state of the app
-                  // ...
-                  // Then close the drawer
                   Navigator.pop(context);
                 },
               ),
@@ -127,7 +148,6 @@ class _mainmenuPage extends State<mainmenuPage> {
             ],
           ),
         ),
-
         body: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
@@ -142,7 +162,9 @@ class _mainmenuPage extends State<mainmenuPage> {
               ),
               Container(
                 child: Column(children: [
-                  SizedBox(height: 25,),
+                  SizedBox(
+                    height: 25,
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -155,7 +177,7 @@ class _mainmenuPage extends State<mainmenuPage> {
                       ),
                       Text(
                         "BMW i4",
-                        style: TextStyle(fontSize: 27,color: Colors.white),
+                        style: TextStyle(fontSize: 27, color: Colors.white),
                       ),
                     ],
                   ),
@@ -166,19 +188,16 @@ class _mainmenuPage extends State<mainmenuPage> {
                     image: AssetImage("assets/mycar.png"),
                     height: 110,
                   ),
-
                 ]),
                 height: 200,
                 width: 360,
                 decoration: BoxDecoration(
-                  image:
-                  DecorationImage(
-                      fit: BoxFit.cover,
-                      colorFilter: new ColorFilter.mode(
-                          Colors.transparent.withOpacity(0.5), BlendMode.dstATop),
-                      image: AssetImage("assets/background_car.jpg"),
+                  image: DecorationImage(
+                    fit: BoxFit.cover,
+                    colorFilter: new ColorFilter.mode(
+                        Colors.transparent.withOpacity(0.5), BlendMode.dstATop),
+                    image: AssetImage("assets/background_car.jpg"),
                   ),
-
                   borderRadius: BorderRadius.circular(30),
                   color: Colors.transparent,
                   boxShadow: [
@@ -284,15 +303,13 @@ class _mainmenuPage extends State<mainmenuPage> {
               }
             },
             child: Column(
-              mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 icons,
                 Text(
                   first,
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontFamily: "bitro", fontSize: 15.0, color: PrimaryColor, fontWeight: FontWeight.bold),
+                  style: Theme.of(context).textTheme.bodyText1,
                 ),
               ],
             ),
@@ -313,7 +330,6 @@ class _mainmenuPage extends State<mainmenuPage> {
               ),
             ],
           ),
-          margin: EdgeInsets.only(left: 0, right: 0),
         ),
         Container(
           child: CupertinoButton(
@@ -324,15 +340,13 @@ class _mainmenuPage extends State<mainmenuPage> {
               }
             },
             child: Column(
-              mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 icons2,
                 Text(
                   second,
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontFamily: "bitro",fontSize: 15.0, color: PrimaryColor, fontWeight: FontWeight.bold),
+                  style: Theme.of(context).textTheme.bodyText1,
                 ),
               ],
             ),
@@ -353,21 +367,18 @@ class _mainmenuPage extends State<mainmenuPage> {
               ),
             ],
           ),
-          margin: EdgeInsets.only(left: 0, right: 0),
         ),
         Container(
           child: CupertinoButton(
             onPressed: () {},
             child: Column(
-              mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 icons3,
                 Text(
                   third,
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontFamily: "bitro",fontSize: 15.0, color: PrimaryColor, fontWeight: FontWeight.bold),
+                  style: Theme.of(context).textTheme.bodyText1,
                 ),
               ],
             ),
@@ -387,7 +398,6 @@ class _mainmenuPage extends State<mainmenuPage> {
               ),
             ],
           ),
-          margin: EdgeInsets.only(left: 0, right: 0),
         ),
       ],
     );

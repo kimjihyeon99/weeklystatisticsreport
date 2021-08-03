@@ -15,19 +15,20 @@ List<GetDrivingwarningscore> countAllEventForEachDay =
     []; //2주동안 일일 이벤트 경고 횟수 총합
 List<CountEventForEvent> countEventForLastWeek = []; //지난주 이벤트별 총 횟수
 List<CountEventForEvent> countEventForThisWeek = []; //이번주 이벤트별 총 횟수
-double thisTotalEventCountAvgForAllUser = 0; // 이번주 전체 사용자 이벤트 평균횟수
 List<GetSpending> spendinglist_last = []; //지난주 지출 내역
 List<GetSpending> spendinglist_this = []; //이번주 지출 내역
 List<String> replace_item = []; //점검 필요항목 리스트
 
 int drivingdistancelist_this = 0; //이번주 주행 거리
 int drivingdistancelist_last = 0; //지난주 주행 거리
-int Totaldrivingdistancelist_this = 0; //앱 이용자들의 이번주 주행 거리 평균
+int TotaldrivingdistanceForAllUser = 0; //앱 이용자들의 이번주 주행 거리 평균
 int maxdistance = 0; // 이번주와 지난주 중 더 긴 주행 거리 저장
 int countAllEventForLastWeek = 0; //지난주 모든 이벤트 경고 횟수
 int countAllEventForThisWeek = 0; //이번주 모든 이벤트 경고 횟수
+int TotalEventCountAvgForAllUser = 0; // 이번주 전체 사용자 이벤트 평균횟수
 int sumAllspending_last = 0; //지난주 지출 총합
 int sumAllspending_this = 0; //이번주 지출 총합
+
 
 int lastweekcnt = 0; //지난주 주행하지 않은 횟수, 멘트를 위한 것
 //평균 점수
@@ -40,7 +41,7 @@ double ecolastavg = 0;
 //fuel
 double fuelthisavg = 0;
 double fuellastavg = 0;
-double allfluelavg = 0;
+double Totalfluelavg = 0;//전체 사용자의 연비 평균
 
 //이벤트 경고 횟수가 0개인지 여부
 bool isZeroEventCountForLastWeek = true;
@@ -1031,14 +1032,14 @@ class drivingwarningscoreContainer implements containerItem {
           ),
           FAProgressBar(
             size: 20,
-            currentValue: thisTotalEventCountAvgForAllUser.toInt(),
+            currentValue: TotalEventCountAvgForAllUser,
             backgroundColor: Colors.white,
             progressColor: Color(0xFF79bd9a),
             animatedDuration: Duration(milliseconds: 1000),
             maxValue: countAllEventForThisWeek >
-                    thisTotalEventCountAvgForAllUser.toInt()
+                TotalEventCountAvgForAllUser
                 ? countAllEventForThisWeek
-                : thisTotalEventCountAvgForAllUser.toInt(),
+                : TotalEventCountAvgForAllUser,
             displayText: '회',
           ),
           SizedBox(
@@ -1053,14 +1054,14 @@ class drivingwarningscoreContainer implements containerItem {
             currentValue: countAllEventForThisWeek,
             backgroundColor: Colors.white,
             progressColor: countAllEventForThisWeek >
-                thisTotalEventCountAvgForAllUser.toInt()
+                TotalEventCountAvgForAllUser
                 ? Colors.red
                 : Colors.yellow,
             animatedDuration: Duration(milliseconds: 1000),
             maxValue: countAllEventForThisWeek >
-                    thisTotalEventCountAvgForAllUser.toInt()
+                TotalEventCountAvgForAllUser
                 ? countAllEventForThisWeek
-                : thisTotalEventCountAvgForAllUser.toInt(),
+                : TotalEventCountAvgForAllUser,
             displayText: '회',
           ),
         ],
@@ -1226,15 +1227,15 @@ class daliyfuelContainer implements containerItem {
                     ],
                   ),
                   Column(
-                    children: [  Text(
-                      "${fuellastavg.toStringAsFixed(2)} ",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Color(0xff79a8a9),
-                        fontSize: 18,
+                    children: [
+                      Text(
+                        "${fuellastavg.toStringAsFixed(2)} ",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xff79a8a9),
+                          fontSize: 18,
+                        ),
                       ),
-                    ),
-
                       SizedBox(
                         height: 5,
                       ),
@@ -1281,14 +1282,15 @@ class daliyfuelContainer implements containerItem {
                     ],
                   ),
                   Column(
-                    children: [  Text(
-                      "${allfluelavg.toStringAsFixed(2)} ",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.blueGrey,
-                        fontSize: 18,
+                    children: [
+                      Text(
+                        "${Totalfluelavg.toStringAsFixed(2)} ",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.blueGrey,
+                          fontSize: 18,
+                        ),
                       ),
-                    ),
                       SizedBox(
                         height: 5,
                       ),
@@ -1296,7 +1298,6 @@ class daliyfuelContainer implements containerItem {
                   )
                 ],
               )),
-
         ],
       ));
 
@@ -1429,7 +1430,6 @@ class drivingdistanceContainer implements containerItem {
                   Text("이번주")
                 ],
               ),
-
             ],
           ),
           SizedBox(
@@ -1543,7 +1543,7 @@ class drivingdistanceContainer implements containerItem {
                 width: 5,
               ),
               //text
-              Text("이번주 모든 사용자")
+              Text("이번주 전체 사용자")
             ],
           ),
           SizedBox(
@@ -1557,13 +1557,13 @@ class drivingdistanceContainer implements containerItem {
                       alignment: Alignment.lerp(
                           Alignment.topLeft,
                           Alignment.topRight,
-                          Totaldrivingdistancelist_this == null
+                          TotaldrivingdistanceForAllUser == null
                               ? 0
-                              : Totaldrivingdistancelist_this / maxdistance),
+                              : TotaldrivingdistanceForAllUser / maxdistance),
                       child: Column(
                         children: [
                           Text(
-                            "${Totaldrivingdistancelist_this == null ? 0 : Totaldrivingdistancelist_this} km",
+                            "${TotaldrivingdistanceForAllUser == null ? 0 : TotaldrivingdistanceForAllUser} km",
                             style: TextStyle(
                               fontSize: 15,
                             ),
@@ -1580,9 +1580,9 @@ class drivingdistanceContainer implements containerItem {
                       borderRadius: BorderRadius.all(Radius.circular(10.0)),
                       child: FAProgressBar(
                         size: 20,
-                        currentValue: Totaldrivingdistancelist_this == null
+                        currentValue: TotaldrivingdistanceForAllUser == null
                             ? 0
-                            : Totaldrivingdistancelist_this,
+                            : TotaldrivingdistanceForAllUser,
                         backgroundColor: Colors.white,
                         progressColor: Color(0xFF3b8686),
                         animatedDuration: Duration(milliseconds: 1000),

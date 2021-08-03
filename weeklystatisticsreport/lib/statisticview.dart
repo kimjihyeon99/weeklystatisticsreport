@@ -68,14 +68,11 @@ class statisticview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     navigatorKey = GlobalKey<NavigatorState>();
-
     return new MaterialApp(
-      title: 'Generated App',
       theme: new ThemeData(
           fontFamily: 'bitro',
           primaryColor: PrimaryColor,
-          accentColor: PrimaryColor,
-          canvasColor: PrimaryColor),
+      ),
       home: new statisticviewPage(),
       navigatorKey: navigatorKey,
     );
@@ -203,7 +200,6 @@ class statistic_viewPage extends State<statisticviewPage> {
                   color: Colors.white,
                 ),
                 onPressed: () async{
-
                   final returnData = await  Navigator.push(context,
                       MaterialPageRoute(builder: (context) => WeeklyStatisticsEditPage(items:mylist)));
 

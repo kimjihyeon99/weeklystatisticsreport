@@ -23,7 +23,7 @@ int numyoil = yoil[todayyoil];
 Future<String> getallapi() async {
   await getsafyscore();
   await getdaliyfuel();
-  await getAlldailyfuel();
+  await getTotaldailyfuel();
   await getdrivingdistance_last();
   await getdrivingdistance();
   await getTotalDrivingdistance();
@@ -286,8 +286,8 @@ void getdaliyfuel() async {
   }
 }
 
-// all 연비 점수 api
-void getAlldailyfuel() async{
+// 총 사용자 이번주 연비 점수 api
+void getTotaldailyfuel() async{
   //이번주 날짜 가져오기
   final DateTime now =
   new DateTime(originnow.year, originnow.month, originnow.day - numyoil);
@@ -299,7 +299,6 @@ void getAlldailyfuel() async{
   //날짜를 문자열로 변환하기, class에 넣어주기 위함
   final String today = formatter.format(now);
   final String lastweekday = formatter.format(lastweek);
-
 
   String url =
       'https://server2.mureung.com/infocarAdminPageAPI/sideproject/totalCbookAvg?startDate=$lastweekday&endDate=$today';
@@ -314,9 +313,9 @@ void getAlldailyfuel() async{
   if(response.statusCode == 200){
     var jsonResponse = convert.jsonDecode(response.body);
     var jr = jsonResponse['response']['body']['items'];
-    allfluelavg = jr['CbookCountAvg'];
+    Totalfluelavg = jr['CbookCountAvg'];
   }else{
-
+    print('Request failed with status: ${response.statusCode}.');
   }
 }
 
@@ -449,17 +448,13 @@ void getTotalDrivingdistance() async {
   );
 
   if (response.statusCode == 200) {
-    if (response.body.isNotEmpty) {
       var jsonResponse = convert.jsonDecode(response.body);
       var jr = jsonResponse['response']['body']['items'];
-      Totaldrivingdistancelist_this = jr['DrvDisAvg'].toInt();
+      TotaldrivingdistanceForAllUser = jr['DrvDisAvg'].toInt();
 
-      maxdistance = (maxdistance > Totaldrivingdistancelist_this)
+      maxdistance = (maxdistance > TotaldrivingdistanceForAllUser)
           ? maxdistance
-          : Totaldrivingdistancelist_this;
-    } else {
-      Totaldrivingdistancelist_this = 0;
-    }
+          : TotaldrivingdistanceForAllUser;
   } else {
     print('Request failed with status: ${response.statusCode}.');
   }
@@ -1027,12 +1022,8 @@ void getThisTotalEventCountAvgAllUser() async {
   );
 
   if (response.statusCode == 200) {
-    if (response.body.isNotEmpty) {
       var jsonResponse = convert.jsonDecode(response.body);
-      thisTotalEventCountAvgForAllUser = jsonResponse['response']['body']['items']['EventCountAvg'];
-    } else {
-      thisTotalEventCountAvgForAllUser = 0;
-    }
+      TotalEventCountAvgForAllUser = jsonResponse['response']['body']['items']['EventCountAvg'].toInt();
   } else {
     print('Request failed with status: ${response.statusCode}.');
   }

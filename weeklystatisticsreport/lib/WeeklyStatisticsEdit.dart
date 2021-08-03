@@ -25,25 +25,10 @@ class isActivateItem implements ListItem {
 //head를 넘어가서 위치 바꾸기 방지를 위한 것
 int baseindex = 0;
 
-class WeeklyStatisticsEdit extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return new MaterialApp(
-      title: '주간 통계 화면 편집',
-      theme: new ThemeData(
-          fontFamily: 'bitro',
-          primaryColor: SecondColor,
-          accentColor: SecondColor,
-          canvasColor: SecondColor),
-      home: new WeeklyStatisticsEditPage(),
-    );
-  }
-}
-
 class WeeklyStatisticsEditPage extends StatefulWidget {
   final List<ListItem> items;
 
-  WeeklyStatisticsEditPage({Key key, @required this.items}) : super(key: key);
+  WeeklyStatisticsEditPage({@required this.items});
 
   @override
   _WeeklyStatisticsEditPage createState() =>
@@ -97,6 +82,8 @@ class _WeeklyStatisticsEditPage extends State<WeeklyStatisticsEditPage> {
 
     void _BottomSheet(context) {
       showModalBottomSheet(
+          isDismissible: false,
+          enableDrag: false,
           context: context,
           backgroundColor: Colors.transparent,
           builder: (builder) {
