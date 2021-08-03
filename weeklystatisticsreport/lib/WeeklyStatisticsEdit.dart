@@ -79,8 +79,7 @@ class _WeeklyStatisticsEditPage extends State<WeeklyStatisticsEditPage>
     });
   }
 
-  //백그라운드 상태에서 삭제해도
-  // @override
+  @override
   void initState() {
     //앱 상태 변경 이벤트 등록
     WidgetsBinding.instance.addObserver(this);
@@ -95,6 +94,7 @@ class _WeeklyStatisticsEditPage extends State<WeeklyStatisticsEditPage>
     super.dispose();
   }
 
+  //백그라운드 상태에서 종료해도 데이터 저장하기
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     switch (state) {
@@ -134,6 +134,175 @@ class _WeeklyStatisticsEditPage extends State<WeeklyStatisticsEditPage>
           });
     }
 
+    void _BottomalertSheet(context) {
+      showModalBottomSheet(
+          isDismissible: false,
+          enableDrag: false,
+          context: context,
+          backgroundColor: Colors.transparent,
+          builder: (builder) {
+            return new Container(
+                height: 60,
+                margin: EdgeInsets.all(20),
+                decoration: new BoxDecoration(
+                    color: SecondColor.withOpacity(0.5),
+                    borderRadius: new BorderRadius.all(
+                      const Radius.circular(15.0),
+                    )),
+                child: Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    "최소 한개의 메뉴는 있어야 합니다.",
+                    style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white),
+                  ),
+                ));
+          });
+    }
+
+    Widget makeAppbarContainer(String menuName, int index) {
+      return IgnorePointer(
+        key: Key('$index'),
+        ignoring: true,
+        child: Container(
+          alignment: Alignment.centerLeft,
+          padding:
+              const EdgeInsets.only(top: 10, bottom: 10, left: 20, right: 10),
+          child: Text(
+            menuName,
+            style: new TextStyle(
+              fontSize: 25.0,
+              color: Colors.white,
+            ),
+          ),
+          decoration: BoxDecoration(
+            color: headingColor,
+          ),
+          width: double.infinity,
+          height: AppBar().preferredSize.height,
+        ),
+      );
+    }
+
+    Widget makeActivationContainer(String menuName, int index) {
+      return Container(
+        key: Key('$index'),
+        child: ListTile(
+          // border를 추가하기 위해 Row를 Container로 감쌈
+          leading: new IconButton(
+            icon: Icon(Icons.remove_circle),
+            color: Color(0xFFff7473),
+            onPressed: () {
+              int activatecnt = 0;
+
+              for (int i = 0; i < items.length; i++) {
+                final myitem = items[i];
+                if (myitem is isActivateItem) {
+                  if (myitem.isactivate == true) {
+                    activatecnt = activatecnt + 1;
+                  }
+                }
+              }
+
+              if (activatecnt == 1) {
+                //최소 한개는 아이템이 있어야한다는 알림 문구
+                _BottomalertSheet(context);
+                Future.delayed(const Duration(seconds: 1), () {
+                  // deleayed code here
+                  Navigator.pop(context);
+                });
+              } else {
+                final item = items[index];
+
+                if (item is isActivateItem) {
+                  item.isactivate = false;
+                }
+                Activateinfo[menuName] = false;
+
+                int ct = countactivate();
+
+                setState(() {
+                  items = List<ListItem>.generate(
+                      9,
+                      (i) => ((i % (ct + 1)) == 0 &&
+                              ((i ~/ (ct + 1)) == 0 || (i ~/ (ct + 1)) == 1))
+                          ? (i == 0 ? HeadingItem("활성화") : HeadingItem("비활성화"))
+                          : ((i ~/ (ct + 1)) == 0
+                              ? isActivateItem(activate[i - 1], true)
+                              : isActivateItem(deactivate[i - ct - 2], false)));
+                });
+              }
+            },
+          ),
+          title: Text(
+            menuName,
+            style: new TextStyle(
+              fontSize: 25.0,
+              color: Colors.white,
+            ),
+          ),
+          trailing: Icon(
+            Icons.reorder,
+            color: Colors.white,
+            size: 24.0,
+          ),
+        ),
+        decoration: BoxDecoration(
+            border: Border.all(color: headingColor, width: 0.1),
+            color: SecondColor.withOpacity(0.1)),
+        height: 50,
+      );
+    }
+
+    Widget makeDeactivationContainer(String menuName, int index) {
+      return new Container(
+        key: Key('$index'),
+        // border를 추가하기 위해 Row를 Container로 감쌈
+        child: ListTile(
+            leading: new IconButton(
+              icon: Icon(Icons.add_circle),
+              color: Color(0xFF8FBC94),
+              onPressed: () {
+                final item = items[index];
+                if (item is isActivateItem) {
+                  item.isactivate = true;
+                }
+                Activateinfo[menuName] = true;
+
+                int ct = countactivate();
+
+                setState(() {
+                  items = List<ListItem>.generate(
+                      9,
+                      (i) => ((i % (ct + 1)) == 0 &&
+                              ((i ~/ (ct + 1)) == 0 || (i ~/ (ct + 1)) == 1))
+                          ? (i == 0 ? HeadingItem("활성화") : HeadingItem("비활성화"))
+                          : ((i ~/ (ct + 1)) == 0
+                              ? isActivateItem(activate[i - 1], true)
+                              : isActivateItem(deactivate[i - ct - 2], false)));
+                });
+              },
+            ),
+            title: new Text(
+              menuName,
+              style: new TextStyle(
+                fontSize: 25.0,
+                color: new Color(0xffE0E0E0),
+              ),
+            ),
+            trailing: Icon(
+              Icons.reorder,
+              color: Colors.white.withOpacity(0.5),
+              size: 24.0,
+            )),
+        decoration: BoxDecoration(
+            border: Border.all(color: headingColor, width: 0.1),
+            color: SecondColor.withOpacity(0.1)),
+        height: 50,
+      );
+    }
 
     return new Scaffold(
         appBar: new AppBar(
@@ -201,8 +370,9 @@ class _WeeklyStatisticsEditPage extends State<WeeklyStatisticsEditPage>
             ),
           ],
         ),
-        body: WillPopScope(//물리적 뒤로가기 처리
-          onWillPop: (){
+        body: WillPopScope(
+          //물리적 뒤로가기 처리
+          onWillPop: () {
             _saveInfo();
             Navigator.pop(context, items);
             return Future.value(true);
@@ -257,7 +427,15 @@ class _WeeklyStatisticsEditPage extends State<WeeklyStatisticsEditPage>
                         items.insert(newIndex, item);
 
                         //deactive 영역으로 넘어가는 경우 아이콘 바꾸기
-                        if (baseindex - 1 < newIndex) {
+
+                        if ((baseindex - 1) == 1) {
+                          //최소 한개는 남겨두어야함
+                          _BottomalertSheet(context);
+                          Future.delayed(const Duration(seconds: 1), () {
+                            // deleayed code here
+                            Navigator.pop(context);
+                          });
+                        } else if (baseindex - 1 < newIndex) {
                           //icon 바꾸기
                           temp.isactivate = false;
                           Activateinfo[temp.Activatename] = false;
@@ -300,126 +478,5 @@ class _WeeklyStatisticsEditPage extends State<WeeklyStatisticsEditPage>
             ),
           ),
         ));
-  }
-
-  Widget makeAppbarContainer(String menuName, int index) {
-    return IgnorePointer(
-      key: Key('$index'),
-      ignoring: true,
-      child: Container(
-        alignment: Alignment.centerLeft,
-        padding:
-            const EdgeInsets.only(top: 10, bottom: 10, left: 20, right: 10),
-        child: Text(
-          menuName,
-          style: new TextStyle(
-            fontSize: 25.0,
-            color: Colors.white,
-          ),
-        ),
-        decoration: BoxDecoration(
-          color: headingColor,
-        ),
-        width: double.infinity,
-        height: AppBar().preferredSize.height,
-      ),
-    );
-  }
-
-  Widget makeActivationContainer(String menuName, int index) {
-    return Container(
-      key: Key('$index'),
-      child: ListTile(
-        // border를 추가하기 위해 Row를 Container로 감쌈
-        leading: new IconButton(
-          icon: Icon(Icons.remove_circle),
-          color: Color(0xFFff7473),
-          onPressed: () {
-            final item = items[index];
-            if (item is isActivateItem) {
-              item.isactivate = false;
-            }
-            Activateinfo[menuName] = false;
-
-            int ct = countactivate();
-
-            setState(() {
-              items = List<ListItem>.generate(
-                  9,
-                  (i) => ((i % (ct + 1)) == 0 &&
-                          ((i ~/ (ct + 1)) == 0 || (i ~/ (ct + 1)) == 1))
-                      ? (i == 0 ? HeadingItem("활성화") : HeadingItem("비활성화"))
-                      : ((i ~/ (ct + 1)) == 0
-                          ? isActivateItem(activate[i - 1], true)
-                          : isActivateItem(deactivate[i - ct - 2], false)));
-            });
-          },
-        ),
-        title: Text(
-          menuName,
-          style: new TextStyle(
-            fontSize: 25.0,
-            color: Colors.white,
-          ),
-        ),
-        trailing: Icon(
-          Icons.reorder,
-          color: Colors.white,
-          size: 24.0,
-        ),
-      ),
-      decoration: BoxDecoration(
-          border: Border.all(color: headingColor, width: 0.1),
-          color: SecondColor.withOpacity(0.1)),
-      height: 50,
-    );
-  }
-
-  Widget makeDeactivationContainer(String menuName, int index) {
-    return new Container(
-      key: Key('$index'),
-      // border를 추가하기 위해 Row를 Container로 감쌈
-      child: ListTile(
-          leading: new IconButton(
-            icon: Icon(Icons.add_circle),
-            color: Color(0xFF8FBC94),
-            onPressed: () {
-              final item = items[index];
-              if (item is isActivateItem) {
-                item.isactivate = true;
-              }
-              Activateinfo[menuName] = true;
-
-              int ct = countactivate();
-
-              setState(() {
-                items = List<ListItem>.generate(
-                    9,
-                    (i) => ((i % (ct + 1)) == 0 &&
-                            ((i ~/ (ct + 1)) == 0 || (i ~/ (ct + 1)) == 1))
-                        ? (i == 0 ? HeadingItem("활성화") : HeadingItem("비활성화"))
-                        : ((i ~/ (ct + 1)) == 0
-                            ? isActivateItem(activate[i - 1], true)
-                            : isActivateItem(deactivate[i - ct - 2], false)));
-              });
-            },
-          ),
-          title: new Text(
-            menuName,
-            style: new TextStyle(
-              fontSize: 25.0,
-              color: new Color(0xffE0E0E0),
-            ),
-          ),
-          trailing: Icon(
-            Icons.reorder,
-            color: Colors.white.withOpacity(0.5),
-            size: 24.0,
-          )),
-      decoration: BoxDecoration(
-          border: Border.all(color: headingColor, width: 0.1),
-          color: SecondColor.withOpacity(0.1)),
-      height: 50,
-    );
   }
 }
