@@ -198,56 +198,66 @@ class statistic_viewPage extends State<statisticviewPage> {
                 })
           ],
         ),
-        body: FutureBuilder(
-          future: myapi,
-          builder: (context, snapshot) {
-            if (snapshot.hasData == false) {
-              return Container(
+        body:
+        WillPopScope(
+          //물리적 뒤로가기 처리
+          onWillPop: () {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => mainmenuPage()));
+            return Future.value(true);
+          },
+          child:  FutureBuilder(
+            future: myapi,
+            builder: (context, snapshot) {
+              if (snapshot.hasData == false) {
+                return Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                          colors: [PrimaryColor, SecondColor],
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter),
+                    ),
+                    alignment: Alignment.center,
+                    child: SpinKitFadingCube(
+                      color: SecondColor,
+                      size: 40,
+                    ));
+              } else {
+                return Container(
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                         colors: [PrimaryColor, SecondColor],
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter),
                   ),
-                  alignment: Alignment.center,
-                  child: SpinKitFadingCube(
-                    color: SecondColor,
-                    size: 40,
-                  ));
-            } else {
-              return Container(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                      colors: [PrimaryColor, SecondColor],
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter),
-                ),
-                child: ListView.builder(
-                    padding: const EdgeInsets.all(20.0),
-                    itemCount: activate.length,
-                    itemBuilder: (context, index) {
-                      final itemname = activate[index];
-                      String name = itemname;
-                      //name이랑 activatename과 비교해서 같으면 해당 container를 반환하기
-                      if (name.compareTo(activateName[0]) == 0) {
-                        return new saftyscoreContainer().mycon;
-                      } else if (name.compareTo(activateName[1]) == 0) {
-                        return new economicscoreContainer().mycon;
-                      } else if (name.compareTo(activateName[2]) == 0) {
-                        return new drivingwarningscoreContainer().mycon;
-                      } else if (name.compareTo(activateName[3]) == 0) {
-                        return new daliyfuelContainer().mycon;
-                      } else if (name.compareTo(activateName[4]) == 0) {
-                        return new drivingdistanceContainer().mycon;
-                      } else if (name.compareTo(activateName[5]) == 0) {
-                        return new spendingContainer().mycon;
-                      } else if (name.compareTo(activateName[6]) == 0) {
-                        return new inspectionContainer().mycon;
-                      }
-                    }),
-              );
-            }
-          },
-        ));
+                  child: ListView.builder(
+                      padding: const EdgeInsets.all(20.0),
+                      itemCount: activate.length,
+                      itemBuilder: (context, index) {
+                        final itemname = activate[index];
+                        String name = itemname;
+                        //name이랑 activatename과 비교해서 같으면 해당 container를 반환하기
+                        if (name.compareTo(activateName[0]) == 0) {
+                          return new saftyscoreContainer().mycon;
+                        } else if (name.compareTo(activateName[1]) == 0) {
+                          return new economicscoreContainer().mycon;
+                        } else if (name.compareTo(activateName[2]) == 0) {
+                          return new drivingwarningscoreContainer().mycon;
+                        } else if (name.compareTo(activateName[3]) == 0) {
+                          return new daliyfuelContainer().mycon;
+                        } else if (name.compareTo(activateName[4]) == 0) {
+                          return new drivingdistanceContainer().mycon;
+                        } else if (name.compareTo(activateName[5]) == 0) {
+                          return new spendingContainer().mycon;
+                        } else if (name.compareTo(activateName[6]) == 0) {
+                          return new inspectionContainer().mycon;
+                        }
+                      }),
+                );
+              }
+            },
+          ),
+        )
+       );
   }
 }
