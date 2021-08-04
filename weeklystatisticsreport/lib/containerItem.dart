@@ -29,6 +29,7 @@ int TotalEventCountAvgForAllUser = 0; // 이번주 전체 사용자 이벤트 �
 int sumAllspending_last = 0; //지난주 지출 총합
 int sumAllspending_this = 0; //이번주 지출 총합
 
+String uploadTime = "";
 
 int lastweekcnt = 0; //지난주 주행하지 않은 횟수, 멘트를 위한 것
 //평균 점수
@@ -41,7 +42,7 @@ double ecolastavg = 0;
 //fuel
 double fuelthisavg = 0;
 double fuellastavg = 0;
-double Totalfluelavg = 0;//전체 사용자의 연비 평균
+double Totalfluelavg = 0; //전체 사용자의 연비 평균
 
 //이벤트 경고 횟수가 0개인지 여부
 bool isZeroEventCountForLastWeek = false;
@@ -128,6 +129,36 @@ List emptyspdment = [
 
 //각자의 container 생성을 위한것
 abstract class containerItem {}
+
+class uploadtimeContainer implements containerItem {
+  final Container mycon = new Container(
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(0),
+      ),
+      child: Column(
+        children: [
+          Align(
+            alignment: Alignment.centerRight,
+            child: Text(
+              '마지막 업로드 시간',
+              style: TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white),
+            ),
+          ),
+          Align(
+            alignment: Alignment.centerRight,
+            child: Text(
+              uploadTime,
+              style: TextStyle(fontSize: 15, color: Colors.white),
+            ),
+          )
+        ],
+      ));
+
+  uploadtimeContainer();
+}
 
 class saftyscoreContainer implements containerItem {
   final Container mycon = new Container(
@@ -1036,8 +1067,7 @@ class drivingwarningscoreContainer implements containerItem {
             backgroundColor: Colors.white,
             progressColor: Color(0xFF79bd9a),
             animatedDuration: Duration(milliseconds: 1000),
-            maxValue: countAllEventForThisWeek >
-                TotalEventCountAvgForAllUser
+            maxValue: countAllEventForThisWeek > TotalEventCountAvgForAllUser
                 ? countAllEventForThisWeek
                 : TotalEventCountAvgForAllUser,
             displayText: '회',
@@ -1053,19 +1083,19 @@ class drivingwarningscoreContainer implements containerItem {
             size: 20,
             currentValue: countAllEventForThisWeek,
             backgroundColor: Colors.white,
-            progressColor: countAllEventForThisWeek >
-                TotalEventCountAvgForAllUser
-                ? Colors.red
-                : Colors.yellow,
+            progressColor:
+                countAllEventForThisWeek > TotalEventCountAvgForAllUser
+                    ? Colors.red
+                    : Colors.yellow,
             animatedDuration: Duration(milliseconds: 1000),
-            maxValue: countAllEventForThisWeek >
-                TotalEventCountAvgForAllUser
+            maxValue: countAllEventForThisWeek > TotalEventCountAvgForAllUser
                 ? countAllEventForThisWeek
                 : TotalEventCountAvgForAllUser,
             displayText: '회',
           ),
-
-          SizedBox(height: 20,)
+          SizedBox(
+            height: 20,
+          )
         ],
       ));
 
@@ -1300,7 +1330,9 @@ class daliyfuelContainer implements containerItem {
                   )
                 ],
               )),
-          SizedBox(height: 20,)
+          SizedBox(
+            height: 20,
+          )
         ],
       ));
 
@@ -1618,7 +1650,9 @@ class drivingdistanceContainer implements containerItem {
                   : Text(drvment.getRange(3, 6).toList()[drvmentrandom],
                       style: TextStyle(fontSize: 18.0, color: Colors.black),
                       textAlign: TextAlign.center)),
-          SizedBox(height: 20,)
+          SizedBox(
+            height: 20,
+          )
         ],
       ));
 
@@ -2049,7 +2083,9 @@ class spendingContainer implements containerItem {
                         style: TextStyle(fontSize: 18.0, color: Colors.black),
                         textAlign: TextAlign.center),
           ),
-          SizedBox(height: 20,)
+          SizedBox(
+            height: 20,
+          )
         ],
       ));
 
@@ -2174,7 +2210,9 @@ class inspectionContainer implements containerItem {
                   ],
                 );
               }),
-          SizedBox(height: 10,)
+          SizedBox(
+            height: 10,
+          )
         ],
       ));
 

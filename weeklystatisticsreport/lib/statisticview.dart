@@ -238,29 +238,35 @@ class statistic_viewPage extends State<statisticviewPage> {
                         child: ListView.builder(
                             controller: _scrollController,
                             padding: const EdgeInsets.all(20.0),
-                            itemCount: activate.length,
+                            itemCount: activate.length+1,
                             itemBuilder: (context, index) {
-                              final itemname = activate[index];
-                              String name = itemname;
-                              //name이랑 activatename과 비교해서 같으면 해당 container를 반환하기
-                              if (name.compareTo(activateName[0]) == 0) {
-                                return new saftyscoreContainer().mycon;
-                              } else if (name.compareTo(activateName[1]) == 0) {
-                                return new economicscoreContainer().mycon;
-                              } else if (name.compareTo(activateName[2]) == 0) {
-                                return new drivingwarningscoreContainer().mycon;
-                              } else if (name.compareTo(activateName[3]) == 0) {
-                                return new daliyfuelContainer().mycon;
-                              } else if (name.compareTo(activateName[4]) == 0) {
-                                return new drivingdistanceContainer().mycon;
-                              } else if (name.compareTo(activateName[5]) == 0) {
-                                return new spendingContainer().mycon;
-                              } else if (name.compareTo(activateName[6]) == 0) {
-                                return new inspectionContainer().mycon;
+
+                              if(index == 0){
+                                return new uploadtimeContainer().mycon;
+                              }else{
+                                final itemname = activate[index-1];
+                                String name = itemname;
+
+                                //name이랑 activatename과 비교해서 같으면 해당 container를 반환하기
+                                if (name.compareTo(activateName[0]) == 0) {
+                                  return new saftyscoreContainer().mycon;
+                                } else if (name.compareTo(activateName[1]) == 0) {
+                                  return new economicscoreContainer().mycon;
+                                } else if (name.compareTo(activateName[2]) == 0) {
+                                  return new drivingwarningscoreContainer().mycon;
+                                } else if (name.compareTo(activateName[3]) == 0) {
+                                  return new daliyfuelContainer().mycon;
+                                } else if (name.compareTo(activateName[4]) == 0) {
+                                  return new drivingdistanceContainer().mycon;
+                                } else if (name.compareTo(activateName[5]) == 0) {
+                                  return new spendingContainer().mycon;
+                                } else if (name.compareTo(activateName[6]) == 0) {
+                                  return new inspectionContainer().mycon;
+                                }
                               }
+
                             }),
                       ),
-
                       Positioned(
                         bottom: 0.0,
                         right: (MediaQuery.of(context).size.width - 70) / 2,

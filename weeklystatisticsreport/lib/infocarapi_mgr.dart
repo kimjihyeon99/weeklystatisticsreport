@@ -21,6 +21,7 @@ int numyoil = yoil[todayyoil];
 //infocar api 서버와 연결
 
 Future<String> getallapi() async {
+  await getServerUploadtime();
   await getsafyscore();
   await getdaliyfuel();
   await getTotaldailyfuel();
@@ -36,6 +37,27 @@ Future<String> getallapi() async {
   await getInspection();
 
   return 'Data Loaded';
+}
+
+void getServerUploadtime() async {
+  String url =
+      'https://server2.mureung.com/infocarAdminPageAPI/sideproject/userUploadTime?userKey=1147';
+  var response = await http.get(
+    Uri.parse(url),
+    headers: {
+      "F_TOKEN":
+      "D5CFB732E7BA8E56356AA766B61EEF32F5F1BCA6F554FB0A9432D285A7E012A3"
+    },
+  );
+
+  if (response.statusCode == 200) {
+    var jsonResponse = convert.jsonDecode(response.body);
+    var jr = jsonResponse['response']['body']['items'][0];
+
+    uploadTime = jr['LAST_UPLOAD_TIME'];
+  } else {
+    print('Request failed with status: ${response.statusCode}.');
+  }
 }
 
 //// 안전운전, 경제운전 점수 기능 api
