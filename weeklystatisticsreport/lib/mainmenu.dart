@@ -9,44 +9,28 @@ import 'localnotifyMgr.dart';
 const PrimaryColor = const Color(0xff3C5186);
 const SecondColor = const Color(0xffC6B4CE);
 
-void main() {
-  runApp(mainmenu());
-}
-
-class mainmenu extends StatelessWidget {
-  Widget build(BuildContext context) {
-    navigatorKey = GlobalKey<NavigatorState>();
-
-    return new MaterialApp(
-      theme: new ThemeData(
-          fontFamily: 'bitro',
-          textTheme: TextTheme(
-              bodyText1: TextStyle(
-                  fontSize: 15.0,
-                  color: Color(0xff3C5186),
-                  fontWeight: FontWeight.bold)),
-          primaryColor: PrimaryColor,
-          canvasColor: PrimaryColor),
-      home: new mainmenuPage(),
-      navigatorKey: navigatorKey,
-    );
-  }
-}
-
 class mainmenuPage extends StatefulWidget {
-  mainmenuPage({Key key}) : super(key: key);
+  final ZoomController;
+
+  mainmenuPage(this.ZoomController);
 
   @override
-  _mainmenuPage createState() => new _mainmenuPage();
+  _mainmenuPage createState() => new _mainmenuPage(ZoomController);
 }
 
 class _mainmenuPage extends State<mainmenuPage> {
+  final ZoomController;
+
+  _mainmenuPage(this.ZoomController);
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     localnotifyMgr.init().setOnNotificationReceive(onNotificationReceive);
     localnotifyMgr.init().setOnNotificationClick(onNotificationClick);
+
+    print(ZoomController);
   }
 
   onNotificationReceive(ReceiveNotification notification) {
@@ -57,127 +41,52 @@ class _mainmenuPage extends State<mainmenuPage> {
     print('Payload : $payload');
 
     if (payload.compareTo("new payload") == 0) {
-      if(isBuildStatisticviewPage == true) { // API를 이미 호출했던 전적이 있는 경우
+      if (isBuildStatisticviewPage == true) {
+        // API를 이미 호출했던 전적이 있는 경우
         Navigator.pop(context);
-      }else {
+      } else {
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => statisticviewPage()));
       }
     }
   }
 
-  Future<bool> _onBackPressed(){
+  Future<bool> _onBackPressed() {
     return showDialog(
         context: context,
         builder: (context) => CupertinoAlertDialog(
-          title: Text("앱을 종료하시겠습니까?"),
-          actions: <Widget>[
-            CupertinoButton(
-              child: Text("예"),
-              onPressed: ()=> SystemChannels.platform.invokeMethod('SystemNavigator.pop'),
-            ),
-            CupertinoButton(
-              child: Text("아니오"),
-              onPressed: ()=>Navigator.pop(context, false),
-            )
-          ],
-        )
-    );
+              title: Text("앱을 종료하시겠습니까?"),
+              actions: <Widget>[
+                CupertinoButton(
+                  child: Text("예"),
+                  onPressed: () => SystemChannels.platform
+                      .invokeMethod('SystemNavigator.pop'),
+                ),
+                CupertinoButton(
+                  child: Text("아니오"),
+                  onPressed: () => Navigator.pop(context, false),
+                )
+              ],
+            ));
   }
-
 
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
         appBar: AppBar(
-          elevation: 0.0, //그림자 제거
+          elevation: 0.0,
+          //그림자 제거
           title: Text(
             'INFOCAR',
             style: TextStyle(fontSize: 23.0, color: Colors.white),
           ),
           centerTitle: true,
           backgroundColor: PrimaryColor,
+          leading: InkWell(
+              onTap: () => ZoomController.toggle(), child: Icon(Icons.menu)),
         ),
-        drawer: Drawer(
-          child: ListView(
-            padding: EdgeInsets.zero,
-            children: [
-              DrawerHeader(
-                decoration: BoxDecoration(
-                    color: SecondColor.withOpacity(0.4),
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(20),
-                      bottomRight: Radius.circular(20),
-                    )),
-                child: Container(
-                  margin: EdgeInsets.only(left: 10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        height: 15,
-                      ),
-                      Image(
-                        image: AssetImage("assets/bmw_logo.png"),
-                        width: 50,
-                        height: 50,
-                      ),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      Text(
-                        "BMW i4",
-                        style: TextStyle(
-                            color: PrimaryColor,
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Text("홍길동",
-                          style: TextStyle(
-                            color: Colors.white.withOpacity(0.9),
-                            fontSize: 15,
-                          ))
-                    ],
-                  ),
-                ),
-              ),
-              ListTile(
-                leading: Icon(
-                  Icons.apps,
-                  color: Colors.white,
-                ),
-                title: const Text(
-                  '내 차 목록',
-                  style: TextStyle(color: Colors.white),
-                ),
-                onTap: () {
-                  Navigator.pop(context);
-                },
-              ),
-              Container(
-                  height: 0.5,
-                  width: double.infinity,
-                  color: Colors.grey.withOpacity(0.3)),
-              ListTile(
-                leading: Icon(Icons.settings, color: Colors.white),
-                title: const Text('설정', style: TextStyle(color: Colors.white)),
-                onTap: () {
-                  Navigator.pop(context);
-                },
-              ),
-              new Container(
-                  height: 0.5,
-                  width: double.infinity,
-                  color: Colors.grey.withOpacity(0.3)),
-            ],
-          ),
-        ),
-        body:
-        WillPopScope(
-          onWillPop: _onBackPressed,
+        body: WillPopScope(
+            onWillPop: _onBackPressed,
             child: Container(
               decoration: BoxDecoration(
                 gradient: LinearGradient(
@@ -225,7 +134,8 @@ class _mainmenuPage extends State<mainmenuPage> {
                       image: DecorationImage(
                         fit: BoxFit.cover,
                         colorFilter: new ColorFilter.mode(
-                            Colors.transparent.withOpacity(0.5), BlendMode.dstATop),
+                            Colors.transparent.withOpacity(0.5),
+                            BlendMode.dstATop),
                         image: AssetImage("assets/background_car.jpg"),
                       ),
                       borderRadius: BorderRadius.circular(30),
@@ -311,9 +221,7 @@ class _mainmenuPage extends State<mainmenuPage> {
                 ],
                 mainAxisAlignment: MainAxisAlignment.start,
               ),
-            )
-        )
-        );
+            )));
   }
 
   Widget makeRow(BuildContext context,
@@ -330,11 +238,14 @@ class _mainmenuPage extends State<mainmenuPage> {
           child: CupertinoButton(
             onPressed: () {
               if (first.compareTo('주간통계') == 0) {
-                if(isBuildStatisticviewPage == true) { // API를 이미 호출했던 전적이 있는 경우
+                if (isBuildStatisticviewPage == true) {
+                  // API를 이미 호출했던 전적이 있는 경우
                   Navigator.pop(context);
-                }else {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => statisticviewPage()));
+                } else {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => statisticviewPage()));
                 }
               }
             },

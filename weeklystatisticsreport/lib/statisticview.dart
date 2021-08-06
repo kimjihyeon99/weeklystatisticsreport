@@ -6,8 +6,8 @@ import 'containerItem.dart';
 import 'infocarapi_mgr.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:math';
-
+import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
+import 'main_screen.dart';
 //activate 와 deactivate 구분하기 위한 list
 List activate = [
   "안전 점수",
@@ -66,7 +66,7 @@ GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 bool isBuildStatisticviewPage = false; // Api를 한번만 호출하기 위해 사용
 
 class statisticviewPage extends StatefulWidget {
-  statisticviewPage({Key key}) : super(key: key);
+  statisticviewPage({ Key key}) : super(key: key);
 
   @override
   statistic_viewPage createState() => new statistic_viewPage();
@@ -85,7 +85,6 @@ class statistic_viewPage extends State<statisticviewPage> {
 
   _loadInfo() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final ScrollController _scrollController = ScrollController();
 
     setState(() {
       activate = prefs.getStringList('activate') ??
@@ -142,7 +141,7 @@ class statistic_viewPage extends State<statisticviewPage> {
             ),
             onPressed: () {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => mainmenuPage()));
+                  MaterialPageRoute(builder: (context) => MyHomePage()));
             },
           ),
           actions: <Widget>[
@@ -206,7 +205,7 @@ class statistic_viewPage extends State<statisticviewPage> {
             //물리적 뒤로가기 처리
             onWillPop: () {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => mainmenuPage()));
+                  MaterialPageRoute(builder: (context) => MyHomePage()));
               return Future.value(true);
             },
             child: FutureBuilder(
