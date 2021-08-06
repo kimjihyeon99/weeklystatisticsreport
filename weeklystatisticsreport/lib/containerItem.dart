@@ -1472,86 +1472,100 @@ class drivingdistanceContainer implements containerItem {
           ),
           SizedBox(
               width: 300,
-              child: Column(
+              height: 60,
+              child: Stack(
                 children: [
-                  Align(
-                      alignment: Alignment.lerp(
-                          Alignment.topLeft,
-                          Alignment.topRight,
-                          drivingdistancelist_last == null
+                  Positioned(
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    child: ClipRRect(
+                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                        child: FAProgressBar(
+                          size: 20,
+                          currentValue: drivingdistancelist_last == null
                               ? 0
-                              : drivingdistancelist_last / maxdistance),
-                      child: Column(
-                        children: [
-                          Text(
-                            "${drivingdistancelist_last == null ? 0 : drivingdistancelist_last} km",
-                            style: TextStyle(
-                              fontSize: 15,
-                            ),
-                            textAlign: TextAlign.center,
+                              : drivingdistancelist_last,
+                          backgroundColor: Colors.white,
+                          progressColor: Color(0xFFcff09e),
+                          animatedDuration: Duration(milliseconds: 1000),
+                          maxValue: maxdistance,
+                        )
+                    ),
+                  ),
+                  Positioned(
+                    top : 0,
+                    // 오른쪽으로부터 떨어져 있는 거리가 260 ( progress bar size인 300 - 자동차 image size인 40 ) 을 넘어선다면 redering 초과가 되므로 이를 방지하기 위해 상한 값을 260으로 걸어둠
+                    right: ((300 * (1 - (drivingdistancelist_last / maxdistance))) > 260) ? 260 : (300 * (1 - (drivingdistancelist_last / maxdistance))),
+                    child: Column(
+                      children: [
+                        Text(
+                          "${drivingdistancelist_last == null ? 0 : drivingdistancelist_last} km",
+                          style: TextStyle(
+                            fontSize: 13,
                           ),
-                          Image(
-                            height: 40,
-                            width: 40,
-                            image: AssetImage('assets/car_img.png'),
-                          ),
-                        ],
-                      )),
-                  ClipRRect(
-                      borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                      child: FAProgressBar(
-                        size: 20,
-                        currentValue: drivingdistancelist_last == null
-                            ? 0
-                            : drivingdistancelist_last,
-                        backgroundColor: Colors.white,
-                        progressColor: Color(0xFFcff09e),
-                        animatedDuration: Duration(milliseconds: 1000),
-                        maxValue: maxdistance,
-                      )),
+                          textAlign: TextAlign.center,
+                        ),
+                        Image(
+                          height: 40,
+                          width: 40,
+                          image: AssetImage('assets/car_img.png'),
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
-              )),
+              )
+          ),
+          SizedBox(
+            height: 15,
+          ),
           SizedBox(
               width: 300,
-              child: Column(
+              height: 60,
+              child: Stack(
                 children: [
-                  Align(
-                      alignment: Alignment.lerp(
-                          Alignment.topLeft,
-                          Alignment.topRight,
-                          drivingdistancelist_this == null
+                  Positioned(
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    child: ClipRRect(
+                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                        child: FAProgressBar(
+                          size: 20,
+                          currentValue: drivingdistancelist_this == null
                               ? 0
-                              : drivingdistancelist_this / maxdistance),
-                      child: Column(
-                        children: [
-                          Text(
-                            "${drivingdistancelist_this == null ? 0 : drivingdistancelist_this} km",
-                            style: TextStyle(
-                              fontSize: 15,
-                            ),
-                            textAlign: TextAlign.center,
+                              : drivingdistancelist_this,
+                          backgroundColor: Colors.white,
+                          progressColor: Color(0xFF79bd9a),
+                          animatedDuration: Duration(milliseconds: 1000),
+                          maxValue: maxdistance,
+                        )
+                    ),
+                  ),
+                  Positioned(
+                    top : 0,
+                    right: ((300 * (1 - (drivingdistancelist_this / maxdistance))) > 260) ? 260 : (300 * (1 - (drivingdistancelist_this / maxdistance))),
+                    child: Column(
+                      children: [
+                        Text(
+                          "${drivingdistancelist_this == null ? 0 : drivingdistancelist_this} km",
+                          style: TextStyle(
+                            fontSize: 13,
                           ),
-                          Image(
-                            height: 40,
-                            width: 40,
-                            image: AssetImage('assets/car_img.png'),
-                          ),
-                        ],
-                      )),
-                  ClipRRect(
-                      borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                      child: FAProgressBar(
-                        size: 20,
-                        currentValue: drivingdistancelist_this == null
-                            ? 0
-                            : drivingdistancelist_this,
-                        backgroundColor: Colors.white,
-                        progressColor: Color(0xFF79bd9a),
-                        animatedDuration: Duration(milliseconds: 1000),
-                        maxValue: maxdistance,
-                      )),
+                          textAlign: TextAlign.center,
+                        ),
+                        Image(
+                          height: 40,
+                          width: 40,
+                          image: AssetImage('assets/car_img.png'),
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
-              )),
+              )
+          ),
           SizedBox(
             height: 15,
           ),
@@ -1586,45 +1600,51 @@ class drivingdistanceContainer implements containerItem {
           ),
           SizedBox(
               width: 300,
-              child: Column(
+              height: 60,
+              child: Stack(
                 children: [
-                  Align(
-                      alignment: Alignment.lerp(
-                          Alignment.topLeft,
-                          Alignment.topRight,
-                          TotaldrivingdistanceForAllUser == null
+                  Positioned(
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    child: ClipRRect(
+                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                        child: FAProgressBar(
+                          size: 20,
+                          currentValue: TotaldrivingdistanceForAllUser == null
                               ? 0
-                              : TotaldrivingdistanceForAllUser / maxdistance),
-                      child: Column(
-                        children: [
-                          Text(
-                            "${TotaldrivingdistanceForAllUser == null ? 0 : TotaldrivingdistanceForAllUser} km",
-                            style: TextStyle(
-                              fontSize: 15,
-                            ),
-                            textAlign: TextAlign.center,
+                              : TotaldrivingdistanceForAllUser,
+                          backgroundColor: Colors.white,
+                          progressColor: Color(0xFF3b8686),
+                          animatedDuration: Duration(milliseconds: 1000),
+                          maxValue: maxdistance,
+                        )
+                    ),
+                  ),
+                  Positioned(
+                    top : 0,
+                    // 오른쪽으로부터 떨어져 있는 거리가 260 ( progress bar size인 300 - 자동차 image size인 40 ) 을 넘어선다면 redering 초과가 되므로 이를 방지하기 위해 상한 값을 260으로 걸어둠
+                    right: ((300 * (1 - (TotaldrivingdistanceForAllUser / maxdistance))) > 260) ? 260 : (300 * (1 - (TotaldrivingdistanceForAllUser / maxdistance))),
+                    child: Column(
+                      children: [
+                        Text(
+                          "${TotaldrivingdistanceForAllUser  == null ? 0 : TotaldrivingdistanceForAllUser } km",
+                          style: TextStyle(
+                            fontSize: 13,
                           ),
-                          Image(
-                            height: 40,
-                            width: 40,
-                            image: AssetImage('assets/car_img.png'),
-                          ),
-                        ],
-                      )),
-                  ClipRRect(
-                      borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                      child: FAProgressBar(
-                        size: 20,
-                        currentValue: TotaldrivingdistanceForAllUser == null
-                            ? 0
-                            : TotaldrivingdistanceForAllUser,
-                        backgroundColor: Colors.white,
-                        progressColor: Color(0xFF3b8686),
-                        animatedDuration: Duration(milliseconds: 1000),
-                        maxValue: maxdistance,
-                      )),
+                          textAlign: TextAlign.center,
+                        ),
+                        Image(
+                          height: 40,
+                          width: 40,
+                          image: AssetImage('assets/car_img.png'),
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
-              )),
+              )
+          ),
           SizedBox(
             height: 25,
           ),
