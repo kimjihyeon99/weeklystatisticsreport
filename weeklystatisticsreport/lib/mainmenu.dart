@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'statisticview.dart';
 import 'localnotifyMgr.dart';
 
@@ -64,6 +65,26 @@ class _mainmenuPage extends State<mainmenuPage> {
       }
     }
   }
+
+  Future<bool> _onBackPressed(){
+    return showDialog(
+        context: context,
+        builder: (context) => CupertinoAlertDialog(
+          title: Text("앱을 종료하시겠습니까?"),
+          actions: <Widget>[
+            CupertinoButton(
+              child: Text("예"),
+              onPressed: ()=> SystemChannels.platform.invokeMethod('SystemNavigator.pop'),
+            ),
+            CupertinoButton(
+              child: Text("아니오"),
+              onPressed: ()=>Navigator.pop(context, false),
+            )
+          ],
+        )
+    );
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -154,140 +175,145 @@ class _mainmenuPage extends State<mainmenuPage> {
             ],
           ),
         ),
-        body: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-                colors: [PrimaryColor, SecondColor],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter),
-          ),
-          child: Column(
-            children: <Widget>[
-              SizedBox(
-                height: 50,
+        body:
+        WillPopScope(
+          onWillPop: _onBackPressed,
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                    colors: [PrimaryColor, SecondColor],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter),
               ),
-              Container(
-                child: Column(children: [
+              child: Column(
+                children: <Widget>[
                   SizedBox(
-                    height: 25,
+                    height: 50,
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image(
-                        image: AssetImage("assets/bmw_logo.png"),
-                        height: 30,
+                  Container(
+                    child: Column(children: [
+                      SizedBox(
+                        height: 25,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image(
+                            image: AssetImage("assets/bmw_logo.png"),
+                            height: 30,
+                          ),
+                          SizedBox(
+                            width: 15,
+                          ),
+                          Text(
+                            "BMW i4",
+                            style: TextStyle(fontSize: 27, color: Colors.white),
+                          ),
+                        ],
                       ),
                       SizedBox(
-                        width: 15,
+                        height: 20,
                       ),
-                      Text(
-                        "BMW i4",
-                        style: TextStyle(fontSize: 27, color: Colors.white),
+                      Image(
+                        image: AssetImage("assets/mycar.png"),
+                        height: 110,
                       ),
-                    ],
+                    ]),
+                    height: 200,
+                    width: 360,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        fit: BoxFit.cover,
+                        colorFilter: new ColorFilter.mode(
+                            Colors.transparent.withOpacity(0.5), BlendMode.dstATop),
+                        image: AssetImage("assets/background_car.jpg"),
+                      ),
+                      borderRadius: BorderRadius.circular(30),
+                      color: Colors.transparent,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.3),
+                          spreadRadius: 3,
+                          blurRadius: 5,
+                          offset: Offset(3, 3),
+                          // changes position of shadow
+                        ),
+                      ],
+                    ),
                   ),
+                  //car img
+                  SizedBox(
+                    height: 60,
+                  ),
+                  makeRow(context,
+                      first: '주간통계',
+                      second: '차량진단',
+                      third: '대시보드',
+                      icons: Icon(
+                        Icons.leaderboard_outlined,
+                        size: 40,
+                        color: PrimaryColor,
+                      ),
+                      icons2: Icon(
+                        Icons.search,
+                        size: 40,
+                        color: PrimaryColor,
+                      ),
+                      icons3: Icon(
+                        Icons.pie_chart_outline_outlined,
+                        size: 40,
+                        color: PrimaryColor,
+                      )),
                   SizedBox(
                     height: 20,
                   ),
-                  Image(
-                    image: AssetImage("assets/mycar.png"),
-                    height: 110,
+                  makeRow(context,
+                      first: '주행기록',
+                      second: '운전스타일',
+                      third: '차량관리',
+                      icons: Icon(
+                        Icons.location_on_outlined,
+                        size: 40,
+                        color: PrimaryColor,
+                      ),
+                      icons2: Icon(
+                        Icons.directions_car,
+                        size: 40,
+                        color: PrimaryColor,
+                      ),
+                      icons3: Icon(
+                        Icons.handyman_outlined,
+                        size: 40,
+                        color: PrimaryColor,
+                      )),
+                  SizedBox(
+                    height: 20,
                   ),
-                ]),
-                height: 200,
-                width: 360,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    fit: BoxFit.cover,
-                    colorFilter: new ColorFilter.mode(
-                        Colors.transparent.withOpacity(0.5), BlendMode.dstATop),
-                    image: AssetImage("assets/background_car.jpg"),
-                  ),
-                  borderRadius: BorderRadius.circular(30),
-                  color: Colors.transparent,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.3),
-                      spreadRadius: 3,
-                      blurRadius: 5,
-                      offset: Offset(3, 3),
-                      // changes position of shadow
-                    ),
-                  ],
-                ),
+                  makeRow(context,
+                      first: '모니터링',
+                      second: '엔진상태',
+                      third: '설정',
+                      icons: Icon(
+                        Icons.monitor,
+                        size: 40,
+                        color: PrimaryColor,
+                      ),
+                      icons2: Icon(
+                        Icons.local_gas_station,
+                        size: 40,
+                        color: PrimaryColor,
+                      ),
+                      icons3: Icon(
+                        Icons.settings,
+                        size: 40,
+                        color: PrimaryColor,
+                      )),
+                ],
+                mainAxisAlignment: MainAxisAlignment.start,
               ),
-              //car img
-              SizedBox(
-                height: 60,
-              ),
-              makeRow(context,
-                  first: '주간통계',
-                  second: '차량진단',
-                  third: '대시보드',
-                  icons: Icon(
-                    Icons.leaderboard_outlined,
-                    size: 40,
-                    color: PrimaryColor,
-                  ),
-                  icons2: Icon(
-                    Icons.search,
-                    size: 40,
-                    color: PrimaryColor,
-                  ),
-                  icons3: Icon(
-                    Icons.pie_chart_outline_outlined,
-                    size: 40,
-                    color: PrimaryColor,
-                  )),
-              SizedBox(
-                height: 20,
-              ),
-              makeRow(context,
-                  first: '주행기록',
-                  second: '운전스타일',
-                  third: '차량관리',
-                  icons: Icon(
-                    Icons.location_on_outlined,
-                    size: 40,
-                    color: PrimaryColor,
-                  ),
-                  icons2: Icon(
-                    Icons.directions_car,
-                    size: 40,
-                    color: PrimaryColor,
-                  ),
-                  icons3: Icon(
-                    Icons.handyman_outlined,
-                    size: 40,
-                    color: PrimaryColor,
-                  )),
-              SizedBox(
-                height: 20,
-              ),
-              makeRow(context,
-                  first: '모니터링',
-                  second: '엔진상태',
-                  third: '설정',
-                  icons: Icon(
-                    Icons.monitor,
-                    size: 40,
-                    color: PrimaryColor,
-                  ),
-                  icons2: Icon(
-                    Icons.local_gas_station,
-                    size: 40,
-                    color: PrimaryColor,
-                  ),
-                  icons3: Icon(
-                    Icons.settings,
-                    size: 40,
-                    color: PrimaryColor,
-                  )),
-            ],
-            mainAxisAlignment: MainAxisAlignment.start,
-          ),
-        ));
+            )
+        )
+        );
   }
 
   Widget makeRow(BuildContext context,

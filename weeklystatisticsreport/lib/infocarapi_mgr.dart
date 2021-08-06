@@ -78,7 +78,7 @@ void getsafyscore() async {
 
   //api 연결
   String url =
-      'https://server2.mureung.com/infocarAdminPageAPI/sideproject/scoreAvg?userKey=1147&startDate=$lastweekday&endDate=$today';
+        'https://server2.mureung.com/infocarAdminPageAPI/sideproject/scoreAvg?userKey=1147&startDate=$lastweekday&endDate=$today';
   var response = await http.get(
     Uri.parse(url),
     headers: {
@@ -101,6 +101,7 @@ void getsafyscore() async {
 
     DateTime lastday =
         new DateTime(now.year, now.month, now.day + 1); //다 돌아간 날짜를 체크하기 위함
+
     jr.forEach((x) {
       var date_str = formatter.format(date);
 
@@ -759,7 +760,9 @@ void geteventscore(String eventcode, String eventname) async {
     if (eventname == "공회전" && countAllEventForLastWeek == 0) {
       isZeroEventCountForLastWeek = true;
     }
-    countAllEventForEachDay = new List.from(countAllEventForEachDay.reversed);
+    if (eventname == "공회전"){
+      countAllEventForEachDay = new List.from(countAllEventForEachDay.reversed);
+    }
   } else {
     print('Request failed with status: ${response.statusCode}.');
   }
