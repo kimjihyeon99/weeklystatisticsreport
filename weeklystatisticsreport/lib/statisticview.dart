@@ -8,6 +8,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'main_screen.dart';
+
 //activate 와 deactivate 구분하기 위한 list
 List activate = [
   "안전 점수",
@@ -66,7 +67,7 @@ GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 bool isBuildStatisticviewPage = false; // Api를 한번만 호출하기 위해 사용
 
 class statisticviewPage extends StatefulWidget {
-  statisticviewPage({ Key key}) : super(key: key);
+  statisticviewPage({Key key}) : super(key: key);
 
   @override
   statistic_viewPage createState() => new statistic_viewPage();
@@ -237,33 +238,38 @@ class statistic_viewPage extends State<statisticviewPage> {
                         child: ListView.builder(
                             controller: _scrollController,
                             padding: const EdgeInsets.all(20.0),
-                            itemCount: activate.length+1,
+                            itemCount: activate.length + 1,
                             itemBuilder: (context, index) {
-
-                              if(index == 0){
+                              if (index == 0) {
                                 return new uploadtimeContainer().mycon;
-                              }else{
-                                final itemname = activate[index-1];
+                              } else {
+                                final itemname = activate[index - 1];
                                 String name = itemname;
 
                                 //name이랑 activatename과 비교해서 같으면 해당 container를 반환하기
                                 if (name.compareTo(activateName[0]) == 0) {
                                   return new saftyscoreContainer().mycon;
-                                } else if (name.compareTo(activateName[1]) == 0) {
+                                } else if (name.compareTo(activateName[1]) ==
+                                    0) {
                                   return new economicscoreContainer().mycon;
-                                } else if (name.compareTo(activateName[2]) == 0) {
-                                  return new drivingwarningscoreContainer().mycon;
-                                } else if (name.compareTo(activateName[3]) == 0) {
+                                } else if (name.compareTo(activateName[2]) ==
+                                    0) {
+                                  return new drivingwarningscoreContainer()
+                                      .mycon;
+                                } else if (name.compareTo(activateName[3]) ==
+                                    0) {
                                   return new daliyfuelContainer().mycon;
-                                } else if (name.compareTo(activateName[4]) == 0) {
+                                } else if (name.compareTo(activateName[4]) ==
+                                    0) {
                                   return new drivingdistanceContainer().mycon;
-                                } else if (name.compareTo(activateName[5]) == 0) {
+                                } else if (name.compareTo(activateName[5]) ==
+                                    0) {
                                   return new spendingContainer().mycon;
-                                } else if (name.compareTo(activateName[6]) == 0) {
+                                } else if (name.compareTo(activateName[6]) ==
+                                    0) {
                                   return new inspectionContainer().mycon;
                                 }
                               }
-
                             }),
                       ),
                       Positioned(
@@ -273,15 +279,14 @@ class statistic_viewPage extends State<statisticviewPage> {
                         child: Container(
                           child: CupertinoButton(
                             child: Container(
-                              child: RotatedBox(
-                                quarterTurns: 3,
-                                child: Icon(
-                                  Icons.double_arrow_rounded,
-                                  color: Colors.white,
-                                  size: 30,
-                                ),
-                              )
-                            ),
+                                child: RotatedBox(
+                              quarterTurns: 3,
+                              child: Icon(
+                                Icons.double_arrow_rounded,
+                                color: Colors.white,
+                                size: 30,
+                              ),
+                            )),
                             onPressed: () {
                               _scrollController.animateTo(
                                   _scrollController.position.minScrollExtent,

@@ -46,7 +46,7 @@ void getServerUploadtime() async {
     Uri.parse(url),
     headers: {
       "F_TOKEN":
-      "D5CFB732E7BA8E56356AA766B61EEF32F5F1BCA6F554FB0A9432D285A7E012A3"
+          "D5CFB732E7BA8E56356AA766B61EEF32F5F1BCA6F554FB0A9432D285A7E012A3"
     },
   );
 
@@ -78,7 +78,7 @@ void getsafyscore() async {
 
   //api 연결
   String url =
-        'https://server2.mureung.com/infocarAdminPageAPI/sideproject/scoreAvg?userKey=1147&startDate=$lastweekday&endDate=$today';
+      'https://server2.mureung.com/infocarAdminPageAPI/sideproject/scoreAvg?userKey=1147&startDate=$lastweekday&endDate=$today';
   var response = await http.get(
     Uri.parse(url),
     headers: {
@@ -760,7 +760,7 @@ void geteventscore(String eventcode, String eventname) async {
     if (eventname == "공회전" && countAllEventForLastWeek == 0) {
       isZeroEventCountForLastWeek = true;
     }
-    if (eventname == "공회전"){
+    if (eventname == "공회전") {
       countAllEventForEachDay = new List.from(countAllEventForEachDay.reversed);
     }
   } else {
