@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
                   color: Color(0xff3C5186),
                   fontWeight: FontWeight.bold)),
           primaryColor: PrimaryColor,
-          canvasColor: SecondColor),
+          canvasColor:Colors.white54),
       home: MyHomePage(),
       navigatorKey: navigatorKey,
     );

@@ -190,68 +190,74 @@ class _WeeklyStatisticsEditPage extends State<WeeklyStatisticsEditPage>
       return Container(
         key: Key('$index'),
         child: ListTile(
-          // border를 추가하기 위해 Row를 Container로 감쌈
-          leading: new IconButton(
-            icon: Icon(Icons.remove_circle),
-            color: Color(0xFFff7473),
-            onPressed: () {
-              int activatecnt = 0;
+            dense: true,
+            // border를 추가하기 위해 Row를 Container로 감쌈
+            leading: IconButton(
+              icon: Icon(Icons.remove_circle),
+              color: Color(0xFFff7473),
+              onPressed: () {
+                int activatecnt = 0;
 
-              for (int i = 0; i < items.length; i++) {
-                final myitem = items[i];
-                if (myitem is isActivateItem) {
-                  if (myitem.isactivate == true) {
-                    activatecnt = activatecnt + 1;
+                for (int i = 0; i < items.length; i++) {
+                  final myitem = items[i];
+                  if (myitem is isActivateItem) {
+                    if (myitem.isactivate == true) {
+                      activatecnt = activatecnt + 1;
+                    }
                   }
                 }
-              }
 
-              if (activatecnt == 1) {
-                //최소 한개는 아이템이 있어야한다는 알림 문구
-                _BottomalertSheet(context);
-                Future.delayed(const Duration(seconds: 1), () {
-                  // deleayed code here
-                  Navigator.pop(context);
-                });
-              } else {
-                final item = items[index];
+                if (activatecnt == 1) {
+                  //최소 한개는 아이템이 있어야한다는 알림 문구
+                  _BottomalertSheet(context);
+                  Future.delayed(const Duration(seconds: 1), () {
+                    // deleayed code here
+                    Navigator.pop(context);
+                  });
+                } else {
+                  final item = items[index];
 
-                if (item is isActivateItem) {
-                  item.isactivate = false;
+                  if (item is isActivateItem) {
+                    item.isactivate = false;
+                  }
+                  Activateinfo[menuName] = false;
+
+                  int ct = countactivate();
+
+                  setState(() {
+                    items = List<ListItem>.generate(
+                        9,
+                        (i) => ((i % (ct + 1)) == 0 &&
+                                ((i ~/ (ct + 1)) == 0 || (i ~/ (ct + 1)) == 1))
+                            ? (i == 0
+                                ? HeadingItem("활성화")
+                                : HeadingItem("비활성화"))
+                            : ((i ~/ (ct + 1)) == 0
+                                ? isActivateItem(activate[i - 1], true)
+                                : isActivateItem(
+                                    deactivate[i - ct - 2], false)));
+                  });
                 }
-                Activateinfo[menuName] = false;
-
-                int ct = countactivate();
-
-                setState(() {
-                  items = List<ListItem>.generate(
-                      9,
-                      (i) => ((i % (ct + 1)) == 0 &&
-                              ((i ~/ (ct + 1)) == 0 || (i ~/ (ct + 1)) == 1))
-                          ? (i == 0 ? HeadingItem("활성화") : HeadingItem("비활성화"))
-                          : ((i ~/ (ct + 1)) == 0
-                              ? isActivateItem(activate[i - 1], true)
-                              : isActivateItem(deactivate[i - ct - 2], false)));
-                });
-              }
-            },
-          ),
-          title: Text(
-            menuName,
-            style: new TextStyle(
-              fontSize: 25.0,
-              color: Colors.white,
+              },
             ),
-          ),
-          trailing: Icon(
-            Icons.reorder,
-            color: Colors.white,
-            size: 24.0,
-          ),
-        ),
+            title: Text(
+              menuName,
+              style: new TextStyle(
+                fontSize: 25.0,
+                color: Colors.white,
+              ),
+            ),
+            trailing: ReorderableDragStartListener(
+              index: index,
+              child: Icon(
+                Icons.reorder,
+                color: Colors.white,
+                size: 24.0,
+              ),
+            )),
         decoration: BoxDecoration(
             border: Border.all(color: headingColor, width: 0.1),
-            color: SecondColor.withOpacity(0.1)),
+        ),
         height: 50,
       );
     }
@@ -261,45 +267,49 @@ class _WeeklyStatisticsEditPage extends State<WeeklyStatisticsEditPage>
         key: Key('$index'),
         // border를 추가하기 위해 Row를 Container로 감쌈
         child: ListTile(
-            leading: new IconButton(
-              icon: Icon(Icons.add_circle),
-              color: Color(0xFF8FBC94),
-              onPressed: () {
-                final item = items[index];
-                if (item is isActivateItem) {
-                  item.isactivate = true;
-                }
-                Activateinfo[menuName] = true;
+          dense: true,
+          leading: new IconButton(
+            icon: Icon(Icons.add_circle),
+            color: Color(0xFF8FBC94),
+            onPressed: () {
+              final item = items[index];
+              if (item is isActivateItem) {
+                item.isactivate = true;
+              }
+              Activateinfo[menuName] = true;
 
-                int ct = countactivate();
+              int ct = countactivate();
 
-                setState(() {
-                  items = List<ListItem>.generate(
-                      9,
-                      (i) => ((i % (ct + 1)) == 0 &&
-                              ((i ~/ (ct + 1)) == 0 || (i ~/ (ct + 1)) == 1))
-                          ? (i == 0 ? HeadingItem("활성화") : HeadingItem("비활성화"))
-                          : ((i ~/ (ct + 1)) == 0
-                              ? isActivateItem(activate[i - 1], true)
-                              : isActivateItem(deactivate[i - ct - 2], false)));
-                });
-              },
+              setState(() {
+                items = List<ListItem>.generate(
+                    9,
+                    (i) => ((i % (ct + 1)) == 0 &&
+                            ((i ~/ (ct + 1)) == 0 || (i ~/ (ct + 1)) == 1))
+                        ? (i == 0 ? HeadingItem("활성화") : HeadingItem("비활성화"))
+                        : ((i ~/ (ct + 1)) == 0
+                            ? isActivateItem(activate[i - 1], true)
+                            : isActivateItem(deactivate[i - ct - 2], false)));
+              });
+            },
+          ),
+          title: new Text(
+            menuName,
+            style: new TextStyle(
+              fontSize: 25.0,
+              color: new Color(0xffE0E0E0),
             ),
-            title: new Text(
-              menuName,
-              style: new TextStyle(
-                fontSize: 25.0,
-                color: new Color(0xffE0E0E0),
-              ),
-            ),
-            trailing: Icon(
-              Icons.reorder,
-              color: Colors.white.withOpacity(0.5),
-              size: 24.0,
-            )),
+          ),
+          trailing: ReorderableDragStartListener(
+              index: index,
+              child: Icon(
+                Icons.reorder,
+                color: Colors.white.withOpacity(0.5),
+                size: 24.0,
+              )),
+        ),
         decoration: BoxDecoration(
             border: Border.all(color: headingColor, width: 0.1),
-            color: SecondColor.withOpacity(0.1)),
+            ),
         height: 50,
       );
     }
@@ -386,6 +396,7 @@ class _WeeklyStatisticsEditPage extends State<WeeklyStatisticsEditPage>
                   end: Alignment.bottomCenter),
             ),
             child: new ReorderableListView.builder(
+              buildDefaultDragHandles: false,
               physics: NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               itemCount: items.length,
