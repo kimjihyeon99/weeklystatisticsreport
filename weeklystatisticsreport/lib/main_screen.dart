@@ -34,6 +34,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final drawerController = ZoomDrawerController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,8 +46,8 @@ class _MyHomePageState extends State<MyHomePage> {
         borderRadius: 24.0,
         showShadow: true,
         angle: 0.0,
-        backgroundColor: Colors.grey[300],
-        slideWidth: MediaQuery.of(context).size.width*.5,
+        backgroundColor: SecondColor,
+        slideWidth: MediaQuery.of(context).size.width * .5,
         openCurve: Curves.fastOutSlowIn,
         closeCurve: Curves.easeInBack,
       ),

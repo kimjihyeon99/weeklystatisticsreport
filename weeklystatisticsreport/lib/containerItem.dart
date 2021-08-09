@@ -875,8 +875,16 @@ class drivingwarningscoreContainer implements containerItem {
                                     ]),
                               ),
                             ),
+                            Center(
+                              child: Text(
+                                countAllEventForLastWeek.toString() + '회',
+                                style: TextStyle(
+                                    fontSize: 15.0,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
                             SfCircularChart(
-                              tooltipBehavior: TooltipBehavior(enable: true),
                               series: <CircularSeries>[
                                 DoughnutSeries<CountEventForEvent, String>(
                                     dataLabelSettings: DataLabelSettings(
@@ -893,15 +901,6 @@ class drivingwarningscoreContainer implements containerItem {
                                         ce.count),
                               ],
                             ),
-                            Center(
-                              child: Text(
-                                countAllEventForLastWeek.toString() + '회',
-                                style: TextStyle(
-                                    fontSize: 15.0,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            )
                           ]),
                         ),
                         Text(
@@ -988,6 +987,15 @@ class drivingwarningscoreContainer implements containerItem {
                                     ]),
                               ),
                             ),
+                            Center(
+                              child: Text(
+                                countAllEventForThisWeek.toString() + '회',
+                                style: TextStyle(
+                                    fontSize: 15.0,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
                             SfCircularChart(
                               legend: Legend(
                                 isVisible: false,
@@ -998,7 +1006,6 @@ class drivingwarningscoreContainer implements containerItem {
                                         fontSize: 15,
                                         fontWeight: FontWeight.w900)),
                               ),
-                              tooltipBehavior: TooltipBehavior(enable: true),
                               series: <CircularSeries>[
                                 DoughnutSeries<CountEventForEvent, String>(
                                     dataLabelSettings: DataLabelSettings(
@@ -1015,15 +1022,6 @@ class drivingwarningscoreContainer implements containerItem {
                                         ce.count),
                               ],
                             ),
-                            Center(
-                              child: Text(
-                                countAllEventForThisWeek.toString() + '회',
-                                style: TextStyle(
-                                    fontSize: 15.0,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            )
                           ]),
                         ),
                         Text(
@@ -1065,7 +1063,7 @@ class drivingwarningscoreContainer implements containerItem {
             size: 20,
             currentValue: TotalEventCountAvgForAllUser,
             backgroundColor: Colors.white,
-            progressColor: Color(0xFF79bd9a),
+            progressColor: Color(0xFF4CD964),
             animatedDuration: Duration(milliseconds: 1000),
             maxValue: countAllEventForThisWeek > TotalEventCountAvgForAllUser
                 ? countAllEventForThisWeek
@@ -1085,8 +1083,8 @@ class drivingwarningscoreContainer implements containerItem {
             backgroundColor: Colors.white,
             progressColor:
                 countAllEventForThisWeek > TotalEventCountAvgForAllUser
-                    ? Colors.red
-                    : Colors.yellow,
+                    ? Color(0xffff3B30)
+                    : Color(0xffffC041),
             animatedDuration: Duration(milliseconds: 1000),
             maxValue: countAllEventForThisWeek > TotalEventCountAvgForAllUser
                 ? countAllEventForThisWeek
@@ -1490,13 +1488,18 @@ class drivingdistanceContainer implements containerItem {
                           progressColor: Color(0xFFcff09e),
                           animatedDuration: Duration(milliseconds: 1000),
                           maxValue: maxdistance,
-                        )
-                    ),
+                        )),
                   ),
                   Positioned(
-                    top : 0,
+                    top: 0,
                     // 오른쪽으로부터 떨어져 있는 거리가 260 ( progress bar size인 300 - 자동차 image size인 40 ) 을 넘어선다면 redering 초과가 되므로 이를 방지하기 위해 상한 값을 260으로 걸어둠
-                    right: ((300 * (1 - (drivingdistancelist_last / maxdistance))) > 260) ? 260 : (300 * (1 - (drivingdistancelist_last / maxdistance))),
+                    right: ((300 *
+                                (1 -
+                                    (drivingdistancelist_last / maxdistance))) >
+                            260)
+                        ? 260
+                        : (300 *
+                            (1 - (drivingdistancelist_last / maxdistance))),
                     child: Column(
                       children: [
                         Text(
@@ -1515,8 +1518,7 @@ class drivingdistanceContainer implements containerItem {
                     ),
                   ),
                 ],
-              )
-          ),
+              )),
           SizedBox(
             height: 15,
           ),
@@ -1540,12 +1542,17 @@ class drivingdistanceContainer implements containerItem {
                           progressColor: Color(0xFF79bd9a),
                           animatedDuration: Duration(milliseconds: 1000),
                           maxValue: maxdistance,
-                        )
-                    ),
+                        )),
                   ),
                   Positioned(
-                    top : 0,
-                    right: ((300 * (1 - (drivingdistancelist_this / maxdistance))) > 260) ? 260 : (300 * (1 - (drivingdistancelist_this / maxdistance))),
+                    top: 0,
+                    right: ((300 *
+                                (1 -
+                                    (drivingdistancelist_this / maxdistance))) >
+                            260)
+                        ? 260
+                        : (300 *
+                            (1 - (drivingdistancelist_this / maxdistance))),
                     child: Column(
                       children: [
                         Text(
@@ -1564,8 +1571,7 @@ class drivingdistanceContainer implements containerItem {
                     ),
                   ),
                 ],
-              )
-          ),
+              )),
           SizedBox(
             height: 15,
           ),
@@ -1618,17 +1624,25 @@ class drivingdistanceContainer implements containerItem {
                           progressColor: Color(0xFF3b8686),
                           animatedDuration: Duration(milliseconds: 1000),
                           maxValue: maxdistance,
-                        )
-                    ),
+                        )),
                   ),
                   Positioned(
-                    top : 0,
+                    top: 0,
                     // 오른쪽으로부터 떨어져 있는 거리가 260 ( progress bar size인 300 - 자동차 image size인 40 ) 을 넘어선다면 redering 초과가 되므로 이를 방지하기 위해 상한 값을 260으로 걸어둠
-                    right: ((300 * (1 - (TotaldrivingdistanceForAllUser / maxdistance))) > 260) ? 260 : (300 * (1 - (TotaldrivingdistanceForAllUser / maxdistance))),
+                    right: ((300 *
+                                (1 -
+                                    (TotaldrivingdistanceForAllUser /
+                                        maxdistance))) >
+                            260)
+                        ? 260
+                        : (300 *
+                            (1 -
+                                (TotaldrivingdistanceForAllUser /
+                                    maxdistance))),
                     child: Column(
                       children: [
                         Text(
-                          "${TotaldrivingdistanceForAllUser  == null ? 0 : TotaldrivingdistanceForAllUser } km",
+                          "${TotaldrivingdistanceForAllUser == null ? 0 : TotaldrivingdistanceForAllUser} km",
                           style: TextStyle(
                             fontSize: 13,
                           ),
@@ -1643,8 +1657,7 @@ class drivingdistanceContainer implements containerItem {
                     ),
                   ),
                 ],
-              )
-          ),
+              )),
           SizedBox(
             height: 25,
           ),
@@ -1932,6 +1945,15 @@ class spendingContainer implements containerItem {
                                     ]),
                               ),
                             ),
+                            Center(
+                              child: Text(
+                                sumAllspending_last.toString() + '원',
+                                style: TextStyle(
+                                    fontSize: 12.0,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
                             SfCircularChart(
                               tooltipBehavior: TooltipBehavior(enable: true),
                               series: <CircularSeries>[
@@ -1944,15 +1966,6 @@ class spendingContainer implements containerItem {
                                         ce.cost),
                               ],
                             ),
-                            Center(
-                              child: Text(
-                                sumAllspending_last.toString() + '원',
-                                style: TextStyle(
-                                    fontSize: 12.0,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            )
                           ]),
                         ),
                         Text(
@@ -2037,6 +2050,15 @@ class spendingContainer implements containerItem {
                                     ]),
                               ),
                             ),
+                            Center(
+                              child: Text(
+                                sumAllspending_this.toString() + '원',
+                                style: TextStyle(
+                                    fontSize: 12.0,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
                             SfCircularChart(
                               legend: Legend(
                                 isVisible: false,
@@ -2057,15 +2079,6 @@ class spendingContainer implements containerItem {
                                     yValueMapper: (GetSpending ce, _) =>
                                         ce.cost),
                               ],
-                            ),
-                            Center(
-                              child: Text(
-                                sumAllspending_this.toString() + '원',
-                                style: TextStyle(
-                                    fontSize: 12.0,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold),
-                              ),
                             ),
                           ]),
                         ),

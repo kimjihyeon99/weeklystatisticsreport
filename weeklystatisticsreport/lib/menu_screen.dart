@@ -12,7 +12,8 @@ class MenuScreen extends StatelessWidget {
         child: Column(
           children: [
             DrawerHeader(
-              decoration: BoxDecoration(border: Border.all(width: 0, color: PrimaryColor) ),
+              decoration: BoxDecoration(
+                  border: Border.all(width: 0, color: PrimaryColor)),
               child: Column(
                 children: [
                   Row(
@@ -73,7 +74,9 @@ class MenuScreen extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 5,),
+            SizedBox(
+              height: 5,
+            ),
             Padding(
               padding: const EdgeInsets.all(8),
               child: InkWell(
