@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'save_getapi.dart';
 import 'package:flutter_animation_progress_bar/flutter_animation_progress_bar.dart';
 import 'dart:math'; //random 수 가져오기 위한것
+import 'mainmenu.dart';
 
 //가져온 api 정보 임시 저장소
 List<Getdrivingscore> saftyscorelist = []; //2주동안 안전운전 점수

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:weeklystatisticsreport/mainmenu.dart';
+
+const PrimaryColor = const Color(0xff3C5186);
+const SecondColor = const Color(0xffC6B4CE);
 
 class MenuScreen extends StatelessWidget {
   const MenuScreen({Key key}) : super(key: key);

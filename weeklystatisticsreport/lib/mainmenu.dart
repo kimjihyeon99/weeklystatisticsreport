@@ -6,8 +6,7 @@ import 'package:flutter/services.dart';
 import 'statisticview.dart';
 import 'localnotifyMgr.dart';
 
-const PrimaryColor = const Color(0xff3C5186);
-const SecondColor = const Color(0xffC6B4CE);
+GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 class mainmenuPage extends StatefulWidget {
   final ZoomController;
