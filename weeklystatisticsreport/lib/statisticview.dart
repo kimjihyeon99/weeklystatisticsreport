@@ -1,12 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'mainmenu.dart';
 import 'WeeklyStatisticsEdit.dart';
 import 'containerItem.dart';
 import 'infocarapi_mgr.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'main_screen.dart';
 
 //activate 와 deactivate 구분하기 위한 list
@@ -61,8 +59,6 @@ int firstcountactivate() {
 //color initialize
 const PrimaryColor = const Color(0xff3C5186);
 const SecondColor = const Color(0xFFC6B4CE);
-
-GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 bool isBuildStatisticviewPage = false; // Api를 한번만 호출하기 위해 사용
 

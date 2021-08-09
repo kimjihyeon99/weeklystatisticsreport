@@ -23,6 +23,7 @@ class MyApp extends StatelessWidget {
           primaryColor: PrimaryColor,
           canvasColor: SecondColor),
       home: MyHomePage(),
+      navigatorKey: navigatorKey,
     );
   }
 }
