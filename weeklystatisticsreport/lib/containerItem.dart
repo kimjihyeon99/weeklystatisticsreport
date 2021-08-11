@@ -1723,7 +1723,7 @@ class spendingContainer implements containerItem {
                 child: Text(activateName[5],
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: 23.0,
+                        fontSize: 27.0,
                         color: Colors.black)),
               ),
               IconButton(
@@ -1744,7 +1744,7 @@ class spendingContainer implements containerItem {
                                 //Dialog Main Title
                                 title: Column(
                                   children: <Widget>[
-                                    new Text("지출 내역"),
+                                    Text("지출 내역"),
                                     SizedBox(
                                       height: 5,
                                     ),
@@ -2156,7 +2156,7 @@ class inspectionContainer implements containerItem {
                 child: Text(activateName[6],
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: 23.0,
+                        fontSize: 27.0,
                         color: Colors.black)),
               ),
               IconButton(
@@ -2177,7 +2177,7 @@ class inspectionContainer implements containerItem {
                                 //Dialog Main Title
                                 title: Column(
                                   children: <Widget>[
-                                    new Text("점검 필요 항목"),
+                                    Text("점검 필요 항목"),
                                     SizedBox(
                                       height: 5,
                                     ),
