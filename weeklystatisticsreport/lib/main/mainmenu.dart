@@ -3,8 +3,8 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'statisticview.dart';
-import 'localnotifyMgr.dart';
+import '../statisticview.dart';
+import '../localnotifyMgr.dart';
 
 GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 

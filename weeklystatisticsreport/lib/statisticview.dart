@@ -5,7 +5,7 @@ import 'containerItem.dart';
 import 'infocarapi_mgr.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'main_screen.dart';
+import 'main/main_screen.dart';
 
 //activate 와 deactivate 구분하기 위한 list
 List activate = [
@@ -168,7 +168,7 @@ class statistic_viewPage extends State<statisticviewPage> {
                                 ],
                               ),
                               content: new Text(
-                                  "앱 내의 흩어져있는 차량 정보들을 수집하여 일주일마다 통계를 냅니다.\n\n ✔ 매주 월요일에 오전에 업데이트 됩니다. \n\n ✔ 설정버튼을 눌러 통계 정보들의 위치와 \n활성화 여부를 선택할 수 있습니다. "),
+                                  "✔ 앱 내의 흩어져있는 차량 정보들을 수집하여 일주일마다 통계를 냅니다.\n\n ✔ 매주 월요일에 오전에 업데이트 되고 알림이 제공됩니다. \n\n ✔ 설정버튼을 눌러 통계 정보들의 위치와 \n활성화 여부를 선택할 수 있습니다. "),
                               actions: <Widget>[
                                 new TextButton(
                                   child: Text("확인"),

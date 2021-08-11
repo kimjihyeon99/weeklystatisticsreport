@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
-import 'menu_screen.dart';
+import 'package:weeklystatisticsreport/main/menu_screen.dart';
 import 'mainmenu.dart';
 
 void main() {
