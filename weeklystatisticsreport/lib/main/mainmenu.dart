@@ -29,7 +29,8 @@ class _mainmenuPage extends State<mainmenuPage> {
     localnotifyMgr.init().setOnNotificationReceive(onNotificationReceive);
     localnotifyMgr.init().setOnNotificationClick(onNotificationClick);
 
-    print(ZoomController);
+    //매주 월요일 12시 자동으로 알림오게 함
+    localnotifyMgr.init().showWeeklyAtDayTimeNotification();
   }
 
   onNotificationReceive(ReceiveNotification notification) {

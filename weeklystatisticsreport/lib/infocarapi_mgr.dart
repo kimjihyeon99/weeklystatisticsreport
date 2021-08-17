@@ -782,7 +782,7 @@ void getTotalEventCount() async {
   final String thisMonday = formatter.format(thisMondayDate);
 
   String url =
-      'https://server2.mureung.com/infocarAdminPageAPI/sideproject/totalEventCountAvg?userKey=1147&startDate=$thisMonday&endDate=$thisSunday';
+      'https://server2.mureung.com/infocarAdminPageAPI/sideproject/totalEventCountAvg?startDate=$thisMonday&endDate=$thisSunday';
   final response = await http.get(
     Uri.parse(url),
     headers: {
