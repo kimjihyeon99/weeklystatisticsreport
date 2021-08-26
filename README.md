@@ -27,6 +27,10 @@
 
 ## 1. Start 
 
+✅ 주간통계 메뉴를 클릭하면 API에서 정보를 가져오는 동안 로딩화면을 띄웁니다.
+
+<img src="https://user-images.githubusercontent.com/44187194/130928995-4a413162-e624-4f8e-b472-7051fbc50d7e.gif" width="200" height="400"/>
+
 ## 2. Using Flow
 
 ## 3. Editing
