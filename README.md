@@ -1,9 +1,10 @@
 # weeklystatisticsreport
-백마인턴십 프로젝트
+
+## 인포카 앱에 저장되는 데이터를 활용한 주간 통계 리포트 시스템
 
 **개발기간** : 21.06.21 ~ 21.08.17
 
-**개발자** : [kimjihyeon99](https://github.com/kimjihyeon99), [Kim-AYoung](https://github.com/Kim-AYoung),[ssonghj](https://github.com/ssonghj)
+**개발자** : [kimjihyeon99](https://github.com/kimjihyeon99), [Kim-AYoung](https://github.com/Kim-AYoung), [ssonghj](https://github.com/ssonghj)
 
 **개발환경** : Intellij(Dart), Flutter
 
@@ -32,6 +33,19 @@
 <img src="https://user-images.githubusercontent.com/44187194/130928995-4a413162-e624-4f8e-b472-7051fbc50d7e.gif" width="200" height="400"/>
 
 ## 2. Using Flow
+<p>
+<img width="200" height="300" src="https://user-images.githubusercontent.com/44187194/130973990-2fd3bf35-12b6-498f-b389-2b893b8f26ef.png">
+<img width="200" height="300" src="https://user-images.githubusercontent.com/44187194/130974078-42d9ee46-04fd-4a70-a790-d3a37706a08e.png">
+<img width="200" height="400" src="https://user-images.githubusercontent.com/44187194/130974157-9fe27bed-3006-4321-bb4b-a5dd75d99cf9.png">
+ </p>
+ 
+ 
+<p>
+<img width="200" height="300" src="https://user-images.githubusercontent.com/44187194/130974167-46f443f0-42f2-4ad1-837b-0babd7b4b707.png">
+<img width="200" height="300" src="https://user-images.githubusercontent.com/44187194/130974184-ef471865-13dd-44c0-a93f-4ccae2029ad9.png">
+<img width="200" height="300" src="https://user-images.githubusercontent.com/44187194/130974193-0873202d-45b2-4bc4-ae50-414ba12da8b3.png">
+<img width="200" height="300" src="https://user-images.githubusercontent.com/44187194/130974201-9512faca-432a-4992-8a1f-1c631dc7090d.png">
+</p>
 
 ## 3. Editing
 
