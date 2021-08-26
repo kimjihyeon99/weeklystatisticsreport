@@ -1,5 +1,3 @@
-# weeklystatisticsreport
-
 ## 인포카 앱에 저장되는 데이터를 활용한 주간 통계 리포트 시스템
 
 **개발기간** : 21.06.21 ~ 21.08.17
@@ -43,9 +41,11 @@
 <p>✅ <b>점검 필요 항목</b>은 일주일 내로 모두 사용할 것 같은 소모품들을 나열해줍니다.</p>
 <br>
 
+<img src="https://user-images.githubusercontent.com/44187194/130985008-26f4452a-ae23-4a8b-9cef-d01a3cec28d5.gif" width="200" height="400"/>
+
 |<img width="200" height="300" src="https://user-images.githubusercontent.com/44187194/130973990-2fd3bf35-12b6-498f-b389-2b893b8f26ef.png">|<img width="200" height="300" src="https://user-images.githubusercontent.com/44187194/130974078-42d9ee46-04fd-4a70-a790-d3a37706a08e.png">|<img width="200" height="400" src="https://user-images.githubusercontent.com/44187194/130974157-9fe27bed-3006-4321-bb4b-a5dd75d99cf9.png">||
 |:------:|:------:|:------:|:------:|
-|안전 운전|경제 운전|운전 스타일||
+|안전 운전|경제 운전|운전 스타일 경고 횟수||
 |<img width="200" height="300" src="https://user-images.githubusercontent.com/44187194/130974167-46f443f0-42f2-4ad1-837b-0babd7b4b707.png">|<img width="200" height="300" src="https://user-images.githubusercontent.com/44187194/130974184-ef471865-13dd-44c0-a93f-4ccae2029ad9.png">|<img width="200" height="300" src="https://user-images.githubusercontent.com/44187194/130974193-0873202d-45b2-4bc4-ae50-414ba12da8b3.png">|<img width="200" height="300" src="https://user-images.githubusercontent.com/44187194/130974201-9512faca-432a-4992-8a1f-1c631dc7090d.png">|
 |일일 연비|주행 거리|지출 내역|점검 필요|
 
